@@ -17,10 +17,17 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $table = "users";
+
     protected $fillable = [
-        'name',
+        'sekolah_id',
+        'nik',
+        'nama',
+        'nohp',
         'email',
         'password',
+        'role',
+        'status',
     ];
 
     /**
@@ -41,4 +48,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function foto()
+    {
+        return $this->hasOne(Fotousers::class);
+    }
+    public function sekolah()
+    {
+        return $this->belongsTo(Sekolah::class);
+    }
+    public function cabdis()
+    {
+        return $this->belongsTo(UserCabdis::class);
+    }
 }

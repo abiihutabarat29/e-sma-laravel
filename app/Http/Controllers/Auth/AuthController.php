@@ -17,12 +17,12 @@ class AuthController extends Controller
         //validate form
         $kredensial =  $request->validate(
             [
-                'username' => 'required|min:8',
+                'email' => 'required|email',
                 'password' => 'required',
             ],
             [
-                'username.required' => 'Username tidak boleh kosong.',
-                'username.min' => 'Username minimal 8 karakter.',
+                'email.required' => 'Email tidak boleh kosong.',
+                'email.email' => 'Penulisan email tidak benar.',
                 'password.required' => 'Password tidak boleh kosong.',
             ]
         );
@@ -35,7 +35,7 @@ class AuthController extends Controller
             }
             return redirect()->intended('login');
         }
-        return back()->withErrors(['username' => 'Maaf username dan password salah!'])->onlyInput('username');
+        return back()->withErrors(['email' => 'Maaf email dan password salah!'])->onlyInput('email');
     }
 
     public function logout(Request $request)
@@ -46,6 +46,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }
