@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class UsersCabdis extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,10 +16,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $table = "users";
+    protected $table = "users_cabdis";
 
     protected $fillable = [
-        'sekolah_id',
         'nik',
         'nama',
         'nohp',
@@ -48,13 +46,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function profile()
     {
-        return $this->hasOne(ProfileUsers::class);
-    }
-    public function sekolah()
-    {
-        return $this->belongsTo(Sekolah::class);
+        return $this->hasOne(ProfileCabdis::class);
     }
 }

@@ -17,9 +17,17 @@ class Role
      */
     public function handle(Request $request, Closure $next, $role)
     {
-        if (Auth::check() && Auth::User()->role == $role) {
+        // if (Auth::check() && Auth::guard('user')->role == $role) {
+        //     return $next($request);
+        // } elseif (Auth::check() && Auth::guard('admincbd')->role == $role) {
+        //     return $next($request);
+        // }
+        if (Auth::check() && Auth::user()->role == $role) {
             return $next($request);
         }
+        // if (in_array($request->user()->level, $level)) {
+        //     return $next($request);
+        // }
         return redirect('login')->with('Maaf, kamu tidak memiliki hak akses!');
     }
 }

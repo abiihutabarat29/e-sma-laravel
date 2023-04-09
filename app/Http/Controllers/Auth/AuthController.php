@@ -27,25 +27,29 @@ class AuthController extends Controller
             ]
         );
 
-        if (Auth::attempt($kredensial)) {
+        if (Auth::guard('admincbd')->attempt($kredensial)) {
             $request->session()->regenerate();
-            $user = Auth::user();
-            if ($user) {
-                return redirect()->intended('dashboard');
-            }
-            return redirect()->intended('login');
+            return redirect()->intended('dashboard');
+        } elseif (Auth::guard('user')->attempt($kredensial)) {
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
         }
         return back()->withErrors(['email' => 'Maaf email dan password salah!'])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        if (Auth::guard('admincbd')->check()) {
 
-        $request->session()->invalidate();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            Auth::guard('admincbd')->logout();
+        } elseif (Auth::guard('user')->check()) {
 
-        $request->session()->regenerateToken();
-
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            Auth::guard('user')->logout();
+        }
         return redirect('/login');
     }
 }

@@ -8,24 +8,34 @@
         @include('admin.layouts.nav')
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="{{ '/dashboard' }}" class="brand-link">
-                <img src="{{ url('dist/img/logo.png') }}" alt="Logo Batu Bara" class="brand-image">
-                <span class="brand-text font-weight-light"><b>SIPENAKU</b></span>
+                <img src="{{ url('dist/login/images/logo-sekolah.svg') }}" alt="Logo Batu Bara" class="brand-image">
+                <span class="brand-text font-weight-light"><b>E-SEKOLAH</b></span>
             </a>
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-1 d-flex">
                     <div class="image">
-                        @if (Auth::user()->foto == null)
-                            <img src="{{ url('storage/fotouser/blank.png') }}" class="img-circle elevation-2"
-                                alt="User Image">
-                        @else
-                            <img src="{{ url('storage/fotouser/' . Auth::user()->foto) }}"
-                                class="img-circle elevation-2" alt="User Image">
+                        @if (Str::length(Auth::guard('admincbd')->user()) > 0)
+                            @if (Auth::guard('admincbd')->user()->profile->foto == null)
+                                <img src="{{ url('storage/foto-user/blank.png') }}" class="img-circle elevation-2"
+                                    alt="User Image">
+                            @else
+                                <img src="{{ url('storage/foto-user/' . Auth::guard('admincbd')->user()->profile->foto) }}"
+                                    class="img-circle elevation-2" alt="User Image">
+                            @endif
+                        @elseif (Str::length(Auth::guard('user')->user()) > 0)
+                            @if (Auth::guard('user')->user()->profile->foto == null)
+                                <img src="{{ url('storage/foto-user/blank.png') }}" class="img-circle elevation-2"
+                                    alt="User Image">
+                            @else
+                                <img src="{{ url('storage/foto-user/' . Auth::guard('user')->user()->profile->foto) }}"
+                                    class="img-circle elevation-2" alt="User Image">
+                            @endif
                         @endif
                     </div>
                     <div class="info">
-                        <a href="{{ route('myprofil.index') }}" class="d-block">{{ Auth::user()->nama }}</a>
+                        <a href="{{ route('profil.index') }}" class="d-block">{{ Auth::user()->nama }}</a>
                         <small class="text-muted">
-                            @if (Auth::user()->level == 1)
+                            @if (Auth::user()->role == 1)
                                 administrator
                             @else
                                 user
@@ -52,7 +62,6 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-
                         @include('admin.layouts.menu')
                     </ul>
                 </nav>
@@ -64,5 +73,5 @@
             @yield('modal')
         </div>
     </div>
-    @include('sweetalert::alert')
+    {{-- @include('sweetalert::alert') --}}
     @include('admin.layouts.footer')

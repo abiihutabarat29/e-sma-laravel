@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fotousers', function (Blueprint $table) {
+        Schema::create('users_cabdis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('foto');
+            $table->string('nik')->unique();
+            $table->string('nama');
+            $table->string('nohp')->unique();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('role');
+            $table->string('status');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fotousers');
+        Schema::dropIfExists('users_cabdis');
     }
 };

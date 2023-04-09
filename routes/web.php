@@ -23,13 +23,21 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login')->middleware('guest');
     Route::get('logout', 'logout')->name('logout');
 });
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth:user,admincbd']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('profile', [UserController::class, 'profil'])->name('profil.index');
+    Route::put('profile/{user}/update', [UserController::class, 'updateprofil'])->name('profil.update');
+    Route::put('profile/{user}/update-password', [UserController::class, 'updatepassword'])->name('profil.update.password');
+    Route::put('profile/{user}/update-foto', [UserController::class, 'updatefoto'])->name('profil.update.foto');
     Route::group(['middleware' => ['checkUser:1']], function () {
+        // route cabdis
         // user
-        Route::get('user', [UserController::class, 'index'])->name('user.index');
-        Route::post('user', [UserController::class, 'store'])->name('user.store');
-        Route::get('user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
-        Route::delete('user/{id}/destroy', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::get('users-sekolah', [UserController::class, 'index'])->name('user.index');
+        Route::post('users-sekolah', [UserController::class, 'store'])->name('user.store');
+        Route::get('users-sekolah/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+        Route::delete('users-sekolah/{id}/destroy', [UserController::class, 'destroy'])->name('user.destroy');
+    });
+    Route::group(['middleware' => ['checkUser:2']], function () {
+        // route user sekolah
     });
 });

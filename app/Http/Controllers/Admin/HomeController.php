@@ -13,6 +13,6 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        echo "Hai, ini Aplikasi SIPENAKU";
+        echo "Hai";
     }
 }

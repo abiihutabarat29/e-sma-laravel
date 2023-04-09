@@ -92,7 +92,7 @@ address {
   line-height: inherit; }
 
   .copyright span{
-         font-size: 14px; 
+         font-size: 14px;
   }
 
 ol,
@@ -8169,7 +8169,7 @@ h1, h2, h3, h4, h5,
 
 .ftco-section {
   padding: 7em 0;
-  background: url(../images/blur-default-2.jpg);
+  background: url(../images/blue.jpg);
   height: 100vh;
   background-size: cover;
   background-position: bottom;
@@ -8353,4 +8353,4 @@ h1, h2, h3, h4, h5,
         background: #e3b04b;
         color: #fff; }
 
-       
+

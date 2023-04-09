@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>::SIPENAKU | LOGIN::</title>
+    <title>::E-SEKOLAH | LOGIN::</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -11,5 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="{{ asset('/') }}dist/login/css/style.css">
+
+    <link rel="icon" href="{{ asset('/') }}dist/login/images/logo-sekolah.svg" type="image/x-icon" />
 
 </head>
