@@ -12,7 +12,7 @@ class ProfileCabdis extends Model
 
     protected $fillable = [
         'users_cabdis_id',
-        'name',
+        'nama',
         'email',
         'nik',
         'tempat_lahir',

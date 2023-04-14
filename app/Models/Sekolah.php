@@ -12,10 +12,14 @@ class Sekolah extends Model
     protected $table = "sekolah";
 
     protected $fillable = [
-        'npsn', 'jenjang', 'nama_sekolah', 'status', 'kabupaten'
+        'kabupaten_id', 'npsn', 'jenjang', 'nama_sekolah', 'status'
     ];
     public function user()
     {
         return $this->hasOne(User::class);
+    }
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class);
     }
 }

@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="javascript:void(0)" id="createNewUser" class="btn btn-info btn-xs float-right">
+                            <a href="javascript:void(0)" id="createNewKabupaten" class="btn btn-info btn-xs float-right">
                                 <i class="fas fa-plus-circle"></i> Tambah</a>
                         </div>
                         <div class="card-body">
@@ -29,10 +29,8 @@
                                 <thead>
                                     <tr>
                                         <th style="width:5%">No</th>
-                                        <th>Sekolah</th>
-                                        <th style="width:15%">NIK</th>
-                                        <th style="width:20%">Nama</th>
-                                        <th class="text-center" style="width:8%">Foto</th>
+                                        <th style="width:15%">Kode Wilayah</th>
+                                        <th>Kabupaten</th>
                                         <th class="text-center" style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
@@ -45,7 +43,7 @@
         </div>
     </section>
     <div class="modal fade" id="ajaxModel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modelHeading"></h4>
@@ -56,79 +54,28 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="userForm" name="userForm" class="form-horizontal">
+                    <form id="kabupatenForm" name="kabupatenForm" class="form-horizontal">
                         @csrf
-                        <input type="hidden" name="user_id" id="user_id">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>Sekolah<span class="text-danger"> *</span></label>
-                                        <select class="browser-default custom-select select2bs4" name="sekolah_id"
-                                            id="sekolah_id">
-                                            <option selected disabled>::Pilih Sekolah::</option>
-                                            @foreach ($sekolah as $item)
-                                                <option value="{{ $item->id }}">
-                                                    {{ $item->nama_sekolah }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>NIK<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nik" name="nik"
-                                            placeholder="NIK" autocomplete="off" value="{{ old('nik') }}"
-                                            onkeypress="return hanyaAngka(event)" autofocus>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Nama<span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nama" name="nama"
-                                            placeholder="Nama" autocomplete="off" value="{{ old('nama') }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Nomor Handphone <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="nohp" name="nohp"
-                                            placeholder="Nomor Handphone" autocomplete="off" value="{{ old('nohp') }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Email <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" id="email" name="email"
-                                            placeholder="Email" autocomplete="off" value="{{ old('email') }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Password <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" id="password" name="password"
-                                            placeholder="Password" autocomplete="off">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Re-Password <span class="text-danger">*</span></label>
-                                        <input type="password" class="form-control" id="repassword" name="repassword"
-                                            placeholder="Re-Password" autocomplete="off">
-                                    </div>
-                                </div>
+                        <input type="hidden" name="kabupaten_id" id="kabupaten_id">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Kode Wilayah<span class="text-danger">*</span></label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="kode_wilayah" name="kode_wilayah"
+                                    placeholder="Kode Wilayah" onkeypress="return hanyaAngka(event)">
                             </div>
                         </div>
-                        <div class="card-footer">
-                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Kembali</button>
-                            <button type="submit" class="btn btn-primary btn-sm" id="saveBtn"
-                                value="create">Simpan</button>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Nama Kabupaten<span class="text-danger"> *</span></label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="nama_kabupaten" name="nama_kabupaten"
+                                    placeholder="Nama Kabupaten">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary btn-sm" id="saveBtn" value="create">Simpan
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -158,7 +105,7 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus User ini ?</h6>
+                        <h6>Apakah anda yakin menghapus Kabupaten ini ?</h6>
                     </center>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -191,69 +138,62 @@
                 processing: true,
                 serverSide: true,
                 responsive: true,
-                lengthChange: false,
+                pageLength: 10,
+                lengthMenu: [10, 50, 100, 200, 500],
+                lengthChange: true,
                 autoWidth: false,
-                ajax: "{{ route('user.index') }}",
+                ajax: "{{ route('kabupaten.index') }}",
                 columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
+                        data: "DT_RowIndex",
+                        name: "DT_RowIndex",
                     },
                     {
-                        data: 'sekolah',
-                        name: 'sekolah'
+                        data: "kode_wilayah",
+                        name: "kode_wilayah",
                     },
                     {
-                        data: 'nik',
-                        name: 'nik'
+                        data: "kabupaten",
+                        name: "kabupaten",
                     },
                     {
-                        data: 'nama',
-                        name: 'nama'
-                    },
-                    {
-                        data: 'foto',
-                        name: 'foto'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
+                        data: "action",
+                        name: "action",
                         orderable: false,
-                        searchable: false
+                        searchable: false,
                     },
-                ]
+                ],
             });
 
-            $("#createNewUser").click(function() {
-                $("#saveBtn").val("create-user");
-                $("#user_id").val("");
-                $("#userForm").trigger("reset");
-                $("#modelHeading").html("Tambah User");
+            $("#createNewKabupaten").click(function() {
+                $("#saveBtn").val("create-kabupaten");
+                $("#kabupaten_id").val("");
+                $("#kabupatenForm").trigger("reset");
+                $("#modelHeading").html("Tambah Kabupaten");
                 $("#ajaxModel").modal("show");
-                $("#deleteUser").modal("show");
+                $("#deleteKab").modal("show");
             });
 
-            $("body").on("click", ".editUser", function() {
-                var user_id = $(this).data("id");
-                $.get("{{ route('user.index') }}" + "/" + user_id + "/edit", function(data) {
-                    $("#modelHeading").html("Edit User");
-                    $("#saveBtn").val("edit-user");
+            $("body").on("click", ".editKab", function() {
+                var kabupaten_id = $(this).data("id");
+                $.get("{{ route('kabupaten.index') }}" + "/" + kabupaten_id + "/edit", function(data) {
+                    $("#modelHeading").html("Edit Kabupaten");
+                    $("#saveBtn").val("edit-kabupaten");
                     $("#ajaxModel").modal("show");
-                    $("#user_id").val(data.id);
-                    $("#sekolah_id").val(data.sekolah_id);
-                    $("#nik").val(data.nik);
-                    $("#nama").val(data.nama);
-                    $("#nohp").val(data.nohp);
-                    $("#email").val(data.email);
+                    $("#kabupaten_id").val(data.id);
+                    $("#kode_wilayah").val(data.kode_wilayah);
+                    $("#nama_kabupaten").val(data.kabupaten);
                 });
             });
+
             $("#saveBtn").click(function(e) {
                 e.preventDefault();
                 $(this).html(
                     "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menyimpan...</i></span>"
                 );
+
                 $.ajax({
-                    data: $("#userForm").serialize(),
-                    url: "{{ route('user.store') }}",
+                    data: $("#kabupatenForm").serialize(),
+                    url: "{{ route('kabupaten.store') }}",
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
@@ -264,22 +204,22 @@
                                 $('.alert-danger').append('<strong><li>' +
                                     value +
                                     '</li></strong>');
-                                $(".alert-danger").fadeOut(3000);
+                                $(".alert-danger").fadeOut(5000);
                                 $("#saveBtn").html("Simpan");
-                                // $('#userForm').trigger("reset");
+                                // $('#kabupatenForm').trigger("reset");
                             });
                         } else {
                             table.draw();
-                            alertSuccess("User Berhasil ditambah");
-                            $('#userForm').trigger("reset");
+                            alertSuccess("Kabupaten berhasil ditambah");
+                            // $('#kabupatenForm').trigger("reset");
                             $("#saveBtn").html("Simpan");
                             $('#ajaxModel').modal('hide');
                         }
                     },
                 });
             });
-            $("body").on("click", ".deleteUser", function() {
-                var user_id = $(this).data("id");
+            $("body").on("click", ".deleteKab", function() {
+                var kabupaten_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
                 $("#ajaxModelHps").modal("show");
                 $("#hapusBtn").click(function(e) {
@@ -289,7 +229,7 @@
                     );
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('user.store') }}" + "/" + user_id + "/destroy",
+                        url: "{{ route('kabupaten.store') }}" + "/" + kabupaten_id,
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },

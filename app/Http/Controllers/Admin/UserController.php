@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProfileUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Bagian;
+use App\Models\Sekolah;
+use App\Models\Timeline;
 use Yajra\Datatables\Datatables;
 
 
@@ -22,21 +24,20 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-
-        $menu = 'User';
-        $bagian = Bagian::latest()->get();
+        $menu = 'User Sekolah';
+        $sekolah = Sekolah::latest()->get();
         if ($request->ajax()) {
-            $data = User::where('level', '!=', 1)->latest()->get();
+            $data = User::latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('bagian', function ($data) {
-                    return $data->bagian->nama_bagian;
+                ->addColumn('sekolah', function ($data) {
+                    return $data->sekolah->nama_sekolah;
                 })
                 ->addColumn('foto', function ($data) {
-                    if ($data->foto != null) {
-                        $foto = '<center><img src="' . url("storage/fotouser/" . $data->foto) . '" width="30px" class="img rounded"><center>';
+                    if ($data->profile->foto != null) {
+                        $foto = '<center><img src="' . url("storage/foto-user/" . $data->profile->foto) . '" width="30px" class="img rounded"><center>';
                     } else {
-                        $foto = '<center><img src="' . url("storage/fotouser/blank.png") . '" width="30px" class="img rounded"><center>';
+                        $foto = '<center><img src="' . url("storage/foto-user/blank.png") . '" width="30px" class="img rounded"><center>';
                     }
                     return $foto;
                 })
@@ -48,55 +49,51 @@ class UserController extends Controller
                 ->rawColumns(['foto', 'action'])
                 ->make(true);
         }
-        return view('admin.user.data', compact('menu', 'bagian'));
+        return view('admin.user.data', compact('menu', 'sekolah'));
     }
 
     public function store(Request $request)
     {
         //Translate Bahasa Indonesia
         $message = array(
-            'bagian_id.required' => 'Instansi harus dipilih.',
-            'bagian_id.unique' => 'Instansi sudah terdaftar.',
-            'nip.required' => 'NIP harus diisi.',
-            'nip.numeric' => 'NIP harus angka.',
-            'nip.min' => 'NIP minimal 18 angka.',
-            'nip.unique' => 'NIP sudah terdaftar.',
+            'sekolah_id.required' => 'Sekolah harus dipilih.',
+            'sekolah_id.unique' => 'Sekolah sudah terdaftar.',
+            'nik.required' => 'NIK harus diisi.',
+            'nik.numeric' => 'NIK harus angka.',
+            'nik.max' => 'NIK maksimal 16 digit.',
+            'nik.min' => 'NIK minimal 16 digit.',
+            'nik.unique' => 'NIK sudah terdaftar.',
             'nama.required' => 'Nama harus diisi.',
             'nohp.required' => 'Nomor Handphone harus diisi.',
             'nohp.numeric' => 'Nomor Handphone harus angka.',
             'email.required' => 'Email harus diisi.',
             'email.email' => 'Penulisan email tidak benar.',
             'email.unique' => 'Email sudah terdaftar.',
-            'username.required' => 'Username harus diisi.',
-            'username.min' => 'Username minimal 8.',
-            'username.unique' => 'Username sudah terdaftar.',
             'password.required' => 'Password harus diisi.',
-            'password.min' => 'Password minimal 8.',
+            'password.min' => 'Password minimal 8 karakter.',
             'repassword.required' => 'Harap konfirmasi password.',
             'repassword.same' => 'Password harus sama.',
-            'repassword.min' => 'Password minimal 8.',
-            'level.required' => 'Level harus dipilih.',
+            'repassword.min' => 'Password minimal 8 karakter.',
         );
         //Check If Field Unique
         if (!$request->user_id) {
             //rule tambah data tanpa user_id
-            $ruleIns = 'required|unique:users,bagian_id';
-            $ruleNip = 'required|min:18|numeric|unique:users,nip';
+            $ruleSekolah = 'required|unique:users,sekolah_id';
+            $ruleNik = 'required|max:16|min:16|unique:users,nik';
             $ruleEmail = 'required|email|unique:users,email';
-            $ruleUsername = 'required|unique:users,username|min:8';
         } else {
             //rule edit jika tidak ada user_id
-            $lastIns = User::where('id', $request->user_id)->first();
-            if ($lastIns->bagian_id == $request->bagian_id) {
-                $ruleIns = 'required';
+            $lastSekolah = User::where('id', $request->user_id)->first();
+            if ($lastSekolah->sekolah_id == $request->sekolah_id) {
+                $ruleSekolah = 'required';
             } else {
-                $ruleIns = 'required|unique:users,bagian_id';
+                $ruleSekolah = 'required|unique:users,sekolah_id';
             }
-            $lastNip = User::where('id', $request->user_id)->first();
-            if ($lastNip->nip == $request->nip) {
-                $ruleNip = 'required|min:18|numeric';
+            $lastNik = User::where('id', $request->user_id)->first();
+            if ($lastNik->nik == $request->nik) {
+                $ruleNik = 'required|max:16|min:16';
             } else {
-                $ruleNip = 'required|min:18|numeric|unique:users,nip';
+                $ruleNik = 'required|max:16|min:16|unique:users,nik';
             }
             $lastEmail = User::where('id', $request->user_id)->first();
             if ($lastEmail->email == $request->email) {
@@ -104,46 +101,61 @@ class UserController extends Controller
             } else {
                 $ruleEmail = 'required|email|unique:users,email';
             }
-            $lastUsername = User::where('id', $request->user_id)->first();
-            if ($lastUsername->username == $request->username) {
-                $ruleUsername = 'required|min:8';
-            } else {
-                $ruleUsername = 'required|unique:users,username|min:8';
-            }
         }
         $validator = Validator::make($request->all(), [
-            'bagian_id' => $ruleIns,
-            'nip' => $ruleNip,
+            'sekolah_id' => $ruleSekolah,
+            'nik' => $ruleNik,
             'nama' => 'required|max:255',
             'nohp' => 'required|numeric',
             'email' => $ruleEmail,
-            'username' => $ruleUsername,
             'password' => 'required|min:8',
             'repassword' => 'required|same:password|min:8',
-            'level' => 'required',
         ], $message);
-
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
-
         User::updateOrCreate(
             [
                 'id' => $request->user_id
             ],
             [
-                'bagian_id' => $request->bagian_id,
-                'nip' => $request->nip,
+                'sekolah_id' => $request->sekolah_id,
+                'nik' => $request->nik,
                 'nama' => $request->nama,
                 'nohp' => $request->nohp,
                 'email' => $request->email,
-                'username' => $request->username,
                 'password' => Hash::make($request->password),
-                'level' => $request->level,
+                'role' => 2,
                 'status' => 1,
             ]
         );
-
+        $usersid  = User::orderBy('id', 'DESC')->first();
+        ProfileUsers::create(
+            [
+                'user_id' => $usersid->id,
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'nik' => $request->nik,
+                'nohp' => $request->nohp,
+            ]
+        );
+        if (!$request->user_id) {
+            Timeline::create(
+                [
+                    'user_id' => $usersid->id,
+                    'status' => 'Bergabung',
+                    'pesan' => 'Membuat Akun Baru',
+                ]
+            );
+        } else {
+            Timeline::create(
+                [
+                    'user_id' => $request->user_id,
+                    'status' => 'Update Akun',
+                    'pesan' => 'Memperbaharui Akun',
+                ]
+            );
+        }
         return response()->json(['success' => 'User saved successfully.']);
     }
     public function edit($id)
@@ -154,14 +166,12 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        Storage::delete('public/foto-user/' . $user->profile->foto);
         $user->delete();
-        if ($user->foto) {
-            Storage::delete('public/fotouser/' . $user->foto);
-        }
         return response()->json(['success' => 'User deleted successfully.']);
     }
 
-    public function myprofil(Request $request)
+    public function profil(Request $request)
     {
         $menu = 'Profil Saya';
         $id = Auth::user()->id;

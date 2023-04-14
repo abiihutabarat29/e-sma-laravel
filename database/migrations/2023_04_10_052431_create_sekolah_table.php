@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('sekolah', function (Blueprint $table) {
             $table->id();
             $table->string('npsn')->unique();
+            $table->unsignedBigInteger('kabupaten_id');
             $table->string('jenjang');
             $table->string('nama_sekolah');
             $table->string('status');
-            $table->string('kabupaten');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sekolahs');
+        Schema::dropIfExists('sekolah');
     }
 };

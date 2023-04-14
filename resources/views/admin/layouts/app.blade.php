@@ -33,7 +33,7 @@
                         @endif
                     </div>
                     <div class="info">
-                        <a href="{{ route('profil.index') }}" class="d-block">{{ Auth::user()->nama }}</a>
+                        <a href="{{ route('profil.index') }}" class="d-block">{{ Auth::user()->profile->nama }}</a>
                         <small class="text-muted">
                             @if (Auth::user()->role == 1)
                                 administrator
@@ -73,5 +73,5 @@
             @yield('modal')
         </div>
     </div>
-    {{-- @include('sweetalert::alert') --}}
+    @include('sweetalert::alert')
     @include('admin.layouts.footer')

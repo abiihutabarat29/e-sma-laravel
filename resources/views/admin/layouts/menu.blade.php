@@ -7,8 +7,18 @@
     </a>
 </li>
 @if (Auth::user()->role == 1)
-    <li class="nav-item {{ request()->segment(1) == 'users-sekolah' ? 'menu-open' : '' }}">
-        <a href="#" class="nav-link {{ request()->segment(1) == 'users-sekolah' ? 'active' : '' }}">
+    <li
+        class="nav-item {{ request()->segment(1) == 'kabupaten' ||
+        request()->segment(1) == 'sekolah' ||
+        request()->segment(1) == 'users-sekolah'
+            ? 'menu-open'
+            : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'kabupaten' ||
+            request()->segment(1) == 'sekolah' ||
+            request()->segment(1) == 'users-sekolah'
+                ? 'active'
+                : '' }}">
             <i class="nav-icon fas fa-layer-group"></i>
             <p>
                 Master Data
@@ -17,10 +27,28 @@
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item">
+                <a href="{{ route('kabupaten.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'kabupaten' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Kabupaten</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('sekolah.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Sekolah</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
                 <a href="{{ route('user.index') }}"
                     class="nav-link {{ request()->segment(1) == 'users-sekolah' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>User Sekolah</p>
+                    <p>Users Sekolah</p>
                 </a>
             </li>
         </ul>

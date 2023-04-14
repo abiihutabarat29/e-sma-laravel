@@ -20,11 +20,11 @@ return new class extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama');
             $table->string('email');
-            $table->string('nik')->nullable();
+            $table->string('nik');
             $table->string('tempat_lahir')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->string('gender')->nullable();
-            $table->string('nohp')->nullable();
+            $table->string('nohp');
             $table->string('alamat')->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();
