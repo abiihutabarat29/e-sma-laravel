@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProfileUsers;
+use App\Models\ProfileCabdis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -183,8 +184,18 @@ class UserController extends Controller
         }
         return view('admin.profil.data', compact('user', 'menu'));
     }
-    public function updateprofil(Request $request, User $user)
+    public function updateprofil(Request $request, $id)
     {
+        if (Auth::user()->role == 1) {
+            $profil = ProfileCabdis::where('id', $id)->first();
+        } else {
+            $profil = ProfileUsers::where("id", $id)->first();
+        }
+        if (Auth::user()->role == 1) {
+            $user = UsersCabdis::where('id', $id)->first();
+        } else {
+            $user = User::where("id", $id)->first();
+        }
         $lastEmail = User::where('id', $request->id)->first();
         if ($lastEmail->email == $request->email) {
             $ruleEmail = 'required|email';
@@ -204,7 +215,7 @@ class UserController extends Controller
                 'email' => $request->email,
             ]
         );
-        ProfileUsers::where("id", $request->id)->update([
+        $profil->update([
             'gender' => $request->jenis_kelamin,
             'tempat_lahir' => $request->tempat_lahir,
             'tgl_lahir' => $request->tgl_lahir,
@@ -220,8 +231,13 @@ class UserController extends Controller
         //redirect to index
         return redirect()->route('profil.index')->with(['status' => 'Profil Berhasil Diupdate!']);
     }
-    public function updatepassword(Request $request, User $user)
+    public function updatepassword(Request $request, $id)
     {
+        if (Auth::user()->role == 1) {
+            $user = UsersCabdis::where('id', $id)->first();
+        } else {
+            $user = User::where("id", $id)->first();
+        }
         //Translate Bahasa Indonesia
         $message = array(
             'npassword.required' => 'Password harus diisi.',
@@ -252,7 +268,11 @@ class UserController extends Controller
     }
     public function updatefoto(Request $request, $id)
     {
-        $user = ProfileUsers::where("id", $id)->first();
+        if (Auth::user()->role == 1) {
+            $user = ProfileCabdis::where('id', $id)->first();
+        } else {
+            $user = ProfileUsers::where("id", $id)->first();
+        }
         //Translate Bahasa Indonesia
         $message = array(
             'foto.images' => 'File harus image.',
