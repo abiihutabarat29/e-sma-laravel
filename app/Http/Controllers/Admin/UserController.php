@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\UsersCabdis;
 use App\Models\Sekolah;
 use App\Models\Timeline;
 use Yajra\Datatables\Datatables;
@@ -171,12 +172,16 @@ class UserController extends Controller
         return response()->json(['success' => 'User deleted successfully.']);
     }
 
-    public function profil(Request $request)
+    public function profil()
     {
         $menu = 'Profil Saya';
         $id = Auth::user()->id;
-        $user = User::where('id', $id)->first();
-        return view('admin.myprofil.data', compact('user', 'menu'));
+        if (Auth::user()->role == 1) {
+            $user = UsersCabdis::where('id', $id)->first();
+        } else {
+            $user = User::where('id', $id)->first();
+        }
+        return view('admin.profil.data', compact('user', 'menu'));
     }
     public function updateprofil(Request $request, User $user)
     {
@@ -186,31 +191,36 @@ class UserController extends Controller
         } else {
             $ruleEmail = 'required|email|unique:users,email';
         }
-        $lastUsername = User::where('id', $request->id)->first();
-        if ($lastUsername->username == $request->username) {
-            $ruleUsername = 'required|min:8';
-        } else {
-            $ruleUsername = 'required|unique:users,username|min:8';
-        }
         //validate form
         $this->validate($request, [
             'nama' => 'required|max:255',
             'nohp' => 'required|numeric',
             'email' => $ruleEmail,
-            'username' => $ruleUsername,
         ]);
         $user->update(
             [
                 'nama' => $request->nama,
                 'nohp' => $request->nohp,
                 'email' => $request->email,
-                'username' => $request->username,
+            ]
+        );
+        ProfileUsers::where("id", $request->id)->update([
+            'gender' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tgl_lahir' => $request->tgl_lahir,
+            'alamat' => $request->alamat,
+        ]);
+        Timeline::create(
+            [
+                'user_id' => $request->id,
+                'status' => 'Update Akun',
+                'pesan' => 'Memperbaharui Profil',
             ]
         );
         //redirect to index
-        return redirect()->route('myprofil.index')->with(['status' => 'Profil Berhasil Diupdate!']);
+        return redirect()->route('profil.index')->with(['status' => 'Profil Berhasil Diupdate!']);
     }
-    public function updatepass(Request $request, User $user)
+    public function updatepassword(Request $request, User $user)
     {
         //Translate Bahasa Indonesia
         $message = array(
@@ -230,11 +240,19 @@ class UserController extends Controller
                 'password' => Hash::make($request->npassword),
             ]
         );
+        Timeline::create(
+            [
+                'user_id' => $request->id,
+                'status' => 'Update Akun',
+                'pesan' => 'Memperbaharui Password Baru',
+            ]
+        );
         //redirect to index
-        return redirect()->route('myprofil.index')->with(['status' => 'Password Berhasil Diupdate!']);
+        return redirect()->route('profil.index')->with(['status' => 'Password Berhasil Diupdate!']);
     }
-    public function updatefoto(Request $request, User $user)
+    public function updatefoto(Request $request, $id)
     {
+        $user = ProfileUsers::where("id", $id)->first();
         //Translate Bahasa Indonesia
         $message = array(
             'foto.images' => 'File harus image.',
@@ -245,13 +263,20 @@ class UserController extends Controller
             'foto' => 'image|mimes:jpeg,png,jpg|max:1024'
         ], $message);
         $img = $request->file('foto');
-        $img->storeAs('public/fotouser/', $img->hashName());
+        $img->storeAs('public/foto-user/', $img->hashName());
         //delete old
-        Storage::delete('public/fotouser/' . $user->foto);
+        Storage::delete('public/foto-user/' . $user->foto);
         $user->update([
             'foto' => $img->hashName(),
         ]);
+        Timeline::create(
+            [
+                'user_id' => $id,
+                'status' => 'Update Akun',
+                'pesan' => 'Memperbaharui Foto Profil',
+            ]
+        );
         //redirect to index
-        return redirect()->route('myprofil.index')->with(['status' => 'Foto Berhasil Diupdate!']);
+        return redirect()->route('profil.index')->with(['status' => 'Foto Berhasil Diupdate!']);
     }
 }

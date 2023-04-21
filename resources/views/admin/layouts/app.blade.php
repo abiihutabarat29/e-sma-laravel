@@ -13,13 +13,22 @@
             </a>
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-1 d-flex">
-                    <div class="image">
-                        @if (Str::length(Auth::guard('admincbd')->user()) > 0)
+                    <div class="image mt-2">
+                        @if (Auth::user()->profile->foto == null)
+                            <img src="{{ url('storage/foto-user/blank.png') }}" class="img-circle elevation-2"
+                                alt="User Image">
+                        @else
+                            <img src="{{ url('storage/foto-user/' . Auth::user()->profile->foto) }}"
+                                class="img-circle elevation-2" alt="User Image">
+                        @endif
+                        {{-- fetch foto with guard user --}}
+                        {{-- ================================================================================== --}}
+                        {{-- @if (Str::length(Auth::guard('admincbd')->user()) > 0)
                             @if (Auth::guard('admincbd')->user()->profile->foto == null)
                                 <img src="{{ url('storage/foto-user/blank.png') }}" class="img-circle elevation-2"
                                     alt="User Image">
                             @else
-                                <img src="{{ url('storage/foto-user/' . Auth::guard('admincbd')->user()->profile->foto) }}"
+                                <img src="{{ url('storage/foto-user/' . Auth::user()->profile->foto) }}"
                                     class="img-circle elevation-2" alt="User Image">
                             @endif
                         @elseif (Str::length(Auth::guard('user')->user()) > 0)
@@ -27,10 +36,11 @@
                                 <img src="{{ url('storage/foto-user/blank.png') }}" class="img-circle elevation-2"
                                     alt="User Image">
                             @else
-                                <img src="{{ url('storage/foto-user/' . Auth::guard('user')->user()->profile->foto) }}"
+                                <img src="{{ url('storage/foto-user/' . Auth::user()->profile->foto) }}"
                                     class="img-circle elevation-2" alt="User Image">
                             @endif
-                        @endif
+                        @endif --}}
+                        {{-- ================================================================================== --}}
                     </div>
                     <div class="info">
                         <a href="{{ route('profil.index') }}" class="d-block">{{ Auth::user()->profile->nama }}</a>

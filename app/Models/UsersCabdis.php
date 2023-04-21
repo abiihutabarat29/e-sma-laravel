@@ -50,4 +50,8 @@ class UsersCabdis extends Authenticatable
     {
         return $this->hasOne(ProfileCabdis::class);
     }
+    public function timeline()
+    {
+        return $this->hasMany(Timeline::class);
+    }
 }
