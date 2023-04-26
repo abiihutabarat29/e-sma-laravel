@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\KabupatenController;
 use App\Http\Controllers\Admin\SekolahController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MapelController;
+use App\Http\Controllers\Admin\SaranaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,8 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::delete('users-sekolah/{user}/destroy', [UserController::class, 'destroy'])->name('user.destroy');
         // Mata Pelajaran
         Route::resource('mata-pelajaran', MapelController::class);
+        // Sarana
+        Route::resource('sarana', SaranaController::class);
     });
     Route::group(['middleware' => ['checkUser:2']], function () {
         // route user sekolah
