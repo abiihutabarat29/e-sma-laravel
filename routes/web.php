@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SekolahController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MapelController;
 use App\Http\Controllers\Admin\SaranaController;
+use App\Http\Controllers\Admin\InventarisController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,8 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('mata-pelajaran', MapelController::class);
         // Sarana
         Route::resource('sarana', SaranaController::class);
+        // Inventaris
+        Route::resource('inventaris', InventarisController::class);
     });
     Route::group(['middleware' => ['checkUser:2']], function () {
         // route user sekolah

@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="javascript:void(0)" id="createNewSarana" class="btn btn-info btn-xs float-right">
+                            <a href="javascript:void(0)" id="createNewInv" class="btn btn-info btn-xs float-right">
                                 <i class="fas fa-plus-circle"></i> Tambah</a>
                         </div>
                         <div class="card-body">
@@ -29,7 +29,7 @@
                                 <thead>
                                     <tr>
                                         <th style="width:5%">No</th>
-                                        <th>Jenis Sarana</th>
+                                        <th>Jenis Inventaris</th>
                                         <th class="text-center" style="width: 10%">Action</th>
                                     </tr>
                                 </thead>
@@ -53,14 +53,14 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="saranaForm" name="saranaForm" class="form-horizontal">
+                    <form id="inventarisForm" name="inventarisForm" class="form-horizontal">
                         @csrf
-                        <input type="hidden" name="sarana_id" id="sarana_id">
+                        <input type="hidden" name="inventaris_id" id="inventaris_id">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>Nama Sarana<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="sarana" name="sarana"
-                                    placeholder="Jenis Sarana">
+                                <label>Nama Inventaris<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="inventaris" name="inventaris"
+                                    placeholder="Jenis Inventaris">
                             </div>
                         </div>
                         <div class="form-group">
@@ -97,7 +97,7 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus Sarana ini ?</h6>
+                        <h6>Apakah anda yakin menghapus Inventaris ini ?</h6>
                     </center>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -126,14 +126,14 @@
                 lengthMenu: [10, 50, 100, 200, 500],
                 lengthChange: true,
                 autoWidth: false,
-                ajax: "{{ route('sarana.index') }}",
+                ajax: "{{ route('inventaris.index') }}",
                 columns: [{
                         data: "DT_RowIndex",
                         name: "DT_RowIndex",
                     },
                     {
-                        data: "sarana",
-                        name: "sarana",
+                        data: "inventaris",
+                        name: "inventaris",
                     },
                     {
                         data: "action",
@@ -144,23 +144,23 @@
                 ],
             });
 
-            $("#createNewSarana").click(function() {
-                $("#saveBtn").val("create-sarana");
-                $("#sarana_id").val("");
-                $("#saranaForm").trigger("reset");
-                $("#modelHeading").html("Tambah Sarana");
+            $("#createNewInv").click(function() {
+                $("#saveBtn").val("create-inventaris");
+                $("#inventaris_id").val("");
+                $("#inventarisForm").trigger("reset");
+                $("#modelHeading").html("Tambah Inventaris");
                 $("#ajaxModel").modal("show");
-                $("#deleteSarana").modal("show");
+                $("#deleteInv").modal("show");
             });
 
-            $("body").on("click", ".editSarana", function() {
-                var sarana_id = $(this).data("id");
-                $.get("{{ route('sarana.index') }}" + "/" + sarana_id + "/edit", function(data) {
-                    $("#modelHeading").html("Edit Sarana");
-                    $("#saveBtn").val("edit-sarana");
+            $("body").on("click", ".editInv", function() {
+                var inventaris_id = $(this).data("id");
+                $.get("{{ route('inventaris.index') }}" + "/" + inventaris_id + "/edit", function(data) {
+                    $("#modelHeading").html("Edit Inventaris");
+                    $("#saveBtn").val("edit-inventaris");
                     $("#ajaxModel").modal("show");
-                    $("#sarana_id").val(data.id);
-                    $("#sarana").val(data.sarana);
+                    $("#inventaris_id").val(data.id);
+                    $("#inventaris").val(data.inventaris);
                 });
             });
 
@@ -171,8 +171,8 @@
                 );
 
                 $.ajax({
-                    data: $("#saranaForm").serialize(),
-                    url: "{{ route('sarana.store') }}",
+                    data: $("#inventarisForm").serialize(),
+                    url: "{{ route('inventaris.store') }}",
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
@@ -188,15 +188,15 @@
                             });
                         } else {
                             table.draw();
-                            alertSuccess("Sarana berhasil ditambah");
+                            alertSuccess("Inventaris berhasil ditambah");
                             $("#saveBtn").html("Simpan");
                             $('#ajaxModel').modal('hide');
                         }
                     },
                 });
             });
-            $("body").on("click", ".deleteSarana", function() {
-                var sarana_id = $(this).data("id");
+            $("body").on("click", ".deleteInv", function() {
+                var inventaris_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
                 $("#ajaxModelHps").modal("show");
                 $("#hapusBtn").click(function(e) {
@@ -206,7 +206,7 @@
                     );
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('sarana.store') }}" + "/" + sarana_id,
+                        url: "{{ route('inventaris.store') }}" + "/" + inventaris_id,
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },
