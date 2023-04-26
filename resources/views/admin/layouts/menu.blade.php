@@ -13,7 +13,8 @@
         request()->segment(1) == 'users-sekolah' ||
         request()->segment(1) == 'mata-pelajaran' ||
         request()->segment(1) == 'sarana' ||
-        request()->segment(1) == 'inventaris'
+        request()->segment(1) == 'inventaris' ||
+        request()->segment(1) == 'golongan'
             ? 'menu-open'
             : '' }}">
         <a href="#"
@@ -22,7 +23,8 @@
             request()->segment(1) == 'users-sekolah' ||
             request()->segment(1) == 'mata-pelajaran' ||
             request()->segment(1) == 'sarana' ||
-            request()->segment(1) == 'inventaris'
+            request()->segment(1) == 'inventaris' ||
+            request()->segment(1) == 'golongan'
                 ? 'active'
                 : '' }}">
             <i class="nav-icon fas fa-layer-group"></i>
@@ -82,6 +84,15 @@
                     class="nav-link {{ request()->segment(1) == 'inventaris' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Inventaris</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('golongan.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'golongan' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Golongan</p>
                 </a>
             </li>
         </ul>
