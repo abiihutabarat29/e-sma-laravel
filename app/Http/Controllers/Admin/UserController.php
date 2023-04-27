@@ -132,7 +132,10 @@ class UserController extends Controller
             ]
         );
         $usersid  = User::orderBy('id', 'DESC')->first();
-        ProfileUsers::create(
+        ProfileUsers::updateOrCreate(
+            [
+                'id' => $request->user_id
+            ],
             [
                 'user_id' => $usersid->id,
                 'nama' => $request->nama,
@@ -144,17 +147,18 @@ class UserController extends Controller
         if (!$request->user_id) {
             Timeline::create(
                 [
-                    'user_id' => $usersid->id,
-                    'status' => 'Bergabung',
-                    'pesan' => 'Membuat Akun Baru',
+                    'user_id' => Auth::user()->id,
+                    'sekolah_id' => $request->sekolah_id,
+                    'status' => 'membuat akun sekolah baru',
+                    'pesan' => 'Selamat bergabung ' . '&nbsp;&nbsp;' . '<b>' . $request->nama . '</b>' . '!' . '&nbsp;&nbsp;' . 'akun anda berhasil dibuat.',
                 ]
             );
         } else {
             Timeline::create(
                 [
-                    'user_id' => $request->user_id,
-                    'status' => 'Update Akun',
-                    'pesan' => 'Memperbaharui Akun',
+                    'user_id' => Auth::user()->id,
+                    'status' => 'memperbaharui akun',
+                    'pesan' => 'Memperbaharui akun ' . '&nbsp;&nbsp;' . '<b>' . $request->nama . '</b>' . '!',
                 ]
             );
         }
@@ -224,8 +228,8 @@ class UserController extends Controller
         Timeline::create(
             [
                 'user_id' => $request->id,
-                'status' => 'Update Akun',
-                'pesan' => 'Memperbaharui Profil',
+                'sekolah_id' => Auth::user()->sekolah_id,
+                'status' => 'memperbaharui profil',
             ]
         );
         //redirect to index
@@ -259,8 +263,8 @@ class UserController extends Controller
         Timeline::create(
             [
                 'user_id' => $request->id,
-                'status' => 'Update Akun',
-                'pesan' => 'Memperbaharui Password Baru',
+                'sekolah_id' => Auth::user()->sekolah_id,
+                'status' => 'memperbaharui password',
             ]
         );
         //redirect to index
@@ -292,8 +296,9 @@ class UserController extends Controller
         Timeline::create(
             [
                 'user_id' => $id,
-                'status' => 'Update Akun',
-                'pesan' => 'Memperbaharui Foto Profil',
+                'sekolah_id' => Auth::user()->sekolah_id,
+                'status' => 'memperbaharui foto profil',
+                'foto' => $img->hashName(),
             ]
         );
         //redirect to index

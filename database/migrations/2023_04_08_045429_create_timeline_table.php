@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('timeline', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->integer('sekolah_id')->nullable();
             $table->string('status');
-            $table->string('pesan');
+            $table->string('pesan')->nullable();
+            $table->string('foto')->nullable();
             $table->timestamps();
             $table->foreign('user_id')
                 ->references('id')

@@ -12,7 +12,7 @@ class Timeline extends Model
     protected $table = "timeline";
 
     protected $fillable = [
-        'user_id', 'status', 'pesan'
+        'user_id', 'sekolah_id', 'status', 'pesan', 'foto'
     ];
 
     public function user()
