@@ -97,6 +97,15 @@
             </li>
         </ul>
     </li>
+@else
+    <li class="nav-item">
+        <a href="{{ route('guru.index') }}" class="nav-link {{ request()->segment(1) == 'guru' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+                Data Guru
+            </p>
+        </a>
+    </li>
 @endif
 <div class="user-panel mt-3">
 </div>

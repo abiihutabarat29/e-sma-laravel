@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MapelController;
 use App\Http\Controllers\Admin\SaranaController;
 use App\Http\Controllers\Admin\InventarisController;
 use App\Http\Controllers\Admin\GolonganController;
+use App\Http\Controllers\Admin\GuruController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,5 +62,11 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
     });
     Route::group(['middleware' => ['checkUser:2']], function () {
         // route user sekolah
+        // Guru
+        Route::get('guru', [GuruController::class, 'index'])->name('guru.index');
+        Route::get('guru/create', [GuruController::class, 'create'])->name('guru.create');
+        Route::post('guru', [GuruController::class, 'store'])->name('guru.store');
+        Route::get('guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
+        Route::delete('guru/{id}/destroy', [GuruController::class, 'destroy'])->name('guru.destroy');
     });
 });

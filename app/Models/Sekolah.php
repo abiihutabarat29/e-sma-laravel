@@ -22,4 +22,8 @@ class Sekolah extends Model
     {
         return $this->belongsTo(Kabupaten::class);
     }
+    public function guru()
+    {
+        return $this->hasMany(Guru::class);
+    }
 }
