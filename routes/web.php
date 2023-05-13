@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SaranaController;
 use App\Http\Controllers\Admin\InventarisController;
 use App\Http\Controllers\Admin\GolonganController;
 use App\Http\Controllers\Admin\GuruController;
+use App\Http\Controllers\Admin\JurusanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,18 +28,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::controller(AuthController::class)->group(function () {
+    // Login
     Route::get('login', 'index')->name('login')->middleware('guest');
     Route::post('login', 'login')->middleware('guest');
     Route::get('logout', 'logout')->name('logout');
 });
 Route::group(['middleware' => ['auth:user,admincbd']], function () {
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    // Profil
     Route::get('profile', [UserController::class, 'profil'])->name('profil.index');
     Route::put('profile/{user}/update', [UserController::class, 'updateprofil'])->name('profil.update');
     Route::put('profile/{user}/update-password', [UserController::class, 'updatepassword'])->name('profil.update.password');
     Route::put('profile/{user}/update-foto', [UserController::class, 'updatefoto'])->name('profil.update.foto');
+    // Download Manual Book
+    Route::get('download', [ManualBookController::class, 'download'])->name('download');
+    // Route cabdis
     Route::group(['middleware' => ['checkUser:1']], function () {
-        // Route cabdis
         // Kabupaten
         Route::resource('kabupaten', KabupatenController::class);
         // Sekolah
@@ -59,9 +65,11 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('inventaris', InventarisController::class);
         // Golongan
         Route::resource('golongan', GolonganController::class);
+        // Jurusan
+        Route::resource('jurusan', JurusanController::class);
     });
+    // Route user sekolah
     Route::group(['middleware' => ['checkUser:2']], function () {
-        // route user sekolah
         // Guru
         Route::get('guru', [GuruController::class, 'index'])->name('guru.index');
         Route::get('guru/create', [GuruController::class, 'create'])->name('guru.create');

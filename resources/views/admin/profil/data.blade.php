@@ -314,5 +314,8 @@
                 img.src = e.target.result;
             }
         }
+        $(function() {
+            bsCustomFileInput.init();
+        });
     </script>
 @endsection

@@ -21,21 +21,21 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active" href="#identitas"
+                            <li class="nav-item"><a class="nav-link active" href="#tabidentitas"
                                     data-toggle="tab">Identitas</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" href="#pendidikan" data-toggle="tab">Pendidikan &
+                            <li class="nav-item"><a class="nav-link" href="#tabpendidikan" data-toggle="tab">Pendidikan &
                                     Pekerjaan</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#diklat" data-toggle="tab">Diklat</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#kontak" data-toggle="tab">Kontak</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#foto" data-toggle="tab">Foto</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tabdiklat" data-toggle="tab">Diklat</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tabkontak" data-toggle="tab">Kontak</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#tabfoto" data-toggle="tab">Foto</a></li>
                         </ul>
                     </div>
                     <div class="card-body">
-                        <form id="userForm" name="userForm" class="form-horizontal">
+                        <form id="guruForm" name="guruForm" class="form-horizontal" enctype="multipart/form-data">
+                            @csrf
                             <div class="tab-content">
-                                @csrf
-                                <div class="active tab-pane" id="identitas">
+                                <div class="active tab-pane" id="tabidentitas">
                                     <div class="card-body">
                                         <input type="hidden" name="user_id" id="user_id">
                                         <div class="row">
@@ -93,6 +93,10 @@
                                                         class="form-control @error('nama') is-invalid @enderror"
                                                         id="nama" name="nama" placeholder="Nama"
                                                         autocomplete="off" value="{{ old('nama') }}">
+                                                    @error('nama')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -173,7 +177,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="pendidikan">
+                                <div class="tab-pane" id="tabpendidikan">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -196,17 +200,17 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Golongan <small> (Opsional)</small></label>
+                                                    <label>Jurusan<span class="text-danger">*</span></label>
                                                     <select
-                                                        class="form-control select2bs4 @error('golongan') is-invalid @enderror"
-                                                        id="golongan" name="golongan" style="width: 100%;">
+                                                        class="form-control select2bs4 @error('jurusan') is-invalid @enderror"
+                                                        id="jurusan" name="jurusan" style="width: 100%;">
                                                         <option selected disabled>---:---</option>
-                                                        @foreach ($golongan as $g)
-                                                            <option value="{{ $g->golongan }}">
-                                                                {{ $g->golongan }}</option>
+                                                        @foreach ($jurusan as $j)
+                                                            <option value="{{ $j->jurusan }}">
+                                                                {{ $j->jurusan }}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('golongan')
+                                                    @error('jurusan')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
@@ -214,11 +218,16 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Jurusan<span class="text-danger">*</span></label>
+                                                    <label>Tahun Ijazah<span class="text-danger">*</span></label>
                                                     <input type="text"
-                                                        class="form-control @error('jurusan') is-invalid @enderror"
-                                                        id="jurusan" name="jurusan" placeholder="Jurusan"
-                                                        autocomplete="off" value="{{ old('jurusan') }}">
+                                                        class="form-control @error('thnijazah') is-invalid @enderror"
+                                                        id="thnijazah" name="thnijazah" placeholder="example : 2020"
+                                                        autocomplete="off" value="{{ old('thnijazah') }}"
+                                                        onkeypress="return hanyaAngka(event)">
+                                                    @error('thnijazah')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -245,13 +254,17 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Tahun Ijazah<span class="text-danger">*</span></label>
-                                                    <input type="text"
-                                                        class="form-control @error('thnijazah') is-invalid @enderror"
-                                                        id="thnijazah" name="thnijazah" placeholder="example : 2020"
-                                                        autocomplete="off" value="{{ old('thnijazah') }}"
-                                                        onkeypress="return hanyaAngka(event)">
-                                                    @error('thnijazah')
+                                                    <label>Golongan <small> (Opsional)</small></label>
+                                                    <select
+                                                        class="form-control select2bs4 @error('golongan') is-invalid @enderror"
+                                                        id="golongan" name="golongan" style="width: 100%;">
+                                                        <option selected disabled>---:---</option>
+                                                        @foreach ($golongan as $g)
+                                                            <option value="{{ $g->golongan }}">
+                                                                {{ $g->golongan }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('golongan')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
@@ -363,19 +376,109 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="diklat">
+                                <div class="tab-pane" id="tabdiklat">
                                     <div class="card-body">
-                                        <p>DIKLAT</p>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Nama Diklat</label>
+                                                <input type="text"
+                                                    class="form-control @error('nama_diklat') is-invalid @enderror"
+                                                    id="nama_diklat" name="nama_diklat" placeholder="Nama Diklat"
+                                                    autocomplete="off" value="{{ old('nama_diklat') }}">
+                                                @error('nama_diklat')
+                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Tempat Diklat</label>
+                                                <textarea name="tempat_diklat" class="form-control  @error('tempat_diklat') is-invalid @enderror" rows="3">{{ old('tempat_diklat') }}</textarea>
+                                                @error('tempat_diklat')
+                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Tahun Diklat</label>
+                                                <input type="text"
+                                                    class="form-control @error('thndiklat') is-invalid @enderror"
+                                                    id="thndiklat" name="thndiklat" placeholder="example : 2020"
+                                                    autocomplete="off" value="{{ old('thndiklat') }}"
+                                                    onkeypress="return hanyaAngka(event)">
+                                                @error('thndiklat')
+                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Lama Diklat</label>
+                                                <input type="text"
+                                                    class="form-control @error('lmdiklat') is-invalid @enderror"
+                                                    id="lmdiklat" name="lmdiklat" placeholder="example : 8"
+                                                    autocomplete="off" value="{{ old('lmdiklat') }}"
+                                                    onkeypress="return hanyaAngka(event)">
+                                                <small><i>*perhitungan dalam Jam dalam pelaksanaan diklat.</i></small>
+                                                @error('lmdiklat')
+                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="kontak">
+                                <div class="tab-pane" id="tabkontak">
                                     <div class="card-body">
-                                        <p>KONTAK</p>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Telp/No HP/No WhatsApp<span class="text-danger">*</label>
+                                                <input type="text"
+                                                    class="form-control @error('nohp') is-invalid @enderror"
+                                                    id="nohp" name="nohp" placeholder="08**********"
+                                                    autocomplete="off" value="{{ old('nohp') }}"
+                                                    onkeypress="return hanyaAngka(event)">
+                                                @error('nohp')
+                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Email<span class="text-danger">*</label>
+                                                <input type="email"
+                                                    class="form-control @error('email') is-invalid @enderror"
+                                                    id="email" name="email" placeholder="example@gmail.com"
+                                                    autocomplete="off" value="{{ old('email') }}">
+                                                @error('email')
+                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane" id="foto">
+                                <div class="tab-pane" id="tabfoto">
                                     <div class="card-body">
-                                        <p>FOTO</p>
+                                        <div class="col-md-12">
+                                            <div class="col-md-4">
+                                                <img src="{{ url('storage/foto-guru/blank.png') }}" alt="Image Profile"
+                                                    class="img-thumbnail rounded img-preview" width="120px">
+                                            </div>
+                                            <div class="col-md-4 mt-2">
+                                                <div class="input-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" name="foto" class="custom-file-input"
+                                                            id="foto" onchange="previewImg();"
+                                                            accept=".png, .jpg, .jpeg">
+                                                        <label class="custom-file-label">Pilih File</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="{{ route('guru.index') }}" class="btn btn-default btn-sm">Kembali</a>
+                                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
                                     </div>
                                 </div>
                             </div>
@@ -398,5 +501,20 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
+
+        function previewImg() {
+            const foto = document.querySelector('#foto');
+            const img = document.querySelector('.img-preview');
+
+            const fileFoto = new FileReader();
+            fileFoto.readAsDataURL(foto.files[0]);
+
+            fileFoto.onload = function(e) {
+                img.src = e.target.result;
+            }
+        }
+        $(function() {
+            bsCustomFileInput.init();
+        });
     </script>
 @endsection

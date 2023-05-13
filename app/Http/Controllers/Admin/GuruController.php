@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Guru;
 use App\Models\Golongan;
+use App\Models\Jurusan;
 use App\Models\MataPelajaran;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,7 @@ class GuruController extends Controller
         $menu = 'Tambah Data Guru';
         $golongan = Golongan::get();
         $mapel = MataPelajaran::get();
-        return view('admin.guru.create', compact('menu', 'golongan', 'mapel'));
+        $jurusan = Jurusan::get();
+        return view('admin.guru.create', compact('menu', 'golongan', 'mapel', 'jurusan'));
     }
 }

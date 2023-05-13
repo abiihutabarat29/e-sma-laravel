@@ -1,5 +1,5 @@
 <li class="nav-item">
-    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->segment(1) == 'dashboard' ? 'active' : '' }}">
+    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->segment(1) == '/dashboard' ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
             Dashboard
@@ -96,13 +96,22 @@
                 </a>
             </li>
         </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('jurusan.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'jurusan' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Jurusan</p>
+                </a>
+            </li>
+        </ul>
     </li>
 @else
     <li class="nav-item">
         <a href="{{ route('guru.index') }}" class="nav-link {{ request()->segment(1) == 'guru' ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-tie"></i>
             <p>
-                Data Guru
+                Entry Guru
             </p>
         </a>
     </li>
@@ -114,6 +123,17 @@
         <i class="nav-icon fas fa-sign-out-alt"></i>
         <p>
             Logout
+        </p>
+    </a>
+</li>
+<div class="user-panel">
+</div>
+<li class="nav-header">MANUAL BOOK</li>
+<li class="nav-item">
+    <a href="{{ route('download') }}" class="nav-link">
+        <i class="nav-icon fas fa-download"></i>
+        <p>
+            Download
         </p>
     </a>
 </li>
