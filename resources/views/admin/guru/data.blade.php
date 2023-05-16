@@ -67,7 +67,7 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus Golongan ini ?</h6>
+                        <h6>Apakah anda yakin menghapus Guru ini ?</h6>
                     </center>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -126,69 +126,18 @@
                 ],
             });
 
-            $("#createNewGol").click(function() {
-                $("#saveBtn").val("create-golongan");
-                $("#golongan_id").val("");
-                $("#golonganForm").trigger("reset");
-                $("#modelHeading").html("Tambah Golongan");
-                $("#ajaxModel").modal("show");
-                $("#deleteInv").modal("show");
-            });
-
-            $("body").on("click", ".editGol", function() {
-                var golongan_id = $(this).data("id");
-                $.get("{{ route('golongan.index') }}" + "/" + golongan_id + "/edit", function(data) {
-                    $("#modelHeading").html("Edit Golongan");
-                    $("#saveBtn").val("edit-golongan");
-                    $("#ajaxModel").modal("show");
-                    $("#golongan_id").val(data.id);
-                    $("#golongan").val(data.golongan);
-                });
-            });
-
-            $("#saveBtn").click(function(e) {
-                e.preventDefault();
-                $(this).html(
-                    "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menyimpan...</i></span>"
-                );
-
-                $.ajax({
-                    data: $("#golonganForm").serialize(),
-                    url: "{{ route('golongan.store') }}",
-                    type: "POST",
-                    dataType: "json",
-                    success: function(data) {
-                        if (data.errors) {
-                            $('.alert-danger').html('');
-                            $.each(data.errors, function(key, value) {
-                                $('.alert-danger').show();
-                                $('.alert-danger').append('<strong><li>' +
-                                    value +
-                                    '</li></strong>');
-                                $(".alert-danger").fadeOut(5000);
-                                $("#saveBtn").html("Simpan");
-                            });
-                        } else {
-                            table.draw();
-                            alertSuccess("Golongan berhasil ditambah");
-                            $("#saveBtn").html("Simpan");
-                            $('#ajaxModel').modal('hide');
-                        }
-                    },
-                });
-            });
-            $("body").on("click", ".deleteGol", function() {
-                var golongan_id = $(this).data("id");
+            $("body").on("click", ".deleteGuru", function() {
+                var guru_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
                 $("#ajaxModelHps").modal("show");
                 $("#hapusBtn").click(function(e) {
                     e.preventDefault();
                     $(this).html(
                         "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menghapus...</i></span>"
-                    );
+                    ).attr('disabled', 'disabled');
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('golongan.store') }}" + "/" + golongan_id,
+                        url: "{{ route('guru.store') }}" + "/" + guru_id + "/destroy",
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },
@@ -202,14 +151,15 @@
                                         '</li></strong>');
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
-                                        "<i class='fa fa-trash'></i>Hapus"
+                                        "<i class='fa fa-info-circle'></i>Error"
                                     );
                                 });
                             } else {
                                 table.draw();
                                 alertSuccess(data.success);
                                 $("#hapusBtn").html(
-                                    "<i class='fa fa-trash'></i>Hapus");
+                                    "<i class='fa fa-trash'></i> Hapus").removeAttr(
+                                    'disabled');
                                 $('#ajaxModelHps').modal('hide');
                             }
                         },

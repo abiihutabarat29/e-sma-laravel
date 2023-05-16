@@ -169,7 +169,6 @@
                 $(this).html(
                     "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menyimpan...</i></span>"
                 );
-
                 $.ajax({
                     data: $("#inventarisForm").serialize(),
                     url: "{{ route('inventaris.store') }}",
@@ -195,6 +194,7 @@
                     },
                 });
             });
+
             $("body").on("click", ".deleteInv", function() {
                 var inventaris_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
@@ -206,7 +206,8 @@
                     );
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('inventaris.store') }}" + "/" + inventaris_id,
+                        url: "{{ route('inventaris.store') }}" + "/" + inventaris_id +
+                            "/destroy",
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },

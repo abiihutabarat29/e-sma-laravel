@@ -12,7 +12,7 @@ class Guru extends Model
     protected $table = "guru";
 
     protected $fillable = [
-        'sekolah_id', 'jenjang', 'nip', 'nik', 'nuptk', 'nrg', 'nama', 'alamat',
+        'sekolah_id', 'nip', 'nik', 'nuptk', 'nrg', 'nama', 'alamat',
         'tempat_lahir', 'tgl_lahir', 'gender', 'golongan',
         'tingkat', 'jurusan', 'thnijazah', 'agama', 'status', 'tmtguru',
         'tmtsekolah', 'thnserti', 'mapel', 'j_jam', 'mk_thn', 'mk_bln',
