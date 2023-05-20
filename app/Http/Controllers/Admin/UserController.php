@@ -279,9 +279,9 @@ class UserController extends Controller
         }
         //Translate Bahasa Indonesia
         $message = array(
-            'foto.images' => 'File harus image.',
+            'foto.image' => 'Foto harus image.',
             'foto.mimes' => 'Foto harus jpeg,png,jpg.',
-            'foto,max' => 'File maksimal 1MB.',
+            'foto,max' => 'Foto maksimal 1MB.',
         );
         $this->validate($request, [
             'foto' => 'image|mimes:jpeg,png,jpg|max:1024'

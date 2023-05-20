@@ -75,6 +75,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::get('guru/create', [GuruController::class, 'create'])->name('guru.create');
         Route::post('guru', [GuruController::class, 'store'])->name('guru.store');
         Route::get('guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
-        Route::delete('guru/{id}/destroy', [GuruController::class, 'destroy'])->name('guru.destroy');
+        Route::put('guru/{id}/update', [GuruController::class, 'update'])->name('guru.update');
+        Route::delete('guru/{guru}/destroy', [GuruController::class, 'destroy'])->name('guru.destroy');
     });
 });
