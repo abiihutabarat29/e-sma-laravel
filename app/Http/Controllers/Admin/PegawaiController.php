@@ -3,26 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Guru;
 use App\Models\Golongan;
 use App\Models\Jurusan;
-use App\Models\MataPelajaran;
+use App\Models\Pegawai;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Yajra\Datatables\Datatables;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class GuruController extends Controller
+class PegawaiController extends Controller
 {
     public function index(Request $request)
     {
-        $menu = 'Guru';
+        $menu = 'Pegawai';
         if ($request->ajax()) {
-            $data = Guru::where('sekolah_id', Auth::user()->sekolah_id)->get();
-            return Datatables::of($data)
+            $data = Pegawai::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('nik', function ($data) {
                     return $data->nik;
@@ -35,42 +33,40 @@ class GuruController extends Controller
                 })
                 ->addColumn('foto', function ($data) {
                     if ($data->foto != null) {
-                        $foto = '<center><img src="' . url("storage/foto-guru/" . $data->foto) . '" width="30px" class="img rounded"><center>';
+                        $foto = '<center><img src="' . url("storage/foto-pegawai/" . $data->foto) . '" width="30px" class="img rounded"><center>';
                     } else {
-                        $foto = '<center><img src="' . url("storage/foto-guru/blank.png") . '" width="30px" class="img rounded"><center>';
+                        $foto = '<center><img src="' . url("storage/foto-pegawai/blank.png") . '" width="30px" class="img rounded"><center>';
                     }
                     return $foto;
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '        <a class="btn btn-primary btn-xs" href="' . route('guru.edit',  Crypt::encryptString($row->id)) . '">Edit</a>';
-                    $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteGuru">Hapus</a><center>';
+                    $btn = '        <a class="btn btn-primary btn-xs" href="' . route('pegawai.edit',  Crypt::encryptString($row->id)) . '">Edit</a>';
+                    $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deletePegawai">Hapus</a><center>';
                     return $btn;
                 })
                 ->rawColumns(['foto', 'action'])
                 ->make(true);
         }
-        return view('admin.guru.data', compact('menu'));
+        return view('admin.pegawai.data', compact('menu'));
     }
     public function create(Request $req)
     {
-        $menu = 'Tambah Data Guru';
+        $menu = 'Tambah Data Pegawai';
         $golongan = Golongan::get();
-        $mapel = MataPelajaran::get();
         $jurusan = Jurusan::get();
-        return view('admin.guru.create', compact('menu', 'golongan', 'mapel', 'jurusan'));
+        return view('admin.pegawai.create', compact('menu', 'golongan', 'jurusan'));
     }
     public function edit($id)
     {
-        $menu = 'Edit Data Guru';
-        $guru = Guru::where('sekolah_id', Auth::user()->sekolah_id)->find(Crypt::decryptString($id));
+        $menu = 'Edit Data Pegawai';
+        $pegawai = Pegawai::where('sekolah_id', Auth::user()->sekolah_id)->find(Crypt::decryptString($id));
         $golongan = Golongan::get();
-        $mapel = MataPelajaran::get();
         $jurusan = Jurusan::get();
-        return view('admin.guru.edit', compact('menu', 'golongan', 'mapel', 'jurusan', 'guru'));
+        return view('admin.pegawai.edit', compact('menu', 'golongan', 'jurusan', 'pegawai'));
     }
+
     public function store(Request $request)
     {
-        // dd($request->all());
         //Translate Bahasa Indonesia
         $message = array(
             'nip.max' => 'NIP maksimal 18 angka.',
@@ -83,10 +79,6 @@ class GuruController extends Controller
             'nuptk.min' => 'NUPTK minimal 16 angka.',
             'nuptk.max' => 'NUPTK maksimal 16 angka.',
             'nuptk.unique' => 'NUPTK sudah terdaftar.',
-            'nrg.required' => 'NRG harus diisi.',
-            'nrg.min' => 'NRG minimal 16 angka.',
-            'nrg.max' => 'NRG maksimal 16 angka.',
-            'nrg.unique' => 'NRG sudah terdaftar.',
             'nama.required' => 'Nama harus diisi.',
             'nama.required' => 'Nama harus dipilih.',
             'agama.required' => 'Agama harus dipilih.',
@@ -101,12 +93,8 @@ class GuruController extends Controller
             'thnijazah.required' => 'Tahun Ijazah harus diisi.',
             'thnijazah.max' => 'Tahun Ijazah maksimal 4 angka.',
             'status.required' => 'Status Kepegawaian harus dipilih.',
-            'stsserti.required' => 'Status Sertifikasi harus dipilih.',
-            'mapel.required' => 'Mata Pelajaran harus dipilih.',
-            'thnserti.max' => 'Tahun Sertifikasi maksimal 4 angka.',
-            'tmtguru.required' => 'TMT Guru harus diisi.',
+            'tmtpegawai.required' => 'TMT Pegawai harus diisi.',
             'tmtsekolah.required' => 'TMT Sekolah harus diisi.',
-            'jlhjam.required' => 'Jumlah Jam harus diisi.',
             'nohp.required' => 'Nomor Handphone harus diisi.',
             'nohp.min' => 'Nomor minimal 11 angka.',
             'nohp.max' => 'Nomor maksimal 12 angka.',
@@ -118,10 +106,9 @@ class GuruController extends Controller
         );
 
         $validator = Validator::make($request->all(), [
-            'nip' => 'max:18|unique:guru,nip',
-            'nik' => 'required|min:16|max:16|unique:guru,nik',
-            'nuptk' => 'required|min:16|max:16|unique:guru,nuptk',
-            'nrg' => 'required|min:16|max:16|unique:guru,nrg',
+            'nip' => 'max:18|unique:pegawai,nip',
+            'nik' => 'required|min:16|max:16|unique:pegawai,nik',
+            'nuptk' => 'required|min:16|max:16|unique:pegawai,nuptk',
             'nama' => 'required|max:255',
             'agama' => 'required',
             'alamat' => 'required|max:255',
@@ -132,12 +119,8 @@ class GuruController extends Controller
             'jurusan' => 'required',
             'thnijazah' => 'required|max:4',
             'status' => 'required',
-            'stsserti' => 'required',
-            'mapel' => 'required',
-            'thnserti' => 'max:4',
-            'tmtguru' => 'required',
+            'tmtpegawai' => 'required',
             'tmtsekolah' => 'required',
-            'jlhjam' => 'required',
             'nohp' => 'required|min:11|max:12',
             'email' => 'required|email',
             'foto' => 'image|mimes:jpeg,png,jpg|max:1024'
@@ -148,17 +131,16 @@ class GuruController extends Controller
         $img = $request->file('foto');
         if ($img != null) {
             $fileName = $img->hashName();
-            $img->storeAs('public/foto-guru/', $fileName);
+            $img->storeAs('public/foto-pegawai/', $fileName);
         } else {
             $fileName = null;
         }
-        Guru::create(
+        Pegawai::create(
             [
                 'sekolah_id' => Auth::user()->sekolah_id,
                 'nip' => $request->nip,
                 'nik' => $request->nik,
                 'nuptk' => $request->nuptk,
-                'nrg' => $request->nrg,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'agama' => $request->agama,
@@ -170,12 +152,8 @@ class GuruController extends Controller
                 'jurusan' => $request->jurusan,
                 'thnijazah' => $request->thnijazah,
                 'status' => $request->status,
-                'sts_serti' => $request->stsserti,
-                'mapel' => $request->mapel,
-                'thnserti' => $request->thnserti,
-                'tmtguru' => $request->tmtguru,
+                'tmtpegawai' => $request->tmtpegawai,
                 'tmtsekolah' => $request->tmtsekolah,
-                'j_jam' => $request->jlhjam,
                 'kehadiran' => $request->kehadiran,
                 'nmdiklat' => $request->nama_diklat,
                 'tdiklat' => $request->tempat_diklat,
@@ -186,11 +164,11 @@ class GuruController extends Controller
                 'foto' => $fileName,
             ]
         );
-        return redirect()->route('guru.index')->with('toast_success', 'Guru saved successfully.');
+        return redirect()->route('pegawai.index')->with('toast_success', 'Pegawai saved successfully.');
     }
     public function update(Request $request, $id)
     {
-        $guru = Guru::find(Crypt::decryptString($id));
+        $pegawai = Pegawai::find(Crypt::decryptString($id));
         //Translate Bahasa Indonesia
         $message = array(
             'nip.max' => 'NIP maksimal 18 angka.',
@@ -203,10 +181,6 @@ class GuruController extends Controller
             'nuptk.min' => 'NUPTK minimal 16 angka.',
             'nuptk.max' => 'NUPTK maksimal 16 angka.',
             'nuptk.unique' => 'NUPTK sudah terdaftar.',
-            'nrg.required' => 'NRG harus diisi.',
-            'nrg.min' => 'NRG minimal 16 angka.',
-            'nrg.max' => 'NRG maksimal 16 angka.',
-            'nrg.unique' => 'NRG sudah terdaftar.',
             'nama.required' => 'Nama harus diisi.',
             'nama.required' => 'Nama harus dipilih.',
             'agama.required' => 'Agama harus dipilih.',
@@ -221,12 +195,8 @@ class GuruController extends Controller
             'thnijazah.required' => 'Tahun Ijazah harus diisi.',
             'thnijazah.max' => 'Tahun Ijazah maksimal 4 angka.',
             'status.required' => 'Status Kepegawaian harus dipilih.',
-            'stsserti.required' => 'Status Sertifikasi harus dipilih.',
-            'mapel.required' => 'Mata Pelajaran harus dipilih.',
-            'thnserti.max' => 'Tahun Sertifikasi maksimal 4 angka.',
-            'tmtguru.required' => 'TMT Guru harus diisi.',
+            'tmtpegawai.required' => 'TMT Pegawai harus diisi.',
             'tmtsekolah.required' => 'TMT Sekolah harus diisi.',
-            'jlhjam.required' => 'Jumlah Jam harus diisi.',
             'nohp.required' => 'Nomor Handphone harus diisi.',
             'nohp.min' => 'Nomor minimal 11 angka.',
             'nohp.max' => 'Nomor maksimal 12 angka.',
@@ -236,31 +206,25 @@ class GuruController extends Controller
             'foto.mimes' => 'Foto harus jpeg,png,jpg.',
             'foto.max' => 'Foto maksimal 1MB.',
         );
-        if ($guru->nip == $request->nip) {
+        if ($pegawai->nip == $request->nip) {
             $ruleNip = 'max:18';
         } else {
-            $ruleNip = 'max:18|unique:guru,nip';
+            $ruleNip = 'max:18|unique:pegawai,nip';
         }
-        if ($guru->nik == $request->nik) {
+        if ($pegawai->nik == $request->nik) {
             $ruleNik = 'required|min:16|max:16';
         } else {
-            $ruleNik = 'required|min:16|max:16|unique:guru,nik';
+            $ruleNik = 'required|min:16|max:16|unique:pegawai,nik';
         }
-        if ($guru->nuptk == $request->nuptk) {
+        if ($pegawai->nuptk == $request->nuptk) {
             $ruleNuptk = 'required|min:16|max:16';
         } else {
-            $ruleNuptk = 'required|min:16|max:16|unique:guru,nuptk';
-        }
-        if ($guru->nrg == $request->nrg) {
-            $ruleNrg = 'required|min:16|max:16';
-        } else {
-            $ruleNrg = 'required|min:16|max:16|unique:guru,nrg';
+            $ruleNuptk = 'required|min:16|max:16|unique:pegawai,nuptk';
         }
         $validator = Validator::make($request->all(), [
             'nip' => $ruleNip,
             'nik' => $ruleNik,
             'nuptk' => $ruleNuptk,
-            'nrg' => $ruleNrg,
             'nama' => 'required|max:255',
             'agama' => 'required',
             'alamat' => 'required|max:255',
@@ -271,12 +235,8 @@ class GuruController extends Controller
             'jurusan' => 'required',
             'thnijazah' => 'required|max:4',
             'status' => 'required',
-            'stsserti' => 'required',
-            'mapel' => 'required',
-            'thnserti' => 'max:4',
-            'tmtguru' => 'required',
+            'tmtpegawai' => 'required',
             'tmtsekolah' => 'required',
-            'jlhjam' => 'required',
             'nohp' => 'required|min:11|max:12',
             'email' => 'required|email',
             'foto' => 'image|mimes:jpeg,png,jpg|max:1024'
@@ -287,18 +247,18 @@ class GuruController extends Controller
         $img = $request->file('foto');
         if ($img != null) {
             $fileName = $img->hashName();
-            $img->storeAs('public/foto-guru/',  $fileName);
+            $img->storeAs('public/foto-pegawai/', $fileName);
             //delete old
-            Storage::delete('public/foto-guru/' . $guru->foto);
+            Storage::delete('public/foto-pegawai/' . $pegawai->foto);
         } else {
-            $fileName = $guru->foto;
+            $fileName = $pegawai->foto;
         }
-        $guru->update(
+        $pegawai->update(
             [
+                'sekolah_id' => Auth::user()->sekolah_id,
                 'nip' => $request->nip,
                 'nik' => $request->nik,
                 'nuptk' => $request->nuptk,
-                'nrg' => $request->nrg,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
                 'agama' => $request->agama,
@@ -310,12 +270,8 @@ class GuruController extends Controller
                 'jurusan' => $request->jurusan,
                 'thnijazah' => $request->thnijazah,
                 'status' => $request->status,
-                'sts_serti' => $request->stsserti,
-                'mapel' => $request->mapel,
-                'thnserti' => $request->thnserti,
-                'tmtguru' => $request->tmtguru,
+                'tmtpegawai' => $request->tmtpegawai,
                 'tmtsekolah' => $request->tmtsekolah,
-                'j_jam' => $request->jlhjam,
                 'kehadiran' => $request->kehadiran,
                 'nmdiklat' => $request->nama_diklat,
                 'tdiklat' => $request->tempat_diklat,
@@ -326,15 +282,14 @@ class GuruController extends Controller
                 'foto' => $fileName,
             ]
         );
-        return redirect()->route('guru.index')->with('toast_success', 'Guru updated successfully.');
+        return redirect()->route('pegawai.index')->with('toast_success', 'Pegawai saved successfully.');
     }
-    public function destroy(Guru $guru)
+    public function destroy(Pegawai $pegawai)
     {
-        $guru->delete();
-        if ($guru->foto) {
-            Storage::delete('public/foto-guru/' . $guru->foto);
+        $pegawai->delete();
+        if ($pegawai->foto) {
+            Storage::delete('public/foto-pegawai/' . $pegawai->foto);
         }
-        return response()->json(['success' => 'Guru deleted successfully.']);
-        // return redirect()->route('guru.index')->with('toast_success', 'Guru deleted successfully.');
+        return response()->json(['success' => 'Pegawai deleted successfully.']);
     }
 }

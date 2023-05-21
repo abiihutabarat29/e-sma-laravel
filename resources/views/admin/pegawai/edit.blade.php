@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('guru.index') }}">Data Guru</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('pegawai.index') }}">Data Pegawai</a></li>
                         <li class="breadcrumb-item active">{{ $menu }}</li>
                     </ol>
                 </div>
@@ -32,11 +32,11 @@
                         </ul>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('guru.update', Crypt::encryptString($guru->id)) }}"
+                        <form method="post" action="{{ route('pegawai.update', Crypt::encryptString($pegawai->id)) }}"
                             class="form-horizontal" enctype="multipart/form-data">
                             @csrf
                             @method('put')
-                            <input type="hidden" name="guru_id" id="{{ $guru->id }}">
+                            <input type="hidden" name="pegawai_id" id="{{ $pegawai->id }}">
                             <div class="tab-content">
                                 <div class="active tab-pane" id="tabidentitas">
                                     <div class="card-body">
@@ -47,7 +47,7 @@
                                                     <input type="text"
                                                         class="form-control @error('nip') is-invalid @enderror"
                                                         id="nip" name="nip" placeholder="NIP" autocomplete="off"
-                                                        value="{{ old('nip', $guru->nip) }}"
+                                                        value="{{ old('nip', $pegawai->nip) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     @error('nip')
                                                         <span
@@ -61,7 +61,7 @@
                                                     <input type="text"
                                                         class="form-control @error('nik') is-invalid @enderror"
                                                         id="nik" name="nik" placeholder="NIK" autocomplete="off"
-                                                        value="{{ old('nik', $guru->nik) }}"
+                                                        value="{{ old('nik', $pegawai->nik) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     @error('nik')
                                                         <span
@@ -75,23 +75,9 @@
                                                     <input type="text"
                                                         class="form-control @error('nuptk') is-invalid @enderror"
                                                         id="nuptk" name="nuptk" placeholder="NUPTK" autocomplete="off"
-                                                        value="{{ old('nuptk', $guru->nuptk) }}"
+                                                        value="{{ old('nuptk', $pegawai->nuptk) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     @error('nuptk')
-                                                        <span
-                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>NRG<span class="text-danger">*</span></label>
-                                                    <input type="text"
-                                                        class="form-control @error('nrg') is-invalid @enderror"
-                                                        id="nrg" name="nrg" placeholder="NRG" autocomplete="off"
-                                                        value="{{ old('nrg', $guru->nrg) }}"
-                                                        onkeypress="return hanyaAngka(event)">
-                                                    @error('nrg')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
@@ -102,8 +88,8 @@
                                                     <label>Nama<span class="text-danger">*</span></label>
                                                     <input type="text"
                                                         class="form-control @error('nama') is-invalid @enderror"
-                                                        id="nama" name="nama" placeholder="Nama"
-                                                        autocomplete="off" value="{{ old('nama', $guru->nama) }}">
+                                                        id="nama" name="nama" placeholder="Nama" autocomplete="off"
+                                                        value="{{ old('nama', $pegawai->nama) }}">
                                                     @error('nama')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -117,22 +103,22 @@
                                                         class="form-control select2bs4 @error('agama') is-invalid @enderror"
                                                         id="agama" name="agama" style="width: 100%;">
                                                         <option value="Islam"
-                                                            {{ $guru->agama == 'Islam' ? 'selected' : '' }}>
+                                                            {{ $pegawai->agama == 'Islam' ? 'selected' : '' }}>
                                                             Islam</option>
                                                         <option value="Kristen Protestan"
-                                                            {{ $guru->agama == 'Kristen Protestan' ? 'selected' : '' }}>
+                                                            {{ $pegawai->agama == 'Kristen Protestan' ? 'selected' : '' }}>
                                                             Kristen
                                                             Protestan
                                                         </option>
                                                         <option value="Kristen Katholik"
-                                                            {{ $guru->agama == 'Kristen Katholik' ? 'selected' : '' }}>
+                                                            {{ $pegawai->agama == 'Kristen Katholik' ? 'selected' : '' }}>
                                                             Kristen Katholik
                                                         </option>
                                                         <option value="Hindu"
-                                                            {{ $guru->agama == 'Hindu' ? 'selected' : '' }}>Hindu
+                                                            {{ $pegawai->agama == 'Hindu' ? 'selected' : '' }}>Hindu
                                                         </option>
                                                         <option value="Budha"
-                                                            {{ $guru->agama == 'Budha' ? 'selected' : '' }}>Budha
+                                                            {{ $pegawai->agama == 'Budha' ? 'selected' : '' }}>Budha
                                                         </option>
                                                     </select>
                                                     @error('agama')
@@ -144,7 +130,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Alamat<span class="text-danger">*</span></label>
-                                                    <textarea id="alamat" name="alamat" class="form-control  @error('alamat') is-invalid @enderror" rows="3">{{ old('alamat', $guru->alamat) }}</textarea>
+                                                    <textarea id="alamat" name="alamat" class="form-control  @error('alamat') is-invalid @enderror" rows="3">{{ old('alamat', $pegawai->alamat) }}</textarea>
                                                     @error('alamat')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -155,7 +141,7 @@
                                                 <div class="form-group">
                                                     <label>Tempat Lahir<span class="text-danger">*</span></label>
                                                     <textarea id="tempat_lahir" name="tempat_lahir" class="form-control  @error('tempat_lahir') is-invalid @enderror"
-                                                        rows="3">{{ old('tempat_lahir', $guru->tempat_lahir) }}</textarea>
+                                                        rows="3">{{ old('tempat_lahir', $pegawai->tempat_lahir) }}</textarea>
                                                     @error('tempat_lahir')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -167,7 +153,7 @@
                                                     <label>Tanggal Lahir<span class="text-danger">*</span></label>
                                                     <input type="date" id="tgl_lahir" name="tgl_lahir"
                                                         class="form-control @error('tgl_lahir') is-invalid @enderror"
-                                                        value="{{ old('tgl_lahir', $guru->tgl_lahir) }}">
+                                                        value="{{ old('tgl_lahir', $pegawai->tgl_lahir) }}">
                                                     @error('tgl_lahir')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -181,14 +167,14 @@
                                                         <div class="custom-control custom-radio">
                                                             <input class="custom-control-input" type="radio"
                                                                 value="L" name="jenis_kelamin" id="jk1"
-                                                                {{ $guru->gender == 'L' ? 'checked' : '' }}>
+                                                                {{ $pegawai->gender == 'L' ? 'checked' : '' }}>
                                                             <label for="jk1"
                                                                 class="custom-control-label">Laki-laki</label>
                                                         </div>
                                                         <div class="custom-control custom-radio">
                                                             <input class="custom-control-input" type="radio"
                                                                 value="P" name="jenis_kelamin" id="jk2"
-                                                                {{ $guru->gender == 'P' ? 'checked' : '' }}>
+                                                                {{ $pegawai->gender == 'P' ? 'checked' : '' }}>
                                                             <label for="jk2"
                                                                 class="custom-control-label">Perempuan</label>
                                                         </div>
@@ -214,13 +200,13 @@
                                                         id="pendidikan" name="pendidikan" style="width: 100%;">
                                                         <option disabled>---:---</option>
                                                         <option value="D3"
-                                                            {{ $guru->tingkat == 'D3' ? 'selected' : '' }}>D3
+                                                            {{ $pegawai->tingkat == 'D3' ? 'selected' : '' }}>D3
                                                         </option>
                                                         <option value="S1"
-                                                            {{ $guru->tingkat == 'S1' ? 'selected' : '' }}>S1
+                                                            {{ $pegawai->tingkat == 'S1' ? 'selected' : '' }}>S1
                                                         </option>
                                                         <option value="S2"
-                                                            {{ $guru->tingkat == 'S2' ? 'selected' : '' }}>S2
+                                                            {{ $pegawai->tingkat == 'S2' ? 'selected' : '' }}>S2
                                                         </option>
                                                     </select>
                                                     @error('pendidikan')
@@ -238,7 +224,7 @@
                                                         <option selected disabled>---:---</option>
                                                         @foreach ($jurusan as $j)
                                                             <option value="{{ $j->jurusan }}"
-                                                                {{ $guru->jurusan == $j->jurusan ? 'selected' : '' }}>
+                                                                {{ $pegawai->jurusan == $j->jurusan ? 'selected' : '' }}>
                                                                 {{ $j->jurusan }}</option>
                                                         @endforeach
                                                     </select>
@@ -255,7 +241,7 @@
                                                         class="form-control @error('thnijazah') is-invalid @enderror"
                                                         id="thnijazah" name="thnijazah" placeholder="example : 2020"
                                                         autocomplete="off"
-                                                        value="{{ old('thnijazah', $guru->thnijazah) }}"
+                                                        value="{{ old('thnijazah', $pegawai->thnijazah) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     @error('thnijazah')
                                                         <span
@@ -271,23 +257,26 @@
                                                         id="status" name="status" style="width: 100%;">
                                                         <option disabled>---:---</option>
                                                         <option value="PNS"
-                                                            {{ $guru->status == 'PNS' ? 'selected' : '' }}>PNS</option>
+                                                            {{ $pegawai->status == 'PNS' ? 'selected' : '' }}>PNS</option>
                                                         <option value="CPNS"
-                                                            {{ $guru->status == 'CPNS' ? 'selected' : '' }}>CPNS</option>
+                                                            {{ $pegawai->status == 'CPNS' ? 'selected' : '' }}>CPNS
+                                                        </option>
                                                         <option value="Non PNS"
-                                                            {{ $guru->status == 'Non PNS' ? 'selected' : '' }}>Non PNS
+                                                            {{ $pegawai->status == 'Non PNS' ? 'selected' : '' }}>Non PNS
                                                         </option>
                                                         <option value="Honda"
-                                                            {{ $guru->status == 'Honda' ? 'selected' : '' }}>Honda
+                                                            {{ $pegawai->status == 'Honda' ? 'selected' : '' }}>Honda
                                                         </option>
                                                         <option value="GTY"
-                                                            {{ $guru->status == 'GTY' ? 'selected' : '' }}>GTY</option>
+                                                            {{ $pegawai->status == 'GTY' ? 'selected' : '' }}>GTY</option>
                                                         <option value="GTT"
-                                                            {{ $guru->status == 'GTT' ? 'selected' : '' }}>GTT</option>
+                                                            {{ $pegawai->status == 'GTT' ? 'selected' : '' }}>GTT</option>
                                                         <option value="GTTY"
-                                                            {{ $guru->status == 'GTTY' ? 'selected' : '' }}>GTTY</option>
+                                                            {{ $pegawai->status == 'GTTY' ? 'selected' : '' }}>GTTY
+                                                        </option>
                                                         <option value="PPPK"
-                                                            {{ $guru->status == 'PPPK' ? 'selected' : '' }}>PPPK</option>
+                                                            {{ $pegawai->status == 'PPPK' ? 'selected' : '' }}>PPPK
+                                                        </option>
                                                     </select>
                                                     @error('status')
                                                         <span
@@ -305,7 +294,7 @@
                                                         <option value="">---:---</option>
                                                         @foreach ($golongan as $g)
                                                             <option value="{{ $g->golongan }}"
-                                                                {{ $guru->golongan == $g->golongan ? 'selected' : '' }}>
+                                                                {{ $pegawai->golongan == $g->golongan ? 'selected' : '' }}>
                                                                 {{ $g->golongan }}</option>
                                                         @endforeach
                                                     </select>
@@ -313,69 +302,11 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Status Sertifikasi<span class="text-danger">*</span></label>
-                                                    <select
-                                                        class="form-control select2bs4 @error('stsserti') is-invalid @enderror"
-                                                        id="stsserti" name="stsserti" style="width: 100%;"
-                                                        onchange=" if (this.selectedIndex==1){ document.getElementById('tahun').style.display='inline' }else { document.getElementById('tahun').style.display='none' };">
-                                                        <option disabled>---:---</option>
-                                                        <option value="Sudah"
-                                                            {{ $guru->sts_serti == 'Sudah' ? 'selected' : '' }}>Sudah
-                                                        </option>
-                                                        <option value="Belum"
-                                                            {{ $guru->sts_serti == 'Belum' ? 'selected' : '' }}>Belum
-                                                        </option>
-                                                    </select>
-                                                    @error('stsserti')
-                                                        <span
-                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Mata Pelajaran<span class="text-danger">*</span></label>
-                                                    <select
-                                                        class="form-control select2bs4 @error('mapel') is-invalid @enderror"
-                                                        id="mapel" name="mapel" style="width: 100%;">
-                                                        <option disabled>---:---</option>
-                                                        @foreach ($mapel as $m)
-                                                            <option value="{{ $m->mapel }}"
-                                                                {{ $guru->mapel == $m->mapel ? 'selected' : '' }}>
-                                                                {{ $m->mapel }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('mapel')
-                                                        <span
-                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div id="tahun"
-                                                style="{{ $guru->sts_serti == 'Sudah' ? 'display:inline;' : 'display:none' }}">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label>Tahun Sertifikasi</label>
-                                                        <input type="text"
-                                                            class="form-control @error('thnserti') is-invalid @enderror"
-                                                            id="thnserti" name="thnserti" placeholder="example : 2020"
-                                                            autocomplete="off"
-                                                            value="{{ old('thnserti', $guru->thnserti) }}"
-                                                            onkeypress="return hanyaAngka(event)">
-                                                        @error('thnserti')
-                                                            <span
-                                                                class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>TMT Guru<span class="text-danger">*</span></label>
-                                                    <input type="date" id="tmtguru" name="tmtguru"
-                                                        class="form-control @error('tmtguru') is-invalid @enderror"
-                                                        value="{{ old('tmtguru', $guru->tmtguru) }}">
-                                                    @error('tmtguru')
+                                                    <label>TMT Pegawai<span class="text-danger">*</span></label>
+                                                    <input type="date" id="tmtpegawai" name="tmtpegawai"
+                                                        class="form-control @error('tmtpegawai') is-invalid @enderror"
+                                                        value="{{ old('tmtpegawai', $pegawai->tmtpegawai) }}">
+                                                    @error('tmtpegawai')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
@@ -386,23 +317,8 @@
                                                     <label>TMT Sekolah<span class="text-danger">*</span></label>
                                                     <input type="date" id="tmtsekolah" name="tmtsekolah"
                                                         class="form-control @error('tmtsekolah') is-invalid @enderror"
-                                                        value="{{ old('tmtsekolah', $guru->tmtsekolah) }}">
+                                                        value="{{ old('tmtsekolah', $pegawai->tmtsekolah) }}">
                                                     @error('tmtsekolah')
-                                                        <span
-                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Jumlah Jam/Minggu<span class="text-danger">*</span></label>
-                                                    <input type="text"
-                                                        class="form-control @error('jlhjam') is-invalid @enderror"
-                                                        id="jlhjam" name="jlhjam" placeholder="example : 8"
-                                                        autocomplete="off" value="{{ old('jlhjam', $guru->j_jam) }}"
-                                                        onkeypress="return hanyaAngka(event)">
-                                                    <small><i>*perhitungan dalam Jam mengajar dalam seminggu.</i></small>
-                                                    @error('jlhjam')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
@@ -415,7 +331,7 @@
                                                         class="form-control @error('kehadiran') is-invalid @enderror"
                                                         id="kehadiran" name="kehadiran" placeholder="example : 100"
                                                         autocomplete="off"
-                                                        value="{{ old('kehadiran', $guru->kehadiran) }}"
+                                                        value="{{ old('kehadiran', $pegawai->kehadiran) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     <small><i>*perhitungan dalam % kehadiran di sekolah.</i></small>
                                                     @error('kehadiran')
@@ -435,7 +351,8 @@
                                                 <input type="text"
                                                     class="form-control @error('nama_diklat') is-invalid @enderror"
                                                     id="nama_diklat" name="nama_diklat" placeholder="Nama Diklat"
-                                                    autocomplete="off" value="{{ old('nama_diklat', $guru->nmdiklat) }}">
+                                                    autocomplete="off"
+                                                    value="{{ old('nama_diklat', $pegawai->nmdiklat) }}">
                                                 @error('nama_diklat')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
@@ -445,7 +362,7 @@
                                             <div class="form-group">
                                                 <label>Tempat Diklat</label>
                                                 <textarea id="tempat_diklat" name="tempat_diklat" class="form-control  @error('tempat_diklat') is-invalid @enderror"
-                                                    rows="3">{{ old('tempat_diklat', $guru->tdiklat) }}</textarea>
+                                                    rows="3">{{ old('tempat_diklat', $pegawai->tdiklat) }}</textarea>
                                                 @error('tempat_diklat')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
@@ -457,7 +374,8 @@
                                                 <input type="text"
                                                     class="form-control @error('thndiklat') is-invalid @enderror"
                                                     id="thndiklat" name="thndiklat" placeholder="example : 2020"
-                                                    autocomplete="off" value="{{ old('thndiklat', $guru->thndiklat) }}"
+                                                    autocomplete="off"
+                                                    value="{{ old('thndiklat', $pegawai->thndiklat) }}"
                                                     onkeypress="return hanyaAngka(event)">
                                                 @error('thndiklat')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -470,7 +388,7 @@
                                                 <input type="text"
                                                     class="form-control @error('lmdiklat') is-invalid @enderror"
                                                     id="lmdiklat" name="lmdiklat" placeholder="example : 8"
-                                                    autocomplete="off" value="{{ old('lmdiklat', $guru->lmdiklat) }}"
+                                                    autocomplete="off" value="{{ old('lmdiklat', $pegawai->lmdiklat) }}"
                                                     onkeypress="return hanyaAngka(event)">
                                                 <small><i>*perhitungan dalam Jam dalam pelaksanaan diklat.</i></small>
                                                 @error('lmdiklat')
@@ -488,7 +406,7 @@
                                                 <input type="text"
                                                     class="form-control @error('nohp') is-invalid @enderror"
                                                     id="nohp" name="nohp" placeholder="08**********"
-                                                    autocomplete="off" value="{{ old('nohp', $guru->nohp) }}"
+                                                    autocomplete="off" value="{{ old('nohp', $pegawai->nohp) }}"
                                                     onkeypress="return hanyaAngka(event)">
                                                 @error('nohp')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -501,7 +419,7 @@
                                                 <input type="email"
                                                     class="form-control @error('email') is-invalid @enderror"
                                                     id="email" name="email" placeholder="example@gmail.com"
-                                                    autocomplete="off" value="{{ old('email', $guru->email) }}">
+                                                    autocomplete="off" value="{{ old('email', $pegawai->email) }}">
                                                 @error('email')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
@@ -516,12 +434,12 @@
                                                 <label>Foto<small> (Opsional)</small></label>
                                             </div>
                                             <div class="col-md-4">
-                                                @if ($guru->foto == null)
-                                                    <img src="{{ url('storage/foto-guru/blank.png') }}"
+                                                @if ($pegawai->foto == null)
+                                                    <img src="{{ url('storage/foto-pegawai/blank.png') }}"
                                                         alt="Image Profile" class="img-thumbnail rounded img-preview"
                                                         width="120px">
                                                 @else
-                                                    <img src="{{ url('storage/foto-guru/' . $guru->foto) }}"
+                                                    <img src="{{ url('storage/foto-pegawai/' . $pegawai->foto) }}"
                                                         alt="Image Profile" class="img-thumbnail rounded img-preview"
                                                         width="120px">
                                                 @endif
@@ -545,7 +463,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="{{ route('guru.index') }}" class="btn btn-default btn-sm">Kembali</a>
+                                        <a href="{{ route('pegawai.index') }}" class="btn btn-default btn-sm">Kembali</a>
                                         <button type="submit" class="btn btn-primary btn-sm" id="saveBtn"
                                             value="create">Perbaharui</button>
                                     </div>

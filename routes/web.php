@@ -10,8 +10,9 @@ use App\Http\Controllers\Admin\MapelController;
 use App\Http\Controllers\Admin\SaranaController;
 use App\Http\Controllers\Admin\InventarisController;
 use App\Http\Controllers\Admin\GolonganController;
-use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\JurusanController;
+use App\Http\Controllers\Admin\GuruController;
+use App\Http\Controllers\Admin\PegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,5 +78,12 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::get('guru/{id}/edit', [GuruController::class, 'edit'])->name('guru.edit');
         Route::put('guru/{id}/update', [GuruController::class, 'update'])->name('guru.update');
         Route::delete('guru/{guru}/destroy', [GuruController::class, 'destroy'])->name('guru.destroy');
+        // Pegawai
+        Route::get('pegawai', [PegawaiController::class, 'index'])->name('pegawai.index');
+        Route::get('pegawai/create', [PegawaiController::class, 'create'])->name('pegawai.create');
+        Route::post('pegawai', [PegawaiController::class, 'store'])->name('pegawai.store');
+        Route::get('pegawai/{id}/edit', [PegawaiController::class, 'edit'])->name('pegawai.edit');
+        Route::put('pegawai/{id}/update', [PegawaiController::class, 'update'])->name('pegawai.update');
+        Route::delete('pegawai/{pegawai}/destroy', [PegawaiController::class, 'destroy'])->name('pegawai.destroy');
     });
 });

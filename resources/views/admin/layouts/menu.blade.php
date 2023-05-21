@@ -115,6 +115,15 @@
             </p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('pegawai.index') }}"
+            class="nav-link {{ request()->segment(1) == 'pegawai' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+                Entry Pegawai
+            </p>
+        </a>
+    </li>
 @endif
 <div class="user-panel mt-3">
 </div>

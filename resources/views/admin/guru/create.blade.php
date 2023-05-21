@@ -400,7 +400,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label>Kehadiran<span class="text-danger">*</label>
+                                                    <label>Kehadiran<small> (Opsional)</small></label>
                                                     <input type="text"
                                                         class="form-control @error('kehadiran') is-invalid @enderror"
                                                         id="kehadiran" name="kehadiran" placeholder="example : 100"
