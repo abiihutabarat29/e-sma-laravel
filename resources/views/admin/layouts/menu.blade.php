@@ -124,6 +124,14 @@
             </p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ route('siswa.index') }}" class="nav-link {{ request()->segment(1) == 'siswa' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user-tie"></i>
+            <p>
+                Entry Siswa
+            </p>
+        </a>
+    </li>
 @endif
 <div class="user-panel mt-3">
 </div>

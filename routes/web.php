@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\GolonganController;
 use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\PegawaiController;
+use App\Http\Controllers\Admin\SiswaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,5 +86,12 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::get('pegawai/{id}/edit', [PegawaiController::class, 'edit'])->name('pegawai.edit');
         Route::put('pegawai/{id}/update', [PegawaiController::class, 'update'])->name('pegawai.update');
         Route::delete('pegawai/{pegawai}/destroy', [PegawaiController::class, 'destroy'])->name('pegawai.destroy');
+        // Siswa
+        Route::get('siswa', [SiswaController::class, 'index'])->name('siswa.index');
+        Route::get('siswa/create', [SiswaController::class, 'create'])->name('siswa.create');
+        Route::post('siswa', [SiswaController::class, 'store'])->name('siswa.store');
+        Route::get('siswa/{id}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
+        Route::put('siswa/{id}/update', [SiswaController::class, 'update'])->name('siswa.update');
+        Route::delete('siswa/{siswa}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
     });
 });
