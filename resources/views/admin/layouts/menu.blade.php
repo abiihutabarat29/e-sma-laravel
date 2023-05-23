@@ -107,6 +107,186 @@
         </ul>
     </li>
 @else
+    <li
+        class="nav-item {{ request()->segment(1) == 'profil-sekolah' ||
+        request()->segment(1) == 'wilayah-sekolah' ||
+        request()->segment(1) == 'kelas-sekolah' ||
+        request()->segment(1) == 'jurusan-sekolah' ||
+        request()->segment(1) == 'dakl-guru' ||
+        request()->segment(1) == 'sarpras' ||
+        request()->segment(1) == 'inventaris'
+            ? 'menu-open'
+            : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'profil-sekolah' ||
+            request()->segment(1) == 'wilayah-sekolah' ||
+            request()->segment(1) == 'kelas-sekolah' ||
+            request()->segment(1) == 'jurusan-sekolah' ||
+            request()->segment(1) == 'dakl-guru' ||
+            request()->segment(1) == 'sarpras' ||
+            request()->segment(1) == 'inventaris'
+                ? 'active'
+                : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Sekolah
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'profil-sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Profil Sekolah</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Wilayah Sekolah</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'kelas-sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Entry Kelas</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'jurusan-sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Entry Jurusan</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'dakl-guru' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Entry DAKL Guru</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'sarpras' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Entry Sarpras</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'inventaris' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Entry Inventaris</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li
+        class="nav-item {{ request()->segment(1) == 'mutasi-masuk' ||
+        request()->segment(1) == 'mutasi-keluar' ||
+        request()->segment(1) == 'kelulusan'
+            ? 'menu-open'
+            : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'mutasi-masuk' ||
+            request()->segment(1) == 'mutasi-keluar' ||
+            request()->segment(1) == 'kelulusan'
+                ? 'active'
+                : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Akademik
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'mutasi-masuk' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Mutasi Masuk</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'mutasi-keluar' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Mutasi Keluar</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'kelulusan' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Kelulusan</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li
+        class="nav-item {{ request()->segment(1) == 'buku-induk' || request()->segment(1) == 'cetak-data' ? 'menu-open' : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'buku-induk' || request()->segment(1) == 'cetak-data' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Administrasi
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'buku-induk' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Buku Induk</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'cetak-data' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Cetak Data</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li
+        class="nav-item {{ request()->segment(1) == 'generate-labul' || request()->segment(1) == 'arsip-labul' ? 'menu-open' : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'generate-labul' || request()->segment(1) == 'arsip-labul' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Laporan
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'generate-labul' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Generate Labul</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'arsip-labul' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Arsip Labul</p>
+                </a>
+            </li>
+        </ul>
+    </li>
     <li class="nav-item">
         <a href="{{ route('guru.index') }}" class="nav-link {{ request()->segment(1) == 'guru' ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-tie"></i>
@@ -125,7 +305,8 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ route('siswa.index') }}" class="nav-link {{ request()->segment(1) == 'siswa' ? 'active' : '' }}">
+        <a href="{{ route('siswa.index') }}"
+            class="nav-link {{ request()->segment(1) == 'siswa' ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-tie"></i>
             <p>
                 Entry Siswa
