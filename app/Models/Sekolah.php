@@ -30,4 +30,8 @@ class Sekolah extends Model
     {
         return $this->hasMany(Pegawai::class);
     }
+    public function profile_sekolah()
+    {
+        return $this->hasOne(ProfileSekolah::class);
+    }
 }

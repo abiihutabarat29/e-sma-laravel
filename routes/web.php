@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\JurusanController;
 use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Admin\SiswaController;
+use App\Http\Controllers\Admin\ProfileSekolahController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,5 +94,11 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::get('siswa/{id}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
         Route::put('siswa/{id}/update', [SiswaController::class, 'update'])->name('siswa.update');
         Route::delete('siswa/{siswa}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+        //Profil Sekolah
+        Route::get('profile-sekolah', [ProfileSekolahController::class, 'index'])->name('profile-sekolah.index');
+        Route::get('profile-sekolah/create', [ProfileSekolahController::class, 'create'])->name('profile-sekolah.create');
+        Route::post('profile-sekolah', [ProfileSekolahController::class, 'store'])->name('profile-sekolah.store');
+        Route::get('profile-sekolah/{id}/edit', [ProfileSekolahController::class, 'edit'])->name('profile-sekolah.edit');
+        Route::put('profile-sekolah/{id}/update', [ProfileSekolahController::class, 'update'])->name('profile-sekolah.update');
     });
 });
