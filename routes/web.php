@@ -48,17 +48,18 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
     Route::put('profile/{user}/update-foto', [UserController::class, 'updatefoto'])->name('profil.update.foto');
     // Download Manual Book
     Route::get('download', [ManualBookController::class, 'download'])->name('download');
+    //Get Data JSON
+    Route::post('kabupaten/get-kabupaten', [KabupatenController::class, 'getKabupaten']);
+    Route::post('kecamatan/get-kecamatan', [KecamatanController::class, 'getKecamatan']);
+    Route::post('desa/get-desa', [DesaController::class, 'getDesa']);
     // Route cabdis
     Route::group(['middleware' => ['checkUser:1']], function () {
         // Kabupaten
         Route::resource('kabupaten', KabupatenController::class);
-        Route::post('kabupaten/get-kabupaten', [KabupatenController::class, 'getKabupaten']);
         // Kecamatan
         Route::resource('kecamatan', KecamatanController::class);
-        Route::post('kecamatan/get-kecamatan', [KecamatanController::class, 'getKecamatan']);
         // Desa/Kelurahan
         Route::resource('desa', DesaController::class);
-        Route::post('desa/get-desa', [DesaController::class, 'getDesa']);
         // Sekolah
         Route::get('sekolah', [SekolahController::class, 'index'])->name('sekolah.index');
         Route::post('sekolah', [SekolahController::class, 'store'])->name('sekolah.store');

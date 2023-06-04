@@ -83,9 +83,9 @@ class KecamatanController extends Controller
         return response()->json(['success' => 'Kecamatan deleted successfully.']);
     }
 
-    public function getKecamatan()
+    public function getKecamatan(Request $request)
     {
-        $kecamatan = Kecamatan::get(["kecamatan", "id"]);
-        return response()->json($kecamatan);
+        $data['kecamatan'] = Kecamatan::where("kabupaten_id", $request->kabupaten_id)->get(["kecamatan", "id"]);
+        return response()->json($data);
     }
 }

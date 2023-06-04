@@ -192,7 +192,7 @@
                                                 <div class="form-group">
                                                     <label>Kabupaten<span class="text-danger">*</span></label>
                                                     <select class="browser-default custom-select select2bs4"
-                                                        name="kabupatem_id" id="kabupatem_id">
+                                                        name="kabupaten_id" id="kabupaten_id">
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -400,6 +400,89 @@
         }
         $(function() {
             bsCustomFileInput.init();
+        });
+        //get kabupaten
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+            $.ajax({
+                url: "{{ url('kabupaten/get-kabupaten') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(result) {
+                    if (result == "") {
+                        $('#kabupaten_id').html(
+                            '<option value="">----Data Kabupaten Kosong----</option>'
+                        );
+                    } else {
+                        $('#kabupaten_id').html(
+                            '<option value="">:::Pilih Kabupaten:::</option>');
+                    }
+                    $.each(result, function(key, value) {
+                        $("#kabupaten_id").append('<option value="' + value
+                            .id + '">' + value.kabupaten + '</option>');
+                    });
+                }
+            });
+
+            $('#kabupaten_id').on('change', function() {
+                var idKabupaten = this.value;
+                $("#kecamatan_id").html('');
+                $("#desa_id").html('');
+                $.ajax({
+                    url: "{{ url('kecamatan/get-kecamatan') }}",
+                    type: "POST",
+                    data: {
+                        kabupaten_id: idKabupaten,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.kecamatan == "") {
+                            $('#kecamatan_id').html(
+                                '<option value="">----Data Kecamatan Kosong----</option>'
+                            );
+                        } else {
+                            $('#kecamatan_id').html(
+                                '<option value="">:::Pilih Kecamatan:::</option>');
+                            $.each(result.kecamatan, function(key, value) {
+                                $("#kecamatan_id").append('<option value="' + value.id +
+                                    '">' + value.kecamatan + '</option>');
+                            });
+                        }
+                    }
+                });
+            });
+            $('#kecamatan_id').on('change', function() {
+                var idKecamatan = this.value;
+                $("#desa_id").html('');
+                $.ajax({
+                    url: "{{ url('desa/get-desa') }}",
+                    type: "POST",
+                    data: {
+                        kecamatan_id: idKecamatan,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.desa == "") {
+                            $('#desa_id').html(
+                                '<option value="">----Data Desa Kosong----</option>'
+                            );
+                        } else {
+                            $('#desa_id').html(
+                                '<option value="">:::Pilih Desa/Kelurahan:::</option>');
+                            $.each(result.desa, function(key, value) {
+                                $("#desa_id").append('<option value="' + value
+                                    .id + '">' + value.desa + '</option>');
+                            });
+                        }
+                    }
+                });
+            });
         });
     </script>
 @endsection

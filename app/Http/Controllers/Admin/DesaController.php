@@ -79,7 +79,7 @@ class DesaController extends Controller
 
     public function getDesa(Request $request)
     {
-        $data = Desa::where("kecamatan_id", $request->kecamatan_id)->get(["desa", "id"]);
+        $data['desa'] = Desa::where("kecamatan_id", $request->kecamatan_id)->get(["desa", "id"]);
         return response()->json($data);
     }
 
