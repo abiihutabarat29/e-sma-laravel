@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KabupatenController;
+use App\Http\Controllers\Admin\KecamatanController;
+use App\Http\Controllers\Admin\DesaController;
 use App\Http\Controllers\Admin\SekolahController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MapelController;
@@ -50,6 +52,13 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
     Route::group(['middleware' => ['checkUser:1']], function () {
         // Kabupaten
         Route::resource('kabupaten', KabupatenController::class);
+        Route::post('kabupaten/get-kabupaten', [KabupatenController::class, 'getKabupaten']);
+        // Kecamatan
+        Route::resource('kecamatan', KecamatanController::class);
+        Route::post('kecamatan/get-kecamatan', [KecamatanController::class, 'getKecamatan']);
+        // Desa/Kelurahan
+        Route::resource('desa', DesaController::class);
+        Route::post('desa/get-desa', [DesaController::class, 'getDesa']);
         // Sekolah
         Route::get('sekolah', [SekolahController::class, 'index'])->name('sekolah.index');
         Route::post('sekolah', [SekolahController::class, 'store'])->name('sekolah.store');

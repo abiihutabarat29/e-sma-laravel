@@ -44,6 +44,24 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
+                <a href="{{ route('kecamatan.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'kecamatan' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Kecamatan</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('desa.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'desa' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Desa/Kelurahan</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
                 <a href="{{ route('sekolah.index') }}"
                     class="nav-link {{ request()->segment(1) == 'sekolah' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>

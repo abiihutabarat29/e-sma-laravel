@@ -76,4 +76,10 @@ class KabupatenController extends Controller
         Kabupaten::find($id)->delete();
         return response()->json(['success' => 'Kabupaten deleted successfully.']);
     }
+
+    public function getKabupaten()
+    {
+        $data = Kabupaten::get(["kabupaten", "id"]);
+        return response()->json($data);
+    }
 }

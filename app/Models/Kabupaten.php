@@ -19,4 +19,8 @@ class Kabupaten extends Model
     {
         return $this->hasMany(Sekolah::class);
     }
+    public function kecamatan()
+    {
+        return $this->hasMany(Kecamatan::class);
+    }
 }
