@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         @if ($profil == null)
-                            <div class="card card-danger card-outline">
+                            <div class="card">
                                 <div class="card-body box-profile">
                                     <div class="text-center p-5">
                                         <span class="text-danger"><i>* profil kepala sekolah tidak ada</i></span>
@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="card card-info card-outline">
+                            <div class="card">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
                                         @if ($profil->foto_kepsek == null)
@@ -40,23 +40,26 @@
                                                 class="profile-user-img img-fluid img-circle" alt="User Image">
                                         @endif
                                     </div>
-
-                                    <h3 class="profile-username text-center">Nina Mcintire</h3>
-
-                                    <p class="text-muted text-center">Software Engineer</p>
-
-                                    <ul class="list-group list-group-unbordered mb-3">
+                                    <h6 class="text-muted text-center mt-1">Kepala Sekolah</h6>
+                                    <h3 class="profile-username text-center">{{ $profil->kepsek }}</h3>
+                                    <h6 class="profile-username text-center">NIP :
+                                        @if ($profil->nip == null)
+                                            -
+                                        @else
+                                            {{ $profil->nip }}
+                                        @endif
+                                    </h6>
+                                    <ul class="list-group list-group-unbordered">
                                         <li class="list-group-item">
-                                            <b>Followers</b> <a class="float-right">1,322</a>
+                                            <b>Guru</b> <a class="float-right">{{ $guru }}</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Following</b> <a class="float-right">543</a>
+                                            <b>Pegawai</b> <a class="float-right">{{ $pegawai }}</a>
                                         </li>
                                         <li class="list-group-item">
-                                            <b>Friends</b> <a class="float-right">13,287</a>
+                                            <b>Siswa</b> <a class="float-right">{{ $siswa }}</a>
                                         </li>
                                     </ul>
-                                    <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
                                 </div>
                             </div>
                         @endif
@@ -70,15 +73,11 @@
                                         <div class="float-right">
                                             @if ($profil == null)
                                                 <a href="javascript:void(0)" class="btn btn-info btn-xs addProfile"
-                                                    title="Update Profil Sekolah">
-                                                    <i class="fa fa-plus-circle">
-                                                    </i>
+                                                    title="Lengkapi Profil">Lengkapi Profil
                                                 </a>
                                             @else
-                                                <a href="javascript:void(0)" class="btn btn-warning btn-xs text-white"
-                                                    title="Ubah Profil Sekolah">
-                                                    <i class="fa fa-edit">
-                                                    </i>
+                                                <a href="javascript:void(0)" class="btn btn-secondary btn-xs"
+                                                    title="Perbaharui Profil">Perbaharui Profil
                                                 </a>
                                             @endif
                                         </div>
@@ -97,38 +96,34 @@
                                     <span>{{ Auth::user()->sekolah->nama_sekolah }}</span>
                                     <h6 class="mt-2"><b>NPSN</b></h6>
                                     <span>{{ Auth::user()->sekolah->npsn }}</span>
-                                    {{-- <h6 class="mt-2"><b>Email</b></h6>
-                            <span>{{ $profil->email }}</span>
-                            <h6 class="mt-2"><b>Nomor Handphone</b></h6>
-                            <span>{{ $profil->nohp }}</span>
-                            <h6 class="mt-2"><b>Jenis Kelamin</b></h6>
-                            @if ($profil->profile->gender == null)
-                                <span class="text-danger"><i>* tidak ada</i></span>
-                            @else
-                                @if ($profil->profile->gender == 'L')
-                                    Laki-laki
-                                @else
-                                    Perempuan
-                                @endif
-                            @endif
-                            <h6 class="mt-2"><b>Tempat Lahir</b></h6>
-                            @if ($profil->profile->tempat_lahir == null)
-                                <span class="text-danger"><i>* tidak ada</i></span>
-                            @else
-                                {{ $profil->profile->tempat_lahir }}
-                            @endif
-                            <h6 class="mt-2"><b>Tanggal Lahir</b></h6>
-                            @if ($profil->profile->tgl_lahir == null)
-                                <span class="text-danger"><i>* tidak ada</i></span>
-                            @else
-                                {{ \Carbon\Carbon::parse($profil->profile->tgl_lahir)->translatedFormat('l, d F Y') }}
-                            @endif
-                            <h6 class="mt-2"><b>Alamat</b></h6>
-                            @if ($profil->profile->alamat == null)
-                                <span class="text-danger"><i>* tidak ada</i></span>
-                            @else
-                                {{ $profil->profile->alamat }}
-                            @endif --}}
+                                    <h6 class="mt-2"><b>NSS</b></h6>
+                                    <span>{{ $profil->nss }}</span>
+                                    <h6 class="mt-2"><b>NDS</b></h6>
+                                    <span>{{ $profil->nds }}</span>
+                                    <h6 class="mt-2"><b>Status</b></h6>
+                                    <span>{{ Auth::user()->sekolah->status }}</span>
+                                    <h6 class="mt-2"><b>Akreditas</b></h6>
+                                    <span>{{ $profil->akreditas }}</span>
+                                    <h6 class="mt-2"><b>Alamat</b></h6>
+                                    <span>{{ $profil->alamat }}</span>
+                                    <h6 class="mt-2"><b>Kabupaten</b></h6>
+                                    <span>{{ $profil->kabupaten->kabupaten }}</span>
+                                    <h6 class="mt-2"><b>Kecamatan</b></h6>
+                                    <span>{{ $profil->kecamatan->kecamatan }}</span>
+                                    <h6 class="mt-2"><b>Desa/Kelurahan</b></h6>
+                                    <span>{{ $profil->desa->desa }}</span>
+                                    <h6 class="mt-2"><b>Kode Pos</b></h6>
+                                    <span>{{ $profil->kodepos }}</span>
+                                    <h6 class="mt-2"><b>Telp/No HP/No WhatsApp</b></h6>
+                                    <span>{{ $profil->telp }}</span>
+                                    <h6 class="mt-2"><b>Email</b></h6>
+                                    <span>{{ $profil->email }}</span>
+                                    <h6 class="mt-2"><b>Website</b></h6>
+                                    @if ($profil->website == null)
+                                        <span class="text-danger"><i>* tidak ada</i></span>
+                                    @else
+                                        {{ $profil->website }}
+                                    @endif
                                 </div>
                             @endif
                         </div>

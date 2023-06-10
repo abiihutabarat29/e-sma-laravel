@@ -104,6 +104,20 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label>Tahun Berdiri<span class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control @error('thnberdiri') is-invalid @enderror"
+                                                        id="thnberdiri" name="thnberdiri" placeholder="example : 2020"
+                                                        autocomplete="off" value="{{ old('thnberdiri') }}"
+                                                        onkeypress="return hanyaAngka(event)">
+                                                    @error('thnberdiri')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label>Nomor SK Pendirian<span class="text-danger">*</span></label>
                                                     <input type="text"
                                                         class="form-control @error('nosk') is-invalid @enderror"
@@ -191,21 +205,36 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Kabupaten<span class="text-danger">*</span></label>
-                                                    <select class="browser-default custom-select select2bs4"
+                                                    <select
+                                                        class="browser-default custom-select select2bs4 @error('kabupaten_id') is-invalid @enderror"
                                                         name="kabupaten_id" id="kabupaten_id">
                                                     </select>
+                                                    @error('kabupaten_id')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Kecamatan<span class="text-danger">*</span></label>
-                                                    <select class="browser-default custom-select select2bs4"
+                                                    <select
+                                                        class="browser-default custom-select select2bs4 @error('kecamatan_id') is-invalid @enderror"
                                                         name="kecamatan_id" id="kecamatan_id">
                                                     </select>
+                                                    @error('kecamatan_id')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Desa/Kelurahan<span class="text-danger">*</span></label>
-                                                    <select class="browser-default custom-select select2bs4"
+                                                    <select
+                                                        class="browser-default custom-select select2bs4 @error('desa_id') is-invalid @enderror"
                                                         name="desa_id" id="desa_id">
                                                     </select>
+                                                    @error('desa_id')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Kode Pos<span class="text-danger">*</span></label>
@@ -266,11 +295,11 @@
                                             <div class="form-group">
                                                 <label>Telp/No HP/No WhatsApp<span class="text-danger">*</label>
                                                 <input type="text"
-                                                    class="form-control @error('nohp') is-invalid @enderror"
-                                                    id="nohp" name="nohp" placeholder="08**********"
-                                                    autocomplete="off" value="{{ old('nohp') }}"
+                                                    class="form-control @error('telp') is-invalid @enderror"
+                                                    id="telp" name="telp" placeholder="08**********"
+                                                    autocomplete="off" value="{{ old('telp') }}"
                                                     onkeypress="return hanyaAngka(event)">
-                                                @error('nohp')
+                                                @error('telp')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
@@ -320,10 +349,10 @@
                                                 <div class="form-group">
                                                     <label>Nama<span class="text-danger">*</span></label>
                                                     <input type="text"
-                                                        class="form-control @error('nama') is-invalid @enderror"
-                                                        id="nama" name="nama" placeholder="Nama"
-                                                        autocomplete="off" value="{{ old('nama') }}">
-                                                    @error('nama')
+                                                        class="form-control @error('nama_kepsek') is-invalid @enderror"
+                                                        id="nama_kepsek" name="nama_kepsek" placeholder="Nama Kepsek"
+                                                        autocomplete="off" value="{{ old('nama_kepsek') }}">
+                                                    @error('nama_kepsek')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
