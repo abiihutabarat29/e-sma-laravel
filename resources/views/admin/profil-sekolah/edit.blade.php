@@ -8,8 +8,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('profile-sekolah.index') }}">{{ $menu }}</a>
-                        </li>
+                        <li class="breadcrumb-item"><a href="{{ route('profile-sekolah.index') }}">Profil Sekolah</a></li>
+                        <li class="breadcrumb-item">{{ $menu }}</li>
                     </ol>
                 </div>
             </div>
@@ -31,9 +31,11 @@
                         </ul>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('profile-sekolah.store') }}" class="form-horizontal"
-                            enctype="multipart/form-data">
+                        <form method="post"
+                            action="{{ route('profile-sekolah.update', Crypt::encryptString($profil->id)) }}"
+                            class="form-horizontal" enctype="multipart/form-data">
                             @csrf
+                            @method('put')
                             <div class="tab-content">
                                 <div class="active tab-pane" id="tabidentitas">
                                     <div class="card-body">
@@ -44,7 +46,8 @@
                                                     <input type="text"
                                                         class="form-control @error('nss') is-invalid @enderror"
                                                         id="nss" name="nss" placeholder="NSS" autocomplete="off"
-                                                        value="{{ old('nss') }}" onkeypress="return hanyaAngka(event)">
+                                                        value="{{ old('nss', $profil->nss) }}"
+                                                        onkeypress="return hanyaAngka(event)">
                                                     @error('nss')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -57,7 +60,8 @@
                                                     <input type="text"
                                                         class="form-control @error('nds') is-invalid @enderror"
                                                         id="nds" name="nds" placeholder="NDS" autocomplete="off"
-                                                        value="{{ old('nds') }}" onkeypress="return hanyaAngka(event)">
+                                                        value="{{ old('nds', $profil->nds) }}"
+                                                        onkeypress="return hanyaAngka(event)">
                                                     @error('nds')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -70,7 +74,7 @@
                                                     <input type="text"
                                                         class="form-control @error('nosiop') is-invalid @enderror"
                                                         id="nosiop" name="nosiop" placeholder="Nomor SIOP"
-                                                        autocomplete="off" value="{{ old('nosiop') }}">
+                                                        autocomplete="off" value="{{ old('nosiop', $profil->nosiop) }}">
                                                     @error('nosiop')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -85,14 +89,14 @@
                                                         id="akreditas" name="akreditas" style="width: 100%;">
                                                         <option selected disabled>---:---</option>
                                                         <option value="A"
-                                                            {{ old('akreditas') == 'A' ? 'selected' : '' }}>
+                                                            {{ $profil->akreditas == 'A' ? 'selected' : '' }}>
                                                             A</option>
                                                         <option value="B"
-                                                            {{ old('akreditas') == 'B' ? 'selected' : '' }}>
+                                                            {{ $profil->akreditas == 'B' ? 'selected' : '' }}>
                                                             B
                                                         </option>
                                                         <option value="C"
-                                                            {{ old('akreditas') == 'C' ? 'selected' : '' }}>
+                                                            {{ $profil->akreditas == 'C' ? 'selected' : '' }}>
                                                             C
                                                         </option>
                                                     </select>
@@ -108,7 +112,7 @@
                                                     <input type="text"
                                                         class="form-control @error('nosk') is-invalid @enderror"
                                                         id="nosk" name="nosk" placeholder="Nomor SK Pendirian"
-                                                        autocomplete="off" value="{{ old('nosk') }}">
+                                                        autocomplete="off" value="{{ old('nosk', $profil->nosk) }}">
                                                     @error('nosk')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -120,7 +124,7 @@
                                                     <label>Tanggal SK<span class="text-danger">*</span></label>
                                                     <input type="date" id="tglsk" name="tglsk"
                                                         class="form-control @error('tglsk') is-invalid @enderror"
-                                                        value="{{ old('tglsk') }}">
+                                                        value="{{ old('tglsk', $profil->tglsk) }}">
                                                     @error('tglsk')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -136,18 +140,18 @@
                                                         id="standar" name="standar" style="width: 100%;">
                                                         <option selected disabled>---:---</option>
                                                         <option value="SSN"
-                                                            {{ old('standar') == 'SSN' ? 'selected' : '' }}>
+                                                            {{ $profil->standar == 'SSN' ? 'selected' : '' }}>
                                                             SSN</option>
                                                         <option value="SBI"
-                                                            {{ old('standar') == 'SBI' ? 'selected' : '' }}>
+                                                            {{ $profil->standar == 'SBI' ? 'selected' : '' }}>
                                                             SBI
                                                         </option>
                                                         <option value="SPM"
-                                                            {{ old('standar') == 'SPM' ? 'selected' : '' }}>
+                                                            {{ $profil->standar == 'SPM' ? 'selected' : '' }}>
                                                             SPM
                                                         </option>
                                                         <option value="SNS"
-                                                            {{ old('standar') == 'SNS' ? 'selected' : '' }}>
+                                                            {{ $profil->standar == 'SNS' ? 'selected' : '' }}>
                                                             SNS
                                                         </option>
                                                     </select>
@@ -165,14 +169,14 @@
                                                         id="waktub" name="waktub" style="width: 100%;">
                                                         <option selected disabled>---:---</option>
                                                         <option value="PAGI"
-                                                            {{ old('waktub') == 'PAGI' ? 'selected' : '' }}>
+                                                            {{ $profil->waktub == 'PAGI' ? 'selected' : '' }}>
                                                             PAGI</option>
                                                         <option value="SIANG"
-                                                            {{ old('waktub') == 'SIANG' ? 'selected' : '' }}>
+                                                            {{ $profil->waktub == 'SIANG' ? 'selected' : '' }}>
                                                             SIANG
                                                         </option>
                                                         <option value="SORE"
-                                                            {{ old('waktub') == 'SORE' ? 'selected' : '' }}>
+                                                            {{ $profil->waktub == 'SORE' ? 'selected' : '' }}>
                                                             SORE
                                                         </option>
                                                     </select>
@@ -192,7 +196,7 @@
                                                 <div class="form-group">
                                                     <label>Kabupaten<span class="text-danger">*</span></label>
                                                     <select class="browser-default custom-select select2bs4"
-                                                        name="kabupatem_id" id="kabupatem_id">
+                                                        name="kabupaten_id" id="kabupaten_id">
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -212,7 +216,7 @@
                                                     <input type="text"
                                                         class="form-control @error('kodepos') is-invalid @enderror"
                                                         id="kodepos" name="kodepos" autocomplete="off"
-                                                        value="{{ old('kodepos') }}"
+                                                        value="{{ old('kodepos', $profil->kodepos) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     @error('kodepos')
                                                         <span
@@ -222,7 +226,7 @@
                                                 <div class="form-group">
                                                     <label>Alamat<span class="text-danger">*</span></label>
                                                     <textarea id="alamat" name="alamat" class="form-control  @error('alamat') is-invalid @enderror" rows="3"
-                                                        placeholder="Tuliskan alamat sekolah ...">{{ old('alamat') }}</textarea>
+                                                        placeholder="Tuliskan alamat sekolah ...">{{ old('alamat', $profil->alamat) }}</textarea>
                                                     @error('alamat')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -268,7 +272,7 @@
                                                 <input type="text"
                                                     class="form-control @error('nohp') is-invalid @enderror"
                                                     id="nohp" name="nohp" placeholder="08**********"
-                                                    autocomplete="off" value="{{ old('nohp') }}"
+                                                    autocomplete="off" value="{{ old('nohp', $profil->telp) }}"
                                                     onkeypress="return hanyaAngka(event)">
                                                 @error('nohp')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -281,7 +285,7 @@
                                                 <input type="email"
                                                     class="form-control @error('email') is-invalid @enderror"
                                                     id="email" name="email" placeholder="sma@gmail.com"
-                                                    autocomplete="off" value="{{ old('email') }}">
+                                                    autocomplete="off" value="{{ old('email', $profil->email) }}">
                                                 @error('email')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
@@ -293,7 +297,7 @@
                                                 <input type="text"
                                                     class="form-control @error('website') is-invalid @enderror"
                                                     id="website" name="website" placeholder="https://sma.ac.id"
-                                                    autocomplete="off" value="{{ old('website') }}">
+                                                    autocomplete="off" value="{{ old('website', $profil->website) }}">
                                                 @error('website')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
@@ -310,7 +314,7 @@
                                                     <input type="text"
                                                         class="form-control @error('nip') is-invalid @enderror"
                                                         id="nip" name="nip" placeholder="NIP"
-                                                        autocomplete="off" value="{{ old('nip') }}"
+                                                        autocomplete="off" value="{{ old('nip', $profil->nip) }}"
                                                         onkeypress="return hanyaAngka(event)">
                                                     @error('nip')
                                                         <span
@@ -322,7 +326,7 @@
                                                     <input type="text"
                                                         class="form-control @error('nama') is-invalid @enderror"
                                                         id="nama" name="nama" placeholder="Nama"
-                                                        autocomplete="off" value="{{ old('nama') }}">
+                                                        autocomplete="off" value="{{ old('nama', $profil->kepsek) }}">
                                                     @error('nama')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -400,6 +404,94 @@
         }
         $(function() {
             bsCustomFileInput.init();
+        });
+        //get kabupaten
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+            var kab = "{{ $profil->kabupaten_id }}";
+            var kec = "{{ $profil->kecamatan_id }}";
+            var desa = "{{ $profil->desa_id }}";
+            $.ajax({
+                url: "{{ url('kabupaten/get-kabupaten') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(result) {
+                    if (result.length == 0) {
+                        $('#kabupaten_id').html(
+                            '<option value="">----Data Kabupaten Kosong----</option>'
+                        );
+                    } else {
+                        $('#kabupaten_id').html(
+                            '<option value="">:::Pilih Kabupaten:::</option>');
+                    }
+                    $.each(result, function(key, value) {
+                        $("#kabupaten_id").append('<option value="' + value
+                            .id + '">' + value.kabupaten + '</option>');
+                    });
+                    $('#kabupaten_id').val(kab).trigger('change');
+                }
+            });
+            $('#kabupaten_id').on('change', function() {
+                var idKabupaten = $(this).val();
+                $("#kecamatan_id").html('');
+                $("#desa_id").html('');
+                $.ajax({
+                    url: "{{ url('kecamatan/get-kecamatan') }}",
+                    type: "POST",
+                    data: {
+                        kabupaten_id: idKabupaten,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.kecamatan.length == 0) {
+                            $('#kecamatan_id').html(
+                                '<option value="">----Data Kecamatan Kosong----</option>'
+                            );
+                        } else {
+                            $('#kecamatan_id').html(
+                                '<option value="">:::Pilih Kecamatan:::</option>');
+                            $.each(result.kecamatan, function(key, value) {
+                                $("#kecamatan_id").append('<option value="' + value.id +
+                                    '">' + value.kecamatan + '</option>');
+                            });
+                            $("#kecamatan_id").val(kec).trigger('change');
+                        }
+                    }
+                });
+            });
+            $('#kecamatan_id').on('change', function() {
+                var idKecamatan = $(this).val();
+                $("#desa_id").html('');
+                $.ajax({
+                    url: "{{ url('desa/get-desa') }}",
+                    type: "POST",
+                    data: {
+                        kecamatan_id: idKecamatan,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.desa == "") {
+                            $('#desa_id').html(
+                                '<option value="">----Data Desa Kosong----</option>'
+                            );
+                        } else {
+                            $('#desa_id').html(
+                                '<option value="">:::Pilih Desa/Kelurahan:::</option>');
+                            $.each(result.desa, function(key, value) {
+                                $("#desa_id").append('<option value="' + value
+                                    .id + '">' + value.desa + '</option>');
+                            });
+                            $('#desa_id').val(desa);
+                        }
+                    }
+                });
+            });
         });
     </script>
 @endsection

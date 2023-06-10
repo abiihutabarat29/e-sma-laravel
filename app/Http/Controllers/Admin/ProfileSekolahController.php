@@ -9,6 +9,7 @@ use App\Models\ProfileSekolah;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileSekolahController extends Controller
@@ -137,5 +138,11 @@ class ProfileSekolahController extends Controller
             ]
         );
         return redirect()->route('profile-sekolah.index')->with('toast_success', 'Guru saved successfully.');
+    }
+    public function edit($id)
+    {
+        $menu = 'Edit Profil Sekolah';
+        $profil = ProfileSekolah::where('sekolah_id', Auth::user()->sekolah_id)->find(Crypt::decryptString($id));
+        return view('admin.profil-sekolah.edit', compact('menu', 'profil'));
     }
 }

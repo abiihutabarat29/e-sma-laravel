@@ -20,6 +20,7 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
+                        {{-- foto kepsek --}}
                         @if ($profil == null)
                             <div class="card">
                                 <div class="card-body box-profile">
@@ -63,6 +64,28 @@
                                 </div>
                             </div>
                         @endif
+                        {{-- foto sekolah --}}
+                        @if ($profil == null)
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center p-5">
+                                        <span class="text-danger"><i>* gambar sekolah tidak ada</i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <div class="card">
+                                <div class="card-body">
+                                    @if ($profil->foto_sekolah == null)
+                                        <img class="img-fluid pad" src="{{ url('storage/foto-sekolah/blank.png') }}"
+                                            alt="Gambar Sekolah">
+                                    @else
+                                        <img src="{{ url('storage/foto-sekolah/' . $profil->foto_sekolah) }}"
+                                            class="img-fluid pad" alt="Gambar Sekolah">
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-md-8">
                         <div class="invoice p-3 mb-3">
@@ -76,7 +99,9 @@
                                                     title="Lengkapi Profil">Lengkapi Profil
                                                 </a>
                                             @else
-                                                <a href="javascript:void(0)" class="btn btn-secondary btn-xs"
+                                                <a href="javascript:void(0)"
+                                                    data-id="{{ Crypt::encryptString($profil->id) }}"
+                                                    class="btn btn-secondary btn-xs editProfile"
                                                     title="Perbaharui Profil">Perbaharui Profil
                                                 </a>
                                             @endif
@@ -152,6 +177,11 @@
         });
         $("body").on("click", ".addProfile", function() {
             var url = "{{ route('profile-sekolah.create') }}"
+            window.location = url;
+        });
+        $("body").on("click", ".editProfile", function() {
+            var profil_id = $(this).data("id");
+            var url = "{{ url('profile-sekolah') }}" + "/" + profil_id + "/edit";
             window.location = url;
         });
     </script>
