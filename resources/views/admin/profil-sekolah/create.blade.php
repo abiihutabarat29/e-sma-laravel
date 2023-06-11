@@ -417,7 +417,19 @@
         })
 
         function previewImg() {
-            const foto = document.querySelector('#foto');
+            const foto = document.querySelector('#fotokepsek');
+            const img = document.querySelector('.img-preview');
+
+            const fileFoto = new FileReader();
+            fileFoto.readAsDataURL(foto.files[0]);
+
+            fileFoto.onload = function(e) {
+                img.src = e.target.result;
+            }
+        }
+
+        function previewImg() {
+            const foto = document.querySelector('#fotosekolah');
             const img = document.querySelector('.img-preview');
 
             const fileFoto = new FileReader();

@@ -108,6 +108,21 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
+                                                    <label>Tahun Berdiri<span class="text-danger">*</span></label>
+                                                    <input type="text"
+                                                        class="form-control @error('thnberdiri') is-invalid @enderror"
+                                                        id="thnberdiri" name="thnberdiri" placeholder="example : 2020"
+                                                        autocomplete="off"
+                                                        value="{{ old('thnberdiri', $profil->thnberdiri) }}"
+                                                        onkeypress="return hanyaAngka(event)">
+                                                    @error('thnberdiri')
+                                                        <span
+                                                            class="invalid-feedback"><strong>{{ $message }}</strong></span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
                                                     <label>Nomor SK Pendirian<span class="text-danger">*</span></label>
                                                     <input type="text"
                                                         class="form-control @error('nosk') is-invalid @enderror"
@@ -238,16 +253,24 @@
                                                     <label>Foto Sekolah<small> (Opsional)</small></label>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <img src="{{ url('storage/foto-sekolah/blank.png') }}"
-                                                        alt="Image Profile" class="img-thumbnail rounded img-preview"
-                                                        width="120px">
+                                                    @if ($profil->foto_sekolah == null)
+                                                        <img src="{{ url('storage/foto-sekolah/blank.png') }}"
+                                                            alt="Image Profile"
+                                                            class="img-thumbnail rounded img-preview-school"
+                                                            width="120px">
+                                                    @else
+                                                        <img src="{{ url('storage/foto-sekolah/' . $profil->foto_sekolah) }}"
+                                                            alt="Image Profile"
+                                                            class="img-thumbnail rounded img-preview-school"
+                                                            width="120px">
+                                                    @endif
                                                 </div>
                                                 <div class="col-md-6 mt-2">
                                                     <div class="input-group">
                                                         <div class="custom-file">
-                                                            <input type="file" id="fotosekolah" name="fotosekolah"
+                                                            <input type="file" name="fotosekolah"
                                                                 class="custom-file-input @error('fotosekolah') is-invalid @enderror""
-                                                                id="fotosekolah" onchange="previewImg();">
+                                                                id="fotosekolah" onchange="previewImgSchool();">
                                                             <label class="custom-file-label">Pilih File</label>
                                                         </div>
                                                     </div>
@@ -270,11 +293,11 @@
                                             <div class="form-group">
                                                 <label>Telp/No HP/No WhatsApp<span class="text-danger">*</label>
                                                 <input type="text"
-                                                    class="form-control @error('nohp') is-invalid @enderror"
-                                                    id="nohp" name="nohp" placeholder="08**********"
-                                                    autocomplete="off" value="{{ old('nohp', $profil->telp) }}"
+                                                    class="form-control @error('telp') is-invalid @enderror"
+                                                    id="telp" name="telp" placeholder="08**********"
+                                                    autocomplete="off" value="{{ old('telp', $profil->telp) }}"
                                                     onkeypress="return hanyaAngka(event)">
-                                                @error('nohp')
+                                                @error('telp')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
@@ -296,7 +319,7 @@
                                                 <label>Website<small> (Opsional)</small></label>
                                                 <input type="text"
                                                     class="form-control @error('website') is-invalid @enderror"
-                                                    id="website" name="website" placeholder="https://sma.ac.id"
+                                                    id="website" name="website" placeholder="https://"
                                                     autocomplete="off" value="{{ old('website', $profil->website) }}">
                                                 @error('website')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
@@ -324,10 +347,11 @@
                                                 <div class="form-group">
                                                     <label>Nama<span class="text-danger">*</span></label>
                                                     <input type="text"
-                                                        class="form-control @error('nama') is-invalid @enderror"
-                                                        id="nama" name="nama" placeholder="Nama"
-                                                        autocomplete="off" value="{{ old('nama', $profil->kepsek) }}">
-                                                    @error('nama')
+                                                        class="form-control @error('nama_kepsek') is-invalid @enderror"
+                                                        id="nama_kepsek" name="nama_kepsek" placeholder="Nama Kepsek"
+                                                        autocomplete="off"
+                                                        value="{{ old('nama_kepsek', $profil->kepsek) }}">
+                                                    @error('nama_kepsek')
                                                         <span
                                                             class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                     @enderror
@@ -338,14 +362,20 @@
                                                     <label>Foto<small> (Opsional)</small></label>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <img src="{{ url('storage/foto-kepsek/blank.png') }}"
-                                                        alt="Image Profile" class="img-thumbnail rounded img-preview"
-                                                        width="65px">
+                                                    @if ($profil->foto_kepsek == null)
+                                                        <img src="{{ url('storage/foto-kepsek/blank.png') }}"
+                                                            alt="Image Profile" class="img-thumbnail rounded img-preview"
+                                                            width="65px">
+                                                    @else
+                                                        <img src="{{ url('storage/foto-kepsek/' . $profil->foto_kepsek) }}"
+                                                            alt="Image Profile" class="img-thumbnail rounded img-preview"
+                                                            width="65px">
+                                                    @endif
                                                 </div>
                                                 <div class="col-md-6 mt-2">
                                                     <div class="input-group">
                                                         <div class="custom-file">
-                                                            <input type="file" id="fotokepsek" name="fotokepsek"
+                                                            <input type="file" name="fotokepsek"
                                                                 class="custom-file-input @error('fotokepsek') is-invalid @enderror""
                                                                 id="fotokepsek" onchange="previewImg();">
                                                             <label class="custom-file-label">Pilih File</label>
@@ -367,7 +397,7 @@
                                         <a href="{{ route('profile-sekolah.index') }}"
                                             class="btn btn-default btn-sm">Kembali</a>
                                         <button type="submit" class="btn btn-primary btn-sm" id="saveBtn"
-                                            value="create">Simpan</button>
+                                            value="create">Perbaharui</button>
                                     </div>
                                 </div>
                             </div>
@@ -392,8 +422,20 @@
         })
 
         function previewImg() {
-            const foto = document.querySelector('#foto');
+            const foto = document.querySelector('#fotokepsek');
             const img = document.querySelector('.img-preview');
+
+            const fileFoto = new FileReader();
+            fileFoto.readAsDataURL(foto.files[0]);
+
+            fileFoto.onload = function(e) {
+                img.src = e.target.result;
+            }
+        }
+
+        function previewImgSchool() {
+            const foto = document.querySelector('#fotosekolah');
+            const img = document.querySelector('.img-preview-school');
 
             const fileFoto = new FileReader();
             fileFoto.readAsDataURL(foto.files[0]);

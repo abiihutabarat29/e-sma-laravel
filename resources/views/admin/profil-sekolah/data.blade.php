@@ -147,7 +147,7 @@
                                     @if ($profil->website == null)
                                         <span class="text-danger"><i>* tidak ada</i></span>
                                     @else
-                                        {{ $profil->website }}
+                                        <a href="{{ $profil->website }}">{{ $profil->website }}</a>
                                     @endif
                                 </div>
                             @endif
