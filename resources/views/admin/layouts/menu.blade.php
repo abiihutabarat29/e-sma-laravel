@@ -162,7 +162,8 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
+                <a href="{{ route('wilayah-sekolah.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Wilayah Sekolah</p>
                 </a>

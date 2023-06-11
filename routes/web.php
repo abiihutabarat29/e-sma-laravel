@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\GuruController;
 use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\ProfileSekolahController;
+use App\Http\Controllers\Admin\BangunanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,5 +111,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::post('profile-sekolah', [ProfileSekolahController::class, 'store'])->name('profile-sekolah.store');
         Route::get('profile-sekolah/{id}/edit', [ProfileSekolahController::class, 'edit'])->name('profile-sekolah.edit');
         Route::put('profile-sekolah/{id}/update', [ProfileSekolahController::class, 'update'])->name('profile-sekolah.update');
+        //Bangunan
+        Route::resource('wilayah-sekolah', BangunanController::class);
     });
 });

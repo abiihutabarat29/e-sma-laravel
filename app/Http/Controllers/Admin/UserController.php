@@ -233,7 +233,7 @@ class UserController extends Controller
             ]
         );
         //redirect to index
-        return redirect()->route('profil.index')->with(['status' => 'Profil Berhasil Diupdate!']);
+        return redirect()->route('profil.index')->with(['toast_success' => 'Profil updated successfully.']);
     }
     public function updatepassword(Request $request, $id)
     {
@@ -268,7 +268,7 @@ class UserController extends Controller
             ]
         );
         //redirect to index
-        return redirect()->route('profil.index')->with(['status' => 'Password Berhasil Diupdate!']);
+        return redirect()->route('profil.index')->with(['toast_success' => 'Password updated successfully.']);
     }
     public function updatefoto(Request $request, $id)
     {
@@ -302,6 +302,6 @@ class UserController extends Controller
             ]
         );
         //redirect to index
-        return redirect()->route('profil.index')->with(['status' => 'Foto Berhasil Diupdate!']);
+        return redirect()->route('profil.index')->with(['toast_success' => 'Photo updated successfully.']);
     }
 }

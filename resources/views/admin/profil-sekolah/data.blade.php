@@ -20,7 +20,6 @@
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
-                        {{-- foto kepsek --}}
                         @if ($profil == null)
                             <div class="card">
                                 <div class="card-body box-profile">
@@ -61,28 +60,6 @@
                                             <b>Siswa</b> <a class="float-right">{{ $siswa }}</a>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>
-                        @endif
-                        {{-- foto sekolah --}}
-                        @if ($profil == null)
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center p-5">
-                                        <span class="text-danger"><i>* gambar sekolah tidak ada</i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <div class="card">
-                                <div class="card-body">
-                                    @if ($profil->foto_sekolah == null)
-                                        <img class="img-fluid pad" src="{{ url('storage/foto-sekolah/blank.png') }}"
-                                            alt="Gambar Sekolah">
-                                    @else
-                                        <img src="{{ url('storage/foto-sekolah/' . $profil->foto_sekolah) }}"
-                                            class="img-fluid pad" alt="Gambar Sekolah">
-                                    @endif
                                 </div>
                             </div>
                         @endif
