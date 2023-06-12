@@ -163,26 +163,17 @@
                                     <div class="card-body">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Kelas<span class="text-danger">*</span></label>
+                                                <label>Kelas/Rombel<span class="text-danger">*</span></label>
                                                 <select
                                                     class="form-control select2bs4 @error('kelas') is-invalid @enderror"
-                                                    id="kelas" name="kelas" style="width: 100%;">
-                                                    <option selected disabled>---:---</option>
-                                                    <option value="X" {{ $siswa->kelas == 'X' ? 'selected' : '' }}>X
-                                                    </option>
-                                                    <option value="XI" {{ $siswa->kelas == 'XI' ? 'selected' : '' }}>
-                                                        XI
-                                                    </option>
-                                                    <option value="XII" {{ $siswa->kelas == 'XII' ? 'selected' : '' }}>
-                                                        XII
-                                                    </option>
+                                                    id="kelas_id" name="kelas_id" style="width: 100%;">
                                                 </select>
                                                 @error('kelas')
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        {{-- <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Jurusan<span class="text-danger">*</span></label>
                                                 <select
@@ -205,7 +196,7 @@
                                                     <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                                                 @enderror
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Tahun Masuk<span class="text-danger">*</span></label>
@@ -225,7 +216,7 @@
                                     <div class="card-body">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Telp/No HP/No WhatsApp<span class="text-danger">*</label>
+                                                <label>Telp/No HP/No WhatsApp<small> (Opsional)</small></label>
                                                 <input type="text"
                                                     class="form-control @error('nohp') is-invalid @enderror"
                                                     id="nohp" name="nohp" placeholder="08**********"
@@ -238,7 +229,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Email<span class="text-danger">*</label>
+                                                <label>Email<small> (Opsional)</small></label>
                                                 <input type="email"
                                                     class="form-control @error('email') is-invalid @enderror"
                                                     id="email" name="email" placeholder="example@gmail.com"
@@ -325,6 +316,36 @@
         }
         $(function() {
             bsCustomFileInput.init();
+        });
+        $(function() {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+            var kelas = "{{ $siswa->kelas_id }}";
+            $.ajax({
+                url: "{{ url('rombel-sekolah/get-rombel') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(result) {
+                    if (result == "") {
+                        $('#kelas_id').html(
+                            '<option disable>Tambahkan Kelas/Rombel Terlebih Dahulu.</option>'
+                        );
+                    } else {
+                        $('#kelas_id').html(
+                            '<option value="">--:---</option>');
+                    }
+                    $.each(result, function(key, value) {
+                        $("#kelas_id").append('<option value="' +
+                            value
+                            .id + '">' + value.kelas + ' ' + value.jurusan + ' ' + value
+                            .ruangan + '</option>');
+                        $('#kelas_id').val(kelas);
+                    });
+                }
+            });
         });
     </script>
 @endsection

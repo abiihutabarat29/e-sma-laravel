@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Rombel;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,7 @@ class SiswaController extends Controller
                     return $data->nama;
                 })
                 ->addColumn('kelas', function ($data) {
-                    return '<center>' . $data->kelas . ' - ' . $data->jurusan . '</center>';
+                    return '<center>' . $data->kelas->kelas . ' ' . $data->kelas->jurusan .  ' ' . $data->kelas->ruangan . '</center>';
                 })
                 ->addColumn('sts_siswa', function ($data) {
                     return '<center>' . $data->sts_siswa . '</center>';
@@ -71,20 +72,26 @@ class SiswaController extends Controller
             'tempat_lahir.max' => 'Tempat Lahir  melebihi maksimal karakter.',
             'tgl_lahir.required' => 'Tanggal Lahir harus diisi.',
             'jenis_kelamin.required' => 'Jenis Kelamin harus dipilih.',
-            'kelas.required' => 'Kelas harus dipilih.',
-            'jurusan.required' => 'Jurusan harus dipilih.',
+            'kelas_id.required' => 'Kelas/Rombel harus dipilih.',
             'thnmasuk.required' => 'Tahun Masuk harus diisi.',
             'thnmasuk.max' => 'Tahun Masuk maksimal 4 angka.',
-            'nohp.required' => 'Nomor Handphone harus diisi.',
             'nohp.min' => 'Nomor minimal 11 angka.',
             'nohp.max' => 'Nomor maksimal 12 angka.',
-            'email.required' => 'Email harus diisi.',
             'email.email' => 'Penulisan email tidak benar.',
             'foto.image' => 'Foto harus gambar.',
             'foto.mimes' => 'Foto harus jpeg,png,jpg.',
             'foto.max' => 'Foto maksimal 1MB.',
         );
-
+        if ($request->nohp == null) {
+            $ruleNohp = '';
+        } else {
+            $ruleNohp = 'min:11|max:12';
+        }
+        if ($request->email == null) {
+            $ruleEmail = '';
+        } else {
+            $ruleEmail = 'email';
+        }
         $validator = Validator::make($request->all(), [
             'nisn' => 'required|min:10|max:10|unique:siswa,nisn',
             'nama' => 'required|max:255',
@@ -93,11 +100,10 @@ class SiswaController extends Controller
             'tgl_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
-            'kelas' => 'required',
-            'jurusan' => 'required',
+            'kelas_id' => 'required',
             'thnmasuk' => 'required|max:4',
-            'nohp' => 'required|min:11|max:12',
-            'email' => 'required|email',
+            'nohp' => $ruleNohp,
+            'email' => $ruleEmail,
             'foto' => 'image|mimes:jpeg,png,jpg|max:1024'
         ], $message);
         if ($validator->fails()) {
@@ -120,8 +126,7 @@ class SiswaController extends Controller
                 'tgl_lahir' => $request->tgl_lahir,
                 'gender' => $request->jenis_kelamin,
                 'agama' => $request->agama,
-                'kelas' => $request->kelas,
-                'jurusan' => $request->jurusan,
+                'kelas_id' => $request->kelas_id,
                 'tahun_masuk' => $request->thnmasuk,
                 'nohp' => $request->nohp,
                 'email' => $request->email,
@@ -154,14 +159,11 @@ class SiswaController extends Controller
             'tempat_lahir.max' => 'Tempat Lahir  melebihi maksimal karakter.',
             'tgl_lahir.required' => 'Tanggal Lahir harus diisi.',
             'jenis_kelamin.required' => 'Jenis Kelamin harus dipilih.',
-            'kelas.required' => 'Kelas harus dipilih.',
-            'jurusan.required' => 'Jurusan harus dipilih.',
+            'kelas_id.required' => 'Kelas/Rombel harus dipilih.',
             'thnmasuk.required' => 'Tahun Masuk harus diisi.',
             'thnmasuk.max' => 'Tahun Masuk maksimal 4 angka.',
-            'nohp.required' => 'Nomor Handphone harus diisi.',
             'nohp.min' => 'Nomor minimal 11 angka.',
             'nohp.max' => 'Nomor maksimal 12 angka.',
-            'email.required' => 'Email harus diisi.',
             'email.email' => 'Penulisan email tidak benar.',
             'foto.image' => 'Foto harus gambar.',
             'foto.mimes' => 'Foto harus jpeg,png,jpg.',
@@ -172,6 +174,16 @@ class SiswaController extends Controller
         } else {
             $ruleNisn = 'required|min:10|max:10|unique:siswa,nisn';
         }
+        if ($request->nohp == null) {
+            $ruleNohp = '';
+        } else {
+            $ruleNohp = 'min:11|max:12';
+        }
+        if ($request->email == null) {
+            $ruleEmail = '';
+        } else {
+            $ruleEmail = 'email';
+        }
         $validator = Validator::make($request->all(), [
             'nisn' => $ruleNisn,
             'nama' => 'required|max:255',
@@ -180,11 +192,10 @@ class SiswaController extends Controller
             'tgl_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
-            'kelas' => 'required',
-            'jurusan' => 'required',
+            'kelas_id' => 'required',
             'thnmasuk' => 'required|max:4',
-            'nohp' => 'required|min:11|max:12',
-            'email' => 'required|email',
+            'nohp' => $ruleNohp,
+            'email' => $ruleEmail,
             'foto' => 'image|mimes:jpeg,png,jpg|max:1024'
         ], $message);
         if ($validator->fails()) {
@@ -208,7 +219,7 @@ class SiswaController extends Controller
                 'tgl_lahir' => $request->tgl_lahir,
                 'gender' => $request->jenis_kelamin,
                 'agama' => $request->agama,
-                'kelas' => $request->kelas,
+                'kelas_id' => $request->kelas_id,
                 'jurusan' => $request->jurusan,
                 'tahun_masuk' => $request->thnmasuk,
                 'nohp' => $request->nohp,

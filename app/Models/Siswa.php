@@ -14,6 +14,16 @@ class Siswa extends Model
     protected $fillable = [
         'sekolah_id', 'nisn', 'nama', 'alamat',
         'tempat_lahir', 'tgl_lahir', 'gender', 'agama',
-        'kelas', 'jurusan', 'pkeahlian', 'nohp', 'email', 'program_pip', 'tahun_masuk', 'asal_sekolah', 'no_surat', 'sts_siswa', 'keterangan', 'foto'
+        'kelas_id', 'pkeahlian', 'nohp', 'email', 'program_pip',
+        'tahun_masuk', 'asal_sekolah', 'no_surat', 'sts_siswa', 'keterangan', 'foto'
     ];
+
+    public function sekolah()
+    {
+        return $this->belongsTo(Sekolah::class);
+    }
+    public function kelas()
+    {
+        return $this->belongsTo(Rombel::class);
+    }
 }

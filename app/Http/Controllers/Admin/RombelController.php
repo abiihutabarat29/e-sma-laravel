@@ -17,8 +17,8 @@ class RombelController extends Controller
         $rombel = Rombel::where('sekolah_id', Auth::user()->sekolah_id)->get();
         $rombelWithSiswa = [];
         foreach ($rombel as $r) {
-            $kelas_id = $r->kelas;
-            $siswaCount = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('kelas', $kelas_id)->count();
+            $kelas_id = $r->id;
+            $siswaCount = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('kelas_id', $kelas_id)->count();
             $rombelWithSiswa[] = [
                 'rombel' => $r,
                 'siswaCount' => $siswaCount
@@ -60,5 +60,10 @@ class RombelController extends Controller
     {
         $rombel = Rombel::find($id);
         return response()->json($rombel);
+    }
+    public function getRombel()
+    {
+        $data = Rombel::where('sekolah_id', Auth::user()->sekolah_id)->get(["id", "kelas", "jurusan", "ruangan"]);
+        return response()->json($data);
     }
 }

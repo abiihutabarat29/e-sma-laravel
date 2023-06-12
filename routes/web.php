@@ -116,5 +116,6 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('wilayah-sekolah', BangunanController::class);
         //Kelas/Rombel
         Route::resource('rombel-sekolah', RombelController::class);
+        Route::post('rombel-sekolah/get-rombel', [RombelController::class, 'getRombel']);
     });
 });
