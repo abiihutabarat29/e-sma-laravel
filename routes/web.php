@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\PegawaiController;
 use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\ProfileSekolahController;
 use App\Http\Controllers\Admin\BangunanController;
+use App\Http\Controllers\Admin\RombelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,5 +114,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::put('profile-sekolah/{id}/update', [ProfileSekolahController::class, 'update'])->name('profile-sekolah.update');
         //Bangunan
         Route::resource('wilayah-sekolah', BangunanController::class);
+        //Kelas/Rombel
+        Route::resource('rombel-sekolah', RombelController::class);
     });
 });
