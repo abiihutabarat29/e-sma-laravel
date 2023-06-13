@@ -16,7 +16,7 @@ class DaklController extends Controller
     {
         $menu = 'Data DAKL Guru';
         if ($request->ajax()) {
-            $data = Dakl::get();
+            $data = Dakl::where('sekolah_id', Auth::user()->sekolah_id)->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('mapel', function ($data) {
