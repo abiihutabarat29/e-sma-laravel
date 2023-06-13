@@ -51,7 +51,7 @@ class DaklController extends Controller
     {
         //Translate Bahasa Indonesia
         $message = array(
-            'mapel_id.required' => 'Mata Pelajaran haru dipilih.',
+            'mapel_id.required' => 'Mata Pelajaran harus dipilih.',
             'dibutuhkan.required' => 'Jumlah dibutuhkan harus diisi.',
             'pns.required' => 'Jumlah PNS tersedia harus diisi.',
             'nonpns.required' => 'Jumlah Non PNS tersedia harus diisi.',

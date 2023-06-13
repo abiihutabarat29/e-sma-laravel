@@ -64,4 +64,9 @@ class SaranaController extends Controller
         Sarana::find($id)->delete();
         return response()->json(['success' => 'Sarana deleted successfully.']);
     }
+    public function getSarana()
+    {
+        $data = Sarana::get(["id", "sarana"]);
+        return response()->json($data);
+    }
 }

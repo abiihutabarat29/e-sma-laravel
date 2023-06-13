@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="javascript:void(0)" id="createNewDakl" class="btn btn-info btn-xs float-right">
+                            <a href="javascript:void(0)" id="createNewSarpras" class="btn btn-info btn-xs float-right">
                                 <i class="fas fa-plus-circle"></i> Tambah</a>
                         </div>
                         <div class="card-body">
@@ -29,12 +29,10 @@
                                 <thead>
                                     <tr>
                                         <th style="width:5%">No</th>
-                                        <th>Mata Pelajaran</th>
-                                        <th class="text-center" style="width: 5%">D</th>
-                                        <th class="text-center" style="width: 10%">PNS</th>
-                                        <th class="text-center" style="width: 10%">Non PNS</th>
-                                        <th class="text-center" style="width: 5%">K</th>
-                                        <th class="text-center" style="width: 5%">L</th>
+                                        <th>Jenis Sarpras</th>
+                                        <th class="text-center" style="width: 5%">Baik</th>
+                                        <th class="text-center" style="width: 12%">Rusak Ringan</th>
+                                        <th class="text-center" style="width: 12%">Rusak Berat</th>
                                         <th class="text-center" style="width: 8%">Action</th>
                                     </tr>
                                 </thead>
@@ -58,49 +56,35 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="daklForm" name="daklForm" class="form-horizontal">
+                    <form id="sarprasForm" name="sarprasForm" class="form-horizontal">
                         @csrf
-                        <input type="hidden" name="dakl_id" id="dakl_id">
+                        <input type="hidden" name="sarpras_id" id="sarpras_id">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>Mata Pelajaran<span class="text-danger">*</span></label>
+                                <label>Sarana<span class="text-danger">*</span></label>
                                 <select class="form-control select2bs4 @error('mapel_id') is-invalid @enderror"
-                                    id="mapel_id" name="mapel_id" style="width: 100%;">
+                                    id="sarana_id" name="sarana_id" style="width: 100%;">
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>Dibutuhkan<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="dibutuhkan" name="dibutuhkan"
+                                <label>Baik<span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="baik" name="baik"
                                     placeholder="example : 10">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>PNS<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="pns" name="pns"
+                                <label>Rusak Ringan<span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="rusak_ringan" name="rusak_ringan"
                                     placeholder="example : 10">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>Non PNS<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="nonpns" name="nonpns"
-                                    placeholder="example : 10">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <label>Kurang<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="kurang" name="kurang"
-                                    placeholder="example : 10">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <label>Lebih<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="lebih" name="lebih"
+                                <label>Rusak Berat<span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="rusak_berat" name="rusak_berat"
                                     placeholder="example : 10">
                             </div>
                         </div>
@@ -112,8 +96,7 @@
                         </div>
                         <div class="form-group">
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary btn-sm" id="saveBtn"
-                                    value="create">Simpan
+                                <button type="submit" class="btn btn-primary btn-sm" id="saveBtn" value="create">Simpan
                                 </button>
                             </div>
                         </div>
@@ -145,7 +128,7 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus Data DAKL ini ?</h6>
+                        <h6>Apakah anda yakin menghapus Data Sarpras ini ?</h6>
                     </center>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -174,34 +157,26 @@
                 lengthMenu: [10, 50, 100, 200, 500],
                 lengthChange: true,
                 autoWidth: false,
-                ajax: "{{ route('dakl.index') }}",
+                ajax: "{{ route('sarpras.index') }}",
                 columns: [{
                         data: "DT_RowIndex",
                         name: "DT_RowIndex",
                     },
                     {
-                        data: "mapel",
-                        name: "mapel",
+                        data: "sarana",
+                        name: "sarana",
                     },
                     {
-                        data: "dibutuhkan",
-                        name: "dibutuhkan",
+                        data: "baik",
+                        name: "baik",
                     },
                     {
-                        data: "pns",
-                        name: "pns",
+                        data: "rusak_ringan",
+                        name: "rusak_ringan",
                     },
                     {
-                        data: "nonpns",
-                        name: "nonpns",
-                    },
-                    {
-                        data: "kurang",
-                        name: "kurang",
-                    },
-                    {
-                        data: "lebih",
-                        name: "lebih",
+                        data: "rusak_berat",
+                        name: "rusak_berat",
                     },
                     {
                         data: "action",
@@ -212,70 +187,68 @@
                 ],
             });
 
-            $("#createNewDakl").click(function() {
-                $("#saveBtn").val("create-dakl");
-                $("#dakl_id").val("");
-                $("#daklForm").trigger("reset");
-                $("#modelHeading").html("Tambah DAKL Guru");
+            $("#createNewSarpras").click(function() {
+                $("#saveBtn").val("create-sarpras");
+                $("#sarpras_id").val("");
+                $("#sarprasForm").trigger("reset");
+                $("#modelHeading").html("Tambah Data Sarpras");
                 $("#ajaxModel").modal("show");
-                $("#deleteDakl").modal("show");
+                $("#deleteSarpras").modal("show");
             });
 
             $.ajax({
-                url: "{{ url('mata-pelajaran/get-mapel') }}",
+                url: "{{ url('sarana/get-sarana') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function(result) {
                     if (result.length == 0) {
-                        $('#mapel_id').html(
-                            '<option disable>--Data Mata Pelarajaran Kosong--.</option>'
+                        $('#sarana_id').html(
+                            '<option disable>--Data Sarana Kosong--.</option>'
                         );
                     } else {
-                        $('#mapel_id').html(
+                        $('#sarana_id').html(
                             '<option value="">--:---</option>');
                     }
                     $.each(result, function(key, value) {
-                        $("#mapel_id").append('<option value="' +
+                        $("#sarana_id").append('<option value="' +
                             value
-                            .id + '">' + value.mapel + '</option>');
+                            .id + '">' + value.sarana + '</option>');
                     });
                 }
             });
 
-            $("body").on("click", ".editDakl", function() {
-                var dakl_id = $(this).data("id");
-                $.get("{{ route('dakl.index') }}" + "/" + dakl_id + "/edit", function(data) {
-                    $("#modelHeading").html("Edit DAKL Guru");
-                    $("#saveBtn").val("edit-dakl");
+            $("body").on("click", ".editSarpras", function() {
+                var sarpras_id = $(this).data("id");
+                $.get("{{ route('sarpras.index') }}" + "/" + sarpras_id + "/edit", function(data) {
+                    $("#modelHeading").html("Edit Data Sarpras");
+                    $("#saveBtn").val("edit-sarpras");
                     $("#ajaxModel").modal("show");
-                    $("#dakl_id").val(data.id);
-                    $("#mapel_id").val(data.mapel_id);
-                    $("#dibutuhkan").val(data.dibutuhkan);
-                    $("#pns").val(data.pns);
-                    $("#nonpns").val(data.nonpns);
-                    $("#kurang").val(data.kurang);
-                    $("#lebih").val(data.lebih);
+                    $("#sarpras_id").val(data.id);
+                    $("#sarana_id").val(data.sarana_id);
+                    $("#baik").val(data.baik);
+                    $("#rusak_ringan").val(data.rusak_ringan);
+                    $("#rusak_berat").val(data.rusak_berat);
                     $("#keterangan").val(data.keterangan);
                     $.ajax({
-                        url: "{{ url('mata-pelajaran/get-mapel') }}",
+                        url: "{{ url('sarana/get-sarana') }}",
                         type: "POST",
                         dataType: 'json',
                         success: function(result) {
                             if (result.length == 0) {
-                                $('#mapel_id').html(
-                                    '<option disable>--Data Mata Pelarajaran Kosong--.</option>'
+                                $('#sarana_id').html(
+                                    '<option disable>--Data Sarana Kosong--.</option>'
                                 );
                             } else {
-                                $('#mapel_id').html(
+                                $('#sarana_id').html(
                                     '<option value="">--:---</option>');
                             }
                             $.each(result, function(key, value) {
-                                $("#mapel_id").append('<option value="' +
+                                $("#sarana_id").append('<option value="' +
                                     value
-                                    .id + '">' + value.mapel + '</option>');
+                                    .id + '">' + value.sarana + '</option>');
                             });
-                            $('#mapel_id option[value=' +
-                                data.mapel_id + ']').prop(
+                            $('#sarana_id option[value=' +
+                                data.sarana_id + ']').prop(
                                 'selected', true);
                         }
                     });
@@ -289,8 +262,8 @@
                 );
 
                 $.ajax({
-                    data: $("#daklForm").serialize(),
-                    url: "{{ route('dakl.store') }}",
+                    data: $("#sarprasForm").serialize(),
+                    url: "{{ route('sarpras.store') }}",
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
@@ -306,15 +279,15 @@
                             });
                         } else {
                             table.draw();
-                            alertSuccess("DAKL saved succesfully.");
+                            alertSuccess("Sarpras saved succesfully.");
                             $("#saveBtn").html("Simpan");
                             $('#ajaxModel').modal('hide');
                         }
                     },
                 });
             });
-            $("body").on("click", ".deleteDakl", function() {
-                var dakl_id = $(this).data("id");
+            $("body").on("click", ".deleteSarpras", function() {
+                var sarpras_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
                 $("#ajaxModelHps").modal("show");
                 $("#hapusBtn").click(function(e) {
@@ -324,7 +297,7 @@
                     );
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('dakl.store') }}" + "/" + dakl_id,
+                        url: "{{ route('sarpras.store') }}" + "/" + sarpras_id,
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },

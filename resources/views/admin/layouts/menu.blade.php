@@ -207,7 +207,8 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'sarpras' ? 'active' : '' }}">
+                <a href="{{ route('sarpras.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'sarpras' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Entry Sarpras</p>
                 </a>
