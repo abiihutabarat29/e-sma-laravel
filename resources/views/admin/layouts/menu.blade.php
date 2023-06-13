@@ -131,7 +131,7 @@
         request()->segment(1) == 'rombel-sekolah' ||
         request()->segment(1) == 'kelas-sekolah' ||
         request()->segment(1) == 'jurusan-sekolah' ||
-        request()->segment(1) == 'dakl-guru' ||
+        request()->segment(1) == 'dakl' ||
         request()->segment(1) == 'sarpras' ||
         request()->segment(1) == 'inventaris'
             ? 'menu-open'
@@ -142,7 +142,7 @@
             request()->segment(1) == 'rombel-sekolah' ||
             request()->segment(1) == 'kelas-sekolah' ||
             request()->segment(1) == 'jurusan-sekolah' ||
-            request()->segment(1) == 'dakl-guru' ||
+            request()->segment(1) == 'dakl' ||
             request()->segment(1) == 'sarpras' ||
             request()->segment(1) == 'inventaris'
                 ? 'active'
@@ -198,7 +198,8 @@
         </ul> --}}
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'dakl-guru' ? 'active' : '' }}">
+                <a href="{{ route('dakl.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'dakl' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Entry DAKL Guru</p>
                 </a>
@@ -340,7 +341,7 @@
             class="nav-link {{ request()->segment(1) == 'siswa' ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-tie"></i>
             <p>
-                Entry Siswa
+                Entry Siswa/i
             </p>
         </a>
     </li>

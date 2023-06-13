@@ -64,4 +64,9 @@ class MapelController extends Controller
         MataPelajaran::find($id)->delete();
         return response()->json(['success' => 'Mata Pelajaran deleted successfully.']);
     }
+    public function getMapel()
+    {
+        $data = MataPelajaran::get(["id", "mapel"]);
+        return response()->json($data);
+    }
 }

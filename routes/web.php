@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\ProfileSekolahController;
 use App\Http\Controllers\Admin\BangunanController;
 use App\Http\Controllers\Admin\RombelController;
+use App\Http\Controllers\Admin\DaklController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +55,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
     Route::post('kabupaten/get-kabupaten', [KabupatenController::class, 'getKabupaten']);
     Route::post('kecamatan/get-kecamatan', [KecamatanController::class, 'getKecamatan']);
     Route::post('desa/get-desa', [DesaController::class, 'getDesa']);
+    Route::post('mata-pelajaran/get-mapel', [MapelController::class, 'getMapel']);
     // Route cabdis
     Route::group(['middleware' => ['checkUser:1']], function () {
         // Kabupaten
@@ -117,5 +119,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         //Kelas/Rombel
         Route::resource('rombel-sekolah', RombelController::class);
         Route::post('rombel-sekolah/get-rombel', [RombelController::class, 'getRombel']);
+        //DAKL
+        Route::resource('dakl', DaklController::class);
     });
 });
