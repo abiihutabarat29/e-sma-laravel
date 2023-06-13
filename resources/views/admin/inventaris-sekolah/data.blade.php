@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="javascript:void(0)" id="createNewDakl" class="btn btn-info btn-xs float-right">
+                            <a href="javascript:void(0)" id="createNewInventaris" class="btn btn-info btn-xs float-right">
                                 <i class="fas fa-plus-circle"></i> Tambah</a>
                         </div>
                         <div class="card-body">
@@ -29,10 +29,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width:5%">No</th>
-                                        <th>Mata Pelajaran</th>
+                                        <th>Jenis Inventaris</th>
                                         <th class="text-center" style="width: 5%">D</th>
-                                        <th class="text-center" style="width: 10%">PNS</th>
-                                        <th class="text-center" style="width: 10%">Non PNS</th>
+                                        <th class="text-center" style="width: 5%">A</th>
                                         <th class="text-center" style="width: 5%">K</th>
                                         <th class="text-center" style="width: 5%">L</th>
                                         <th class="text-center" style="width: 8%">Action</th>
@@ -58,13 +57,14 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="daklForm" name="daklForm" class="form-horizontal">
+                    <form id="inventarisForm" name="inventarisForm" class="form-horizontal">
                         @csrf
-                        <input type="hidden" name="dakl_id" id="dakl_id">
+                        <input type="hidden" name="inventarissekolah_id" id="inventarissekolah_id">
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>Mata Pelajaran<span class="text-danger">*</span></label>
-                                <select class="form-control select2bs4" id="mapel_id" name="mapel_id" style="width: 100%;">
+                                <label>Inventaris<span class="text-danger">*</span></label>
+                                <select class="form-control select2bs4" id="inventaris_id" name="inventaris_id"
+                                    style="width: 100%;">
                                 </select>
                             </div>
                         </div>
@@ -77,15 +77,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
-                                <label>PNS<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="pns" name="pns"
-                                    placeholder="example : 10">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <label>Non PNS<span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="nonpns" name="nonpns"
+                                <label>Ada<span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="ada" name="ada"
                                     placeholder="example : 10">
                             </div>
                         </div>
@@ -104,15 +97,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-md-12">
-                                <label>Keterangan<small> (Opsional)</small></label>
-                                <textarea id="keterangan" name="keterangan" class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary btn-sm" id="saveBtn"
-                                    value="create">Simpan
+                                <button type="submit" class="btn btn-primary btn-sm" id="saveBtn" value="create">Simpan
                                 </button>
                             </div>
                         </div>
@@ -144,7 +130,7 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus Data DAKL ini ?</h6>
+                        <h6>Apakah anda yakin menghapus Data Inventaris ini ?</h6>
                     </center>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -173,26 +159,22 @@
                 lengthMenu: [10, 50, 100, 200, 500],
                 lengthChange: true,
                 autoWidth: false,
-                ajax: "{{ route('dakl.index') }}",
+                ajax: "{{ route('inventaris-sekolah.index') }}",
                 columns: [{
                         data: "DT_RowIndex",
                         name: "DT_RowIndex",
                     },
                     {
-                        data: "mapel",
-                        name: "mapel",
+                        data: "inventaris",
+                        name: "inventaris",
                     },
                     {
                         data: "dibutuhkan",
                         name: "dibutuhkan",
                     },
                     {
-                        data: "pns",
-                        name: "pns",
-                    },
-                    {
-                        data: "nonpns",
-                        name: "nonpns",
+                        data: "ada",
+                        name: "ada",
                     },
                     {
                         data: "kurang",
@@ -211,73 +193,72 @@
                 ],
             });
 
-            $("#createNewDakl").click(function() {
-                $("#saveBtn").val("create-dakl");
-                $("#dakl_id").val("");
-                $("#daklForm").trigger("reset");
-                $("#modelHeading").html("Tambah DAKL Guru");
+            $("#createNewInventaris").click(function() {
+                $("#saveBtn").val("create-inventaris");
+                $("#inventarissekolah_id").val("");
+                $("#inventarisForm").trigger("reset");
+                $("#modelHeading").html("Tambah Data Inventaris");
                 $("#ajaxModel").modal("show");
             });
-
             $.ajax({
-                url: "{{ url('mata-pelajaran/get-mapel') }}",
+                url: "{{ url('inventaris/get-inventaris') }}",
                 type: "POST",
                 dataType: 'json',
                 success: function(result) {
                     if (result.length == 0) {
-                        $('#mapel_id').html(
-                            '<option disable>--Data Mata Pelarajaran Kosong--.</option>'
+                        $('#inventaris_id').html(
+                            '<option disable>--Data Inventaris Kosong--.</option>'
                         );
                     } else {
-                        $('#mapel_id').html(
+                        $('#inventaris_id').html(
                             '<option value="">--:---</option>');
                     }
                     $.each(result, function(key, value) {
-                        $("#mapel_id").append('<option value="' +
+                        $("#inventaris_id").append('<option value="' +
                             value
-                            .id + '">' + value.mapel + '</option>');
+                            .id + '">' + value.inventaris + '</option>');
                     });
                 }
             });
-
-            $("body").on("click", ".editDakl", function() {
-                var dakl_id = $(this).data("id");
-                $.get("{{ route('dakl.index') }}" + "/" + dakl_id + "/edit", function(data) {
-                    $("#modelHeading").html("Edit DAKL Guru");
-                    $("#saveBtn").val("edit-dakl");
-                    $("#ajaxModel").modal("show");
-                    $("#dakl_id").val(data.id);
-                    $("#mapel_id").val(data.mapel_id);
-                    $("#dibutuhkan").val(data.dibutuhkan);
-                    $("#pns").val(data.pns);
-                    $("#nonpns").val(data.nonpns);
-                    $("#kurang").val(data.kurang);
-                    $("#lebih").val(data.lebih);
-                    $("#keterangan").val(data.keterangan);
-                    $.ajax({
-                        url: "{{ url('mata-pelajaran/get-mapel') }}",
-                        type: "POST",
-                        dataType: 'json',
-                        success: function(result) {
-                            if (result.length == 0) {
-                                $('#mapel_id').html(
-                                    '<option disable>--Data Mata Pelarajaran Kosong--.</option>'
-                                );
-                            } else {
-                                $('#mapel_id').html(
-                                    '<option value="">--:---</option>');
+            $("body").on("click", ".editInventaris", function() {
+                var inventarissekolah_id = $(this).data("id");
+                $.get("{{ route('inventaris-sekolah.index') }}" + "/" + inventarissekolah_id + "/edit",
+                    function(
+                        data) {
+                        $("#modelHeading").html("Edit Data Inventaris");
+                        $("#saveBtn").val("edit-inventaris");
+                        $("#ajaxModel").modal("show");
+                        $("#inventarissekolah_id").val(data.id);
+                        $("#inventaris_id").val(data.inventaris_id);
+                        $("#dibutuhkan").val(data.dibutuhkan);
+                        $("#ada").val(data.ada);
+                        $("#kurang").val(data.kurang);
+                        $("#lebih").val(data.lebih);
+                        $.ajax({
+                            url: "{{ url('inventaris/get-inventaris') }}",
+                            type: "POST",
+                            dataType: 'json',
+                            success: function(result) {
+                                if (result.length == 0) {
+                                    $('#inventaris_id').html(
+                                        '<option disable>--Data Inventaris Kosong--.</option>'
+                                    );
+                                } else {
+                                    $('#inventaris_id').html(
+                                        '<option value="">--:---</option>');
+                                }
+                                $.each(result, function(key, value) {
+                                    $("#inventaris_id").append('<option value="' +
+                                        value
+                                        .id + '">' + value.inventaris +
+                                        '</option>');
+                                });
+                                $('#inventaris_id option[value=' +
+                                    data.inventaris_id + ']').prop(
+                                    'selected', true);
                             }
-                            $.each(result, function(key, value) {
-                                $("#mapel_id").append('<option value="' +
-                                    value
-                                    .id + '">' + value.mapel + '</option>');
-                            });
-                            $('#mapel_id option[value=' +
-                                data.mapel_id + ']').prop(
-                                'selected', true);
-                        }
+                        });
                     });
-                });
             });
 
             $("#saveBtn").click(function(e) {
@@ -287,8 +268,8 @@
                 );
 
                 $.ajax({
-                    data: $("#daklForm").serialize(),
-                    url: "{{ route('dakl.store') }}",
+                    data: $("#inventarisForm").serialize(),
+                    url: "{{ route('inventaris-sekolah.store') }}",
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
@@ -304,15 +285,15 @@
                             });
                         } else {
                             table.draw();
-                            alertSuccess("DAKL saved succesfully.");
+                            alertSuccess("Data Inventaris saved succesfully.");
                             $("#saveBtn").html("Simpan");
                             $('#ajaxModel').modal('hide');
                         }
                     },
                 });
             });
-            $("body").on("click", ".deleteDakl", function() {
-                var dakl_id = $(this).data("id");
+            $("body").on("click", ".deleteInventaris", function() {
+                var inventarissekolah_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
                 $("#ajaxModelHps").modal("show");
                 $("#hapusBtn").click(function(e) {
@@ -322,7 +303,8 @@
                     );
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('dakl.store') }}" + "/" + dakl_id,
+                        url: "{{ route('inventaris-sekolah.store') }}" + "/" +
+                            inventarissekolah_id,
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },

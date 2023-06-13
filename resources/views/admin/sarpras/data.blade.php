@@ -62,8 +62,8 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <label>Sarana<span class="text-danger">*</span></label>
-                                <select class="form-control select2bs4 @error('mapel_id') is-invalid @enderror"
-                                    id="sarana_id" name="sarana_id" style="width: 100%;">
+                                <select class="form-control select2bs4" id="sarana_id" name="sarana_id"
+                                    style="width: 100%;">
                                 </select>
                             </div>
                         </div>
@@ -193,7 +193,6 @@
                 $("#sarprasForm").trigger("reset");
                 $("#modelHeading").html("Tambah Data Sarpras");
                 $("#ajaxModel").modal("show");
-                $("#deleteSarpras").modal("show");
             });
 
             $.ajax({
@@ -279,7 +278,7 @@
                             });
                         } else {
                             table.draw();
-                            alertSuccess("Sarpras saved succesfully.");
+                            alertSuccess("Data Sarpras saved succesfully.");
                             $("#saveBtn").html("Simpan");
                             $('#ajaxModel').modal('hide');
                         }

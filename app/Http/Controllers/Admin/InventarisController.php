@@ -65,4 +65,9 @@ class InventarisController extends Controller
         Inventaris::find($id)->delete();
         return response()->json(['success' => 'Inventaris deleted successfully.']);
     }
+    public function getInventaris()
+    {
+        $data = Inventaris::get(["id", "inventaris"]);
+        return response()->json($data);
+    }
 }

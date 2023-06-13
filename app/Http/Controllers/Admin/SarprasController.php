@@ -13,7 +13,7 @@ class SarprasController extends Controller
 {
     public function index(Request $request)
     {
-        $menu = 'Sarpras';
+        $menu = 'Data Sarpras';
         if ($request->ajax()) {
             $data = Sarpras::where('sekolah_id', Auth::user()->sekolah_id)->get();
             return DataTables::of($data)
@@ -72,7 +72,7 @@ class SarprasController extends Controller
                 'keterangan' => $request->keterangan,
             ]
         );
-        return response()->json(['success' => 'Sarpras saved successfully.']);
+        return response()->json(['success' => 'Data Sarpras saved successfully.']);
     }
     public function edit($id)
     {
@@ -83,6 +83,6 @@ class SarprasController extends Controller
     public function destroy($id)
     {
         Sarpras::find($id)->delete();
-        return response()->json(['success' => 'Sarpras deleted successfully.']);
+        return response()->json(['success' => 'Data Sarpras deleted successfully.']);
     }
 }

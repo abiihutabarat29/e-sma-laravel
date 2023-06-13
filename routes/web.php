@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProfileSekolahController;
 use App\Http\Controllers\Admin\BangunanController;
 use App\Http\Controllers\Admin\RombelController;
 use App\Http\Controllers\Admin\DaklController;
+use App\Http\Controllers\Admin\InventarisSekolahController;
 use App\Http\Controllers\Admin\SarprasController;
 
 /*
@@ -58,6 +59,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
     Route::post('desa/get-desa', [DesaController::class, 'getDesa']);
     Route::post('mata-pelajaran/get-mapel', [MapelController::class, 'getMapel']);
     Route::post('sarana/get-sarana', [SaranaController::class, 'getSarana']);
+    Route::post('inventaris/get-inventaris', [InventarisController::class, 'getInventaris']);
     // Route cabdis
     Route::group(['middleware' => ['checkUser:1']], function () {
         // Kabupaten
@@ -125,5 +127,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('dakl', DaklController::class);
         //Sarpras
         Route::resource('sarpras', SarprasController::class);
+        //Inventaris
+        Route::resource('inventaris-sekolah', InventarisSekolahController::class);
     });
 });

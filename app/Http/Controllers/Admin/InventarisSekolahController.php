@@ -3,33 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Dakl;
-use App\Models\MataPelajaran;
+use App\Models\InventarisSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
-class DaklController extends Controller
+class InventarisSekolahController extends Controller
 {
     public function index(Request $request)
     {
-        $menu = 'Data DAKL Guru';
+        $menu = 'Data Inventaris';
         if ($request->ajax()) {
-            $data = Dakl::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            $data = InventarisSekolah::where('sekolah_id', Auth::user()->sekolah_id)->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('mapel', function ($data) {
-                    return $data->mapel->mapel;
+                ->addColumn('inventaris', function ($data) {
+                    return $data->inventaris->inventaris;
                 })
                 ->addColumn('dibutuhkan', function ($data) {
                     return '<center>' . $data->dibutuhkan . '</center>';
                 })
-                ->addColumn('pns', function ($data) {
-                    return '<center>' . $data->pns . '</center>';
-                })
-                ->addColumn('nonpns', function ($data) {
-                    return '<center>' . $data->nonpns . '</center>';
+                ->addColumn('ada', function ($data) {
+                    return '<center>' . $data->ada . '</center>';
                 })
                 ->addColumn('kurang', function ($data) {
                     return '<center>' . $data->kurang . '</center>';
@@ -38,31 +34,29 @@ class DaklController extends Controller
                     return '<center>' . $data->lebih . '</center>';
                 })
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-xs editDakl"><i class="fas fa-edit"></i></a>';
-                    $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteDakl"><i class="fas fa-trash"></i></a><center>';
+                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-xs editInventaris"><i class="fas fa-edit"></i></a>';
+                    $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteInventaris"><i class="fas fa-trash"></i></a><center>';
                     return $btn;
                 })
-                ->rawColumns(['dibutuhkan', 'pns', 'nonpns', 'kurang', 'lebih', 'action'])
+                ->rawColumns(['dibutuhkan', 'ada', 'kurang', 'lebih', 'action'])
                 ->make(true);
         }
-        return view('admin.dakl.data', compact('menu'));
+        return view('admin.inventaris-sekolah.data', compact('menu'));
     }
     public function store(Request $request)
     {
         //Translate Bahasa Indonesia
         $message = array(
-            'mapel_id.required' => 'Mata Pelajaran harus dipilih.',
+            'inventaris_id.required' => 'Inventaris harus dipilih.',
             'dibutuhkan.required' => 'Jumlah Dibutuhkan harus diisi.',
-            'pns.required' => 'Jumlah PNS tersedia harus diisi.',
-            'nonpns.required' => 'Jumlah Non PNS tersedia harus diisi.',
+            'ada.required' => 'Jumlah Ada harus diisi.',
             'kurang.required' => 'Jumlah Kurang harus diisi.',
             'lebih.required' => 'Jumlah Lebih harus diisi.',
         );
         $validator = Validator::make($request->all(), [
-            'mapel_id' => 'required',
+            'inventaris_id' => 'required',
             'dibutuhkan' => 'required',
-            'pns' => 'required',
-            'nonpns' => 'required',
+            'ada' => 'required',
             'kurang' => 'required',
             'lebih' => 'required',
         ], $message);
@@ -70,32 +64,30 @@ class DaklController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
-        Dakl::updateOrCreate(
+        InventarisSekolah::updateOrCreate(
             [
-                'id' => $request->dakl_id
+                'id' => $request->inventarissekolah_id
             ],
             [
                 'sekolah_id' => Auth::user()->sekolah_id,
-                'mapel_id' => $request->mapel_id,
+                'inventaris_id' => $request->inventaris_id,
                 'dibutuhkan' => $request->dibutuhkan,
-                'pns' => $request->pns,
-                'nonpns' => $request->nonpns,
+                'ada' => $request->ada,
                 'kurang' => $request->kurang,
                 'lebih' => $request->lebih,
-                'keterangan' => $request->keterangan,
             ]
         );
-        return response()->json(['success' => 'DAKL saved successfully.']);
+        return response()->json(['success' => 'Data Inventaris saved successfully.']);
     }
     public function edit($id)
     {
-        $dakl = Dakl::find($id);
-        return response()->json($dakl);
+        $inventaris = InventarisSekolah::find($id);
+        return response()->json($inventaris);
     }
 
     public function destroy($id)
     {
-        Dakl::find($id)->delete();
-        return response()->json(['success' => 'DAKL deleted successfully.']);
+        InventarisSekolah::find($id)->delete();
+        return response()->json(['success' => 'Data Inventaris deleted successfully.']);
     }
 }

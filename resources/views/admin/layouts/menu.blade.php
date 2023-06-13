@@ -129,22 +129,18 @@
         class="nav-item {{ request()->segment(1) == 'profile-sekolah' ||
         request()->segment(1) == 'wilayah-sekolah' ||
         request()->segment(1) == 'rombel-sekolah' ||
-        request()->segment(1) == 'kelas-sekolah' ||
-        request()->segment(1) == 'jurusan-sekolah' ||
         request()->segment(1) == 'dakl' ||
         request()->segment(1) == 'sarpras' ||
-        request()->segment(1) == 'inventaris'
+        request()->segment(1) == 'inventaris-sekolah'
             ? 'menu-open'
             : '' }}">
         <a href="#"
             class="nav-link {{ request()->segment(1) == 'profile-sekolah' ||
             request()->segment(1) == 'wilayah-sekolah' ||
             request()->segment(1) == 'rombel-sekolah' ||
-            request()->segment(1) == 'kelas-sekolah' ||
-            request()->segment(1) == 'jurusan-sekolah' ||
             request()->segment(1) == 'dakl' ||
             request()->segment(1) == 'sarpras' ||
-            request()->segment(1) == 'inventaris'
+            request()->segment(1) == 'inventaris-sekolah'
                 ? 'active'
                 : '' }}">
             <i class="nav-icon fas fa-layer-group"></i>
@@ -216,7 +212,8 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'inventaris' ? 'active' : '' }}">
+                <a href="{{ route('inventaris-sekolah.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'inventaris-sekolah' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Entry Inventaris</p>
                 </a>
