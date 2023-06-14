@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Mutasi;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -234,6 +235,12 @@ class SiswaController extends Controller
         $siswa->delete();
         if ($siswa->foto) {
             Storage::delete('public/foto-siswa/' . $siswa->foto);
+        }
+        $mutasi = Mutasi::where('sekolah_id', Auth::user()->sekolah_id)->where('nisn', $siswa->nisn)->first();
+        if ($mutasi != null) {
+            if ($mutasi->nisn == $siswa->nisn) {
+                $mutasi->delete();
+            }
         }
         return response()->json(['success' => 'Siswa deleted successfully.']);
     }

@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\RombelController;
 use App\Http\Controllers\Admin\DaklController;
 use App\Http\Controllers\Admin\InventarisSekolahController;
 use App\Http\Controllers\Admin\SarprasController;
+use App\Http\Controllers\Admin\MutasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,5 +130,19 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('sarpras', SarprasController::class);
         //Inventaris
         Route::resource('inventaris-sekolah', InventarisSekolahController::class);
+        // Mutasi Masuk
+        Route::get('mutasi-masuk', [MutasiController::class, 'index'])->name('mutasi-masuk.index');
+        Route::get('mutasi-masuk/create', [MutasiController::class, 'create'])->name('mutasi-masuk.create');
+        Route::post('mutasi-masuk', [MutasiController::class, 'store'])->name('mutasi-masuk.store');
+        Route::get('mutasi-masuk/{id}/edit', [MutasiController::class, 'edit'])->name('mutasi-masuk.edit');
+        Route::put('mutasi-masuk/{id}/update', [MutasiController::class, 'update'])->name('mutasi-masuk.update');
+        Route::delete('mutasi-masuk/{mutasi}/destroy', [MutasiController::class, 'destroy'])->name('mutasi-masuk.destroy');
+        // Mutasi Keluar
+        Route::get('mutasi-keluar', [MutasiController::class, 'indexk'])->name('mutasi-keluar.index');
+        Route::get('mutasi-keluar/create', [MutasiController::class, 'createk'])->name('mutasi-keluar.create');
+        Route::post('mutasi-keluar', [MutasiController::class, 'storek'])->name('mutasi-keluar.store');
+        Route::get('mutasi-keluar/{id}/edit', [MutasiController::class, 'editk'])->name('mutasi-keluar.edit');
+        Route::put('mutasi-keluar/{id}/update', [MutasiController::class, 'updatek'])->name('mutasi-keluar.update');
+        Route::delete('mutasi-keluar/{siswa}/destroy', [MutasiController::class, 'destroyk'])->name('mutasi-keluar.destroy');
     });
 });

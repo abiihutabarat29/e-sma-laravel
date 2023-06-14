@@ -240,7 +240,8 @@
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'mutasi-masuk' ? 'active' : '' }}">
+                <a href="{{ route('mutasi-masuk.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'mutasi-masuk' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Mutasi Masuk</p>
                 </a>
@@ -248,7 +249,8 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'mutasi-keluar' ? 'active' : '' }}">
+                <a href="{{ route('mutasi-keluar.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'mutasi-keluar' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Mutasi Keluar</p>
                 </a>
