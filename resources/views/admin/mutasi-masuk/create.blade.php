@@ -205,11 +205,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Keterangan<small> (Opsional)</small></label>
-                                                <textarea id="keterangan" name="keterangan" class="form-control  @error('keterangan') is-invalid @enderror"
-                                                    rows="3">{{ old('keterangan') }}</textarea>
-                                                @error('keterangan')
-                                                    <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
-                                                @enderror
+                                                <textarea id="keterangan" name="keterangan" class="form-control" rows="3">{{ old('keterangan') }}</textarea>
                                             </div>
                                         </div>
                                     </div>

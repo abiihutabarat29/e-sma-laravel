@@ -157,4 +157,87 @@ class MutasiController extends Controller
         $mutasi->delete();
         return response()->json(['success' => 'Siswa Pindahan deleted successfully.']);
     }
+    public function indexk(Request $request)
+    {
+        $menu = 'Data Mutasi Keluar';
+        if ($request->ajax()) {
+            $data = Mutasi::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_mutasi', 'keluar')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('no_surat', function ($data) {
+                    return $data->no_surat;
+                })
+                ->addColumn('nisn', function ($data) {
+                    return $data->nisn;
+                })
+                ->addColumn('nama', function ($data) {
+                    return $data->nama;
+                })
+                ->addColumn('kelas', function ($data) {
+                    return '<center>' . $data->kelas->kelas . ' ' . $data->kelas->jurusan .  ' ' . $data->kelas->ruangan . '</center>';
+                })
+                ->addColumn('sekolah_tujuan', function ($data) {
+                    return $data->sekolah_tujuan;
+                })
+                ->addColumn('action', function ($row) {
+                    $btn = '<center><a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteMutasiK">Hapus</a><center>';
+                    return $btn;
+                })
+                ->rawColumns(['kelas', 'sts_mutasi', 'action'])
+                ->make(true);
+        }
+        return view('admin.mutasi-keluar.data', compact('menu'));
+    }
+    public function createk(Request $req)
+    {
+        $menu = 'Tambah Data Mutasi Keluar';
+        return view('admin.mutasi-keluar.create', compact('menu'));
+    }
+    public function storek(Request $request)
+    {
+        //Translate Bahasa Indonesia
+        $message = array(
+            'siswa_id.required' => 'Siswa harus dipilih.',
+            'no_surat.required' => 'Nomor Surat harus diisi.',
+            'sekolah_tujuan.required' => 'Sekolah Tujuan harus diisi.',
+            'sekolah_tujuan.max' => 'Sekolah Tujuan melebihi maksimal karakter.',
+            'keterangan.max' => 'Keterangan melebihi maksimal karakter.',
+        );
+        $validator = Validator::make($request->all(), [
+            'siswa_id' => 'required',
+            'no_surat' => 'required',
+            'sekolah_tujuan' => 'required|max:255',
+            'keterangan' => 'max:255',
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+        $data = new Mutasi();
+        $data->sekolah_id = Auth::user()->sekolah_id;
+        $data->nisn = $request->nisn;
+        $data->nama = $request->nama;
+        $data->kelas_id = $request->kelas_id;
+        $data->alamat = $request->alamat;
+        $data->tempat_lahir = $request->tempat_lahir;
+        $data->tgl_lahir = $request->tgl_lahir;
+        $data->gender = $request->gender;
+        $data->agama = $request->agama;
+        $data->nohp = $request->nohp;
+        $data->email = $request->email;
+        $data->tahun_masuk = $request->tahun_masuk;
+        $data->sts_mutasi = 'keluar';
+        $data->no_surat = $request->no_surat;
+        $data->sekolah_tujuan = $request->sekolah_tujuan;
+        $data->keterangan = $request->keterangan;
+        $data->save();
+        $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->findOrFail($request->siswa_id);
+        $siswa->delete();
+        return response()->json(['success' => 'Siswa Dropout successfully.']);
+    }
+    public function destroyk($id)
+    {
+        Mutasi::find($id)->delete();
+        return response()->json(['success' => 'Mutasi Keluar deleted successfully.']);
+    }
 }

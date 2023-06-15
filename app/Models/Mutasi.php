@@ -15,7 +15,7 @@ class Mutasi extends Model
         'sekolah_id', 'nisn', 'nama', 'alamat',
         'tempat_lahir', 'tgl_lahir', 'gender', 'agama',
         'kelas_id', 'pkeahlian', 'tahun_masuk', 'nohp', 'email',
-        'asal_sekolah', 'no_surat', 'keterangan', 'sts_mutasi',
+        'asal_sekolah', 'sekolah_tujuan', 'no_surat', 'keterangan', 'sts_mutasi',
     ];
 
     public function sekolah()

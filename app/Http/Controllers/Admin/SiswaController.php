@@ -244,4 +244,14 @@ class SiswaController extends Controller
         }
         return response()->json(['success' => 'Siswa deleted successfully.']);
     }
+    public function getSiswa()
+    {
+        $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get(["id", "nisn", "nama"]);
+        return response()->json($data);
+    }
+    public function getSiswaData($id)
+    {
+        $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->find($id);
+        return response()->json($data);
+    }
 }
