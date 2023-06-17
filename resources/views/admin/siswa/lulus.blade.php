@@ -22,7 +22,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="naikForm" name="naikForm" method="post" class="form-horizontal">
+            <form id="lulusForm" name="lulusForm" method="post" class="form-horizontal">
                 @csrf
                 <div class="col-12">
                     <div class="box-shadow">
@@ -32,8 +32,8 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <small class="mb-5"><i class="fas fa-info-circle text-danger"></i> Silahkan pilih kelas XII
-                                yang ingin diluluskan.
+                            <small class="mb-5"><i class="fas fa-info-circle text-danger"></i> Untuk mengurangi kesalahan
+                                kelulusan calon alumni, silahkan filter siswa/i kelas XII yang ingin diluluskan.
                             </small>
                             <hr>
                             <div class="row">
@@ -65,6 +65,8 @@
                                         <th style="width:8%">Kelas</th>
                                         <th style="width:8%">Status</th>
                                         <th style="width:8%">Foto</th>
+                                        <th class="text-center" style="width: 5%"><input type="checkbox" id="selectAll">
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -112,6 +114,12 @@
                         data: "foto",
                         name: "foto",
                     },
+                    {
+                        data: "action",
+                        name: "action",
+                        orderable: false,
+                        searchable: false,
+                    },
                 ],
             });
             $.ajax({
@@ -121,7 +129,7 @@
                 success: function(result) {
                     if (result == "") {
                         $('#kelas_filter_id').html(
-                            '<option>::Tambahkan Kelas/Rombel Terlebih Dahulu::</option>'
+                            '<option>::Tambahkan Kelas/Rombel XII Terlebih Dahulu::</option>'
                         );
                     } else {
                         $('#kelas_filter_id').html(
@@ -144,8 +152,8 @@
                     "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> sedang diproses...</i></span>"
                 ).attr('disabled', 'disabled');
                 $.ajax({
-                    data: $("#naikForm").serialize(),
-                    url: "{{ route('kenaikan-kelas.naik') }}",
+                    data: $("#lulusForm").serialize(),
+                    url: "{{ route('kelulusan.lulus') }}",
                     type: "POST",
                     dataType: "json",
                     success: function(data) {
@@ -159,11 +167,11 @@
                                     '</li></strong>');
                                 $(".alert-danger").fadeOut(5000);
                                 $("#lulus").html(
-                                        "<i class='fa fa-arrow-up'></i> Naikkan")
+                                        "<i class='fa fa-arrow-up'></i> Luluskan")
                                     .removeAttr("disabled");
                             });
                         } else {
-                            $("#lulus").html("<i class='fa fa-arrow-up'></i> Naikkan")
+                            $("#lulus").html("<i class='fa fa-arrow-up'></i> Luluskan")
                                 .removeAttr(
                                     "disabled");
                             window.location.reload();
@@ -179,6 +187,32 @@
                     .search($(this).val())
                     .draw();
             });
+        });
+        //select all
+        $(document).ready(function() {
+            // Checkbox "Pilih Semua"
+            $('#selectAll').click(function() {
+                $('.itemCheckboxA').prop('checked', $(this).prop('checked'));
+            });
+            // Periksa apakah checkbox "Pilih Semua" harus dicentang
+            $('.itemCheckbox').click(function() {
+                if ($('.itemCheckboxA:checked').length === $('.itemCheckbox').length) {
+                    $('#selectAll').prop('checked', true);
+                } else {
+                    $('#selectAll').prop('checked', false);
+                }
+            });
+        });
+        //validasi data
+        document.addEventListener('DOMContentLoaded', function() {
+            var submitButton = document.getElementById('lulus');
+            // Cek apakah data ada atau tidak ada
+            @if ($siswa->isEmpty())
+                submitButton.disabled = true;
+                submitButton.title = 'Pastikan data siswa/i kelas XII tersedia';
+            @else
+                submitButton.disabled = false;
+            @endif
         });
     </script>
 @endsection

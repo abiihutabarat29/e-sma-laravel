@@ -40,7 +40,8 @@
                                 <div class="info-box-content">
                                     <span
                                         class="info-box-text">{{ $item['rombel']->kelas }}&nbsp;{{ $item['rombel']->jurusan }}&nbsp;{{ $item['rombel']->ruangan }}</span>
-                                    <span class="info-box-number">Jumlah Siswa/i :&nbsp;{{ $item['siswaCount'] }}</span>
+                                    <span class="info-box-number">Jumlah Siswa/i :&nbsp;<span
+                                            class="badge badge-danger">{{ $item['siswaCount'] }}</span></span>
                                 </div>
                                 <a href="javascript:void(0)" class="badge badge-sm editRombel mr-1"
                                     data-id="{{ $item['rombel']->id }}"><i class="fa fa-edit"

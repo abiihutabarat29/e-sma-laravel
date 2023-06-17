@@ -7,6 +7,7 @@ use App\Models\Mutasi;
 use App\Models\Rombel;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,7 @@ class SiswaController extends Controller
     {
         $menu = 'Siswa';
         if ($request->ajax()) {
-            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('check', function ($row) {
@@ -143,7 +144,7 @@ class SiswaController extends Controller
     public function edit($id)
     {
         $menu = 'Edit Data Siswa';
-        $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->find(Crypt::decryptString($id));
+        $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->find(Crypt::decryptString($id));
         return view('admin.siswa.edit', compact('menu', 'siswa'));
     }
     public function update(Request $request, $id)
@@ -249,19 +250,19 @@ class SiswaController extends Controller
     }
     public function getSiswa()
     {
-        $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get(["id", "nisn", "nama"]);
+        $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->get(["id", "nisn", "nama"]);
         return response()->json($data);
     }
     public function getSiswaData($id)
     {
-        $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->find($id);
+        $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->find($id);
         return response()->json($data);
     }
     public function kenaikan(Request $request)
     {
         $menu = 'Kenaikan Kelas';
         if ($request->ajax()) {
-            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('nisn', function ($data) {
@@ -318,9 +319,12 @@ class SiswaController extends Controller
     }
     public function kelulusan(Request $request)
     {
-        $menu = 'Kelulusan';
+        $menu = 'Kelulusan Alumni Tahun';
+        $siswa = Siswa::with('kelas')->where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->whereHas('kelas', function ($query) {
+            $query->where('kelas', 'XII');
+        })->get();
         if ($request->ajax()) {
-            $data = Siswa::with('kelas')->where('sekolah_id', Auth::user()->sekolah_id)->whereHas('kelas', function ($query) {
+            $data = Siswa::with('kelas')->where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->whereHas('kelas', function ($query) {
                 $query->where('kelas', 'XII');
             })->get();
             return DataTables::of($data)
@@ -345,46 +349,33 @@ class SiswaController extends Controller
                     }
                     return $foto;
                 })
+                ->addColumn('action', function ($row) {
+                    return '<center><input type="checkbox" class="itemCheckboxA" name="CalumniID[]" value="' . $row->id . '"></center>';
+                })
                 ->rawColumns(['kelas', 'sts_siswa', 'foto', 'action'])
                 ->make(true);
         }
-        return view('admin.siswa.lulus', compact('menu'));
+        return view('admin.siswa.lulus', compact('menu', 'siswa'));
     }
-    public function filterData(Request $request)
+    public function lulus(Request $request)
     {
-        $menu = 'Kelulusan';
-        if ($request->ajax()) {
-            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get();
-            // Menerapkan filter berdasarkan kriteria tertentu
-            if ($request->filled('kelas_filter_id')) {
-                $filterColumn = $request->input('kelas_filter_id');
-                $data->where($filterColumn);
-            }
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('nisn', function ($data) {
-                    return $data->nisn;
-                })
-                ->addColumn('nama', function ($data) {
-                    return $data->nama;
-                })
-                ->addColumn('kelas', function ($data) {
-                    return '<center>' . $data->kelas->kelas . ' ' . $data->kelas->jurusan .  ' ' . $data->kelas->ruangan . '</center>';
-                })
-                ->addColumn('sts_siswa', function ($data) {
-                    return '<center>' . $data->sts_siswa . '</center>';
-                })
-                ->addColumn('foto', function ($data) {
-                    if ($data->foto != null) {
-                        $foto = '<center><img src="' . url("storage/foto-siswa/" . $data->foto) . '" width="30px" class="img rounded"><center>';
-                    } else {
-                        $foto = '<center><img src="' . url("storage/foto-siswa/blank.png") . '" width="30px" class="img rounded"><center>';
-                    }
-                    return $foto;
-                })
-                ->rawColumns(['kelas', 'sts_siswa', 'foto', 'action'])
-                ->make(true);
+        //Translate Bahasa Indonesia
+        $message = array(
+            'CalumniID.required' => 'Silahkan pilih calon alumni terlebih dahulu.',
+        );
+        $validator = Validator::make($request->all(), [
+            'CalumniID' => 'required',
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
         }
-        return view('admin.siswa.lulus', compact('menu'));
+        $CalumniID = $request->input('CalumniID', []);
+        $jumlahCalumniID = count($request->input('CalumniID'));
+        // Menggunakan Model Eloquent untuk mengupdate data
+        Siswa::whereIn('id', $CalumniID)->update([
+            'sts_siswa' => 'Lulus',
+        ]);
+        return redirect()->route('kenaikan-kelas.index')->with('toast_success', 'Congratulations, <h6 class="text-success">' . $jumlahCalumniID . '</h6> Siswa diluluskan.');
     }
 }
