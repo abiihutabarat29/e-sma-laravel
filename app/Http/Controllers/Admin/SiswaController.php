@@ -22,6 +22,9 @@ class SiswaController extends Controller
             $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get();
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->addColumn('check', function ($row) {
+                    return '<center><input type="checkbox" class="checkSiswa" name="siswaCheck[]" value="' . $row->id . '"></center>';
+                })
                 ->addColumn('nisn', function ($data) {
                     return $data->nisn;
                 })
@@ -47,7 +50,7 @@ class SiswaController extends Controller
                     $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteSiswa">Hapus</a><center>';
                     return $btn;
                 })
-                ->rawColumns(['kelas', 'sts_siswa', 'foto', 'action'])
+                ->rawColumns(['check', 'kelas', 'sts_siswa', 'foto', 'action'])
                 ->make(true);
         }
         return view('admin.siswa.data', compact('menu'));
@@ -253,5 +256,135 @@ class SiswaController extends Controller
     {
         $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->find($id);
         return response()->json($data);
+    }
+    public function kenaikan(Request $request)
+    {
+        $menu = 'Kenaikan Kelas';
+        if ($request->ajax()) {
+            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('nisn', function ($data) {
+                    return $data->nisn;
+                })
+                ->addColumn('nama', function ($data) {
+                    return $data->nama;
+                })
+                ->addColumn('kelas', function ($data) {
+                    return '<center>' . $data->kelas->kelas . ' ' . $data->kelas->jurusan .  ' ' . $data->kelas->ruangan . '</center>';
+                })
+                ->addColumn('sts_siswa', function ($data) {
+                    return '<center>' . $data->sts_siswa . '</center>';
+                })
+                ->addColumn('foto', function ($data) {
+                    if ($data->foto != null) {
+                        $foto = '<center><img src="' . url("storage/foto-siswa/" . $data->foto) . '" width="30px" class="img rounded"><center>';
+                    } else {
+                        $foto = '<center><img src="' . url("storage/foto-siswa/blank.png") . '" width="30px" class="img rounded"><center>';
+                    }
+                    return $foto;
+                })
+                ->addColumn('action', function ($row) {
+                    return '<center><input type="checkbox" class="itemCheckbox" name="siswaID[]" value="' . $row->id . '"></center>';
+                })
+                ->rawColumns(['kelas', 'sts_siswa', 'foto', 'action'])
+                ->make(true);
+        }
+        return view('admin.siswa.naik', compact('menu'));
+    }
+    public function naik(Request $request)
+    {
+        //Translate Bahasa Indonesia
+        $message = array(
+            'kelas_id.required' => 'Silahkan pilih kelas/rombel terlebih dahulu.',
+            'siswaID.required' => 'Silahkan pilih siswa/i terlebih dahulu.',
+        );
+        $validator = Validator::make($request->all(), [
+            'kelas_id' => 'required',
+            'siswaID' => 'required',
+        ], $message);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()]);
+        }
+        $siswaID = $request->input('siswaID', []);
+        $jumlahSiswaID = count($request->input('siswaID'));
+        $kelas = $request->input('kelas_id');
+        // Menggunakan Model Eloquent untuk mengupdate data
+        Siswa::whereIn('id', $siswaID)->update([
+            'kelas_id' => $kelas,
+        ]);
+        return redirect()->route('kenaikan-kelas.index')->with('toast_success', 'Congratulations, <h6 class="text-success">' . $jumlahSiswaID . '</h6> Siswa berhasil naik kelas.');
+    }
+    public function kelulusan(Request $request)
+    {
+        $menu = 'Kelulusan';
+        if ($request->ajax()) {
+            $data = Siswa::with('kelas')->where('sekolah_id', Auth::user()->sekolah_id)->whereHas('kelas', function ($query) {
+                $query->where('kelas', 'XII');
+            })->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('nisn', function ($data) {
+                    return $data->nisn;
+                })
+                ->addColumn('nama', function ($data) {
+                    return $data->nama;
+                })
+                ->addColumn('kelas', function ($data) {
+                    return '<center>' . $data->kelas->kelas . ' ' . $data->kelas->jurusan .  ' ' . $data->kelas->ruangan . '</center>';
+                })
+                ->addColumn('sts_siswa', function ($data) {
+                    return '<center>' . $data->sts_siswa . '</center>';
+                })
+                ->addColumn('foto', function ($data) {
+                    if ($data->foto != null) {
+                        $foto = '<center><img src="' . url("storage/foto-siswa/" . $data->foto) . '" width="30px" class="img rounded"><center>';
+                    } else {
+                        $foto = '<center><img src="' . url("storage/foto-siswa/blank.png") . '" width="30px" class="img rounded"><center>';
+                    }
+                    return $foto;
+                })
+                ->rawColumns(['kelas', 'sts_siswa', 'foto', 'action'])
+                ->make(true);
+        }
+        return view('admin.siswa.lulus', compact('menu'));
+    }
+    public function filterData(Request $request)
+    {
+        $menu = 'Kelulusan';
+        if ($request->ajax()) {
+            $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->get();
+            // Menerapkan filter berdasarkan kriteria tertentu
+            if ($request->filled('kelas_filter_id')) {
+                $filterColumn = $request->input('kelas_filter_id');
+                $data->where($filterColumn);
+            }
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('nisn', function ($data) {
+                    return $data->nisn;
+                })
+                ->addColumn('nama', function ($data) {
+                    return $data->nama;
+                })
+                ->addColumn('kelas', function ($data) {
+                    return '<center>' . $data->kelas->kelas . ' ' . $data->kelas->jurusan .  ' ' . $data->kelas->ruangan . '</center>';
+                })
+                ->addColumn('sts_siswa', function ($data) {
+                    return '<center>' . $data->sts_siswa . '</center>';
+                })
+                ->addColumn('foto', function ($data) {
+                    if ($data->foto != null) {
+                        $foto = '<center><img src="' . url("storage/foto-siswa/" . $data->foto) . '" width="30px" class="img rounded"><center>';
+                    } else {
+                        $foto = '<center><img src="' . url("storage/foto-siswa/blank.png") . '" width="30px" class="img rounded"><center>';
+                    }
+                    return $foto;
+                })
+                ->rawColumns(['kelas', 'sts_siswa', 'foto', 'action'])
+                ->make(true);
+        }
+        return view('admin.siswa.lulus', compact('menu'));
     }
 }

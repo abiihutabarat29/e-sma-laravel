@@ -223,12 +223,14 @@
     <li
         class="nav-item {{ request()->segment(1) == 'mutasi-masuk' ||
         request()->segment(1) == 'mutasi-keluar' ||
+        request()->segment(1) == 'kenaikan-kelas' ||
         request()->segment(1) == 'kelulusan'
             ? 'menu-open'
             : '' }}">
         <a href="#"
             class="nav-link {{ request()->segment(1) == 'mutasi-masuk' ||
             request()->segment(1) == 'mutasi-keluar' ||
+            request()->segment(1) == 'kenaikan-kelas' ||
             request()->segment(1) == 'kelulusan'
                 ? 'active'
                 : '' }}">
@@ -258,7 +260,17 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'kelulusan' ? 'active' : '' }}">
+                <a href="{{ route('kenaikan-kelas.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'kenaikan-kelas' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Kenaikan Kelas</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('kelulusan.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'kelulusan' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Kelulusan</p>
                 </a>

@@ -126,6 +126,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         //Kelas/Rombel
         Route::resource('rombel-sekolah', RombelController::class);
         Route::post('rombel-sekolah/get-rombel', [RombelController::class, 'getRombel']);
+        Route::post('rombel-sekolah/get-rombel-xii', [RombelController::class, 'getRombelXII']);
         //DAKL
         Route::resource('dakl', DaklController::class);
         //Sarpras
@@ -142,5 +143,11 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::get('mutasi-keluar/create', [MutasiController::class, 'createk'])->name('mutasi-keluar.create');
         Route::post('mutasi-keluar', [MutasiController::class, 'storek'])->name('mutasi-keluar.store');
         Route::delete('mutasi-keluar/{siswa}/destroy', [MutasiController::class, 'destroyk'])->name('mutasi-keluar.destroy');
+        // Kenaikan Kelas
+        Route::get('kenaikan-kelas', [SiswaController::class, 'kenaikan'])->name('kenaikan-kelas.index');
+        Route::post('kenaikan-kelas/naik', [SiswaController::class, 'naik'])->name('kenaikan-kelas.naik');
+        // Kelulusan
+        Route::get('kelulusan', [SiswaController::class, 'kelulusan'])->name('kelulusan.index');
+        Route::post('kelulusan/lulus', [SiswaController::class, 'lulus'])->name('kelulusan.lulus');
     });
 });

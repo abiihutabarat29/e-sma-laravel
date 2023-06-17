@@ -21,13 +21,22 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('siswa.create') }}" class="btn btn-info btn-xs float-right">
+                            <a href="{{ route('siswa.create') }}" class="btn btn-info btn-sm float-left mr-2"
+                                title="Tambah Siswa/i Baru">
                                 <i class="fas fa-plus-circle"></i> Tambah</a>
+                            <button id="nonaktif" class="btn btn-warning btn-sm float-left mr-2 text-white"
+                                title="Nonaktifkan Siswa/i Baru" disabled>
+                                <i class="fas fa-ban"></i> Nonaktif</button>
+                            <button id="deleteAll" class="btn btn-danger btn-sm float-left" title="Hapus Siswa Pilihan"
+                                disabled>
+                                <i class="fas fa-trash"></i> Hapus</button>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-striped data-table">
                                 <thead>
                                     <tr>
+                                        <th class="text-center" style="width: 5%"><input type="checkbox" id="selectAll">
+                                        </th>
                                         <th style="width:5%">No</th>
                                         <th style="width:10%">NISN</th>
                                         <th>Nama</th>
@@ -99,6 +108,11 @@
                 autoWidth: false,
                 ajax: "{{ route('siswa.index') }}",
                 columns: [{
+                        data: "check",
+                        name: "check",
+                        orderable: false,
+                        searchable: false,
+                    }, {
                         data: "DT_RowIndex",
                         name: "DT_RowIndex",
                     },
@@ -174,6 +188,28 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+        });
+        //select all
+        $(document).ready(function() {
+            // Checkbox "Pilih Semua"
+            $('#selectAll').click(function() {
+                $('.checkSiswa').prop('checked', $(this).prop('checked'));
+            });
+            // Periksa apakah checkbox "Pilih Semua" harus dicentang
+            $('.checkSiswa').click(function() {
+                if ($('.checkSiswa:checked').length === $('.checkSiswa').length) {
+                    $('#selectAll').prop('checked', true);
+                } else {
+                    $('#selectAll').prop('checked', false);
+                }
+            });
+            $('.checkSiswa').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#deleteAll').prop('disabled', false);
+                } else {
+                    $('#deleteAll').prop('disabled', true);
+                }
+            });
         });
     </script>
 @endsection

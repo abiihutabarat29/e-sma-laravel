@@ -320,7 +320,7 @@
                 success: function(result) {
                     if (result == "") {
                         $('#kelas_id').html(
-                            '<option disable>Tambahkan Kelas/Rombel Terlebih Dahulu.</option>'
+                            '<option disable>::Tambahkan Kelas/Rombel Terlebih Dahulu::</option>'
                         );
                     } else {
                         $('#kelas_id').html(

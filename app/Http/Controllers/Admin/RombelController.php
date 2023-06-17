@@ -66,4 +66,9 @@ class RombelController extends Controller
         $data = Rombel::where('sekolah_id', Auth::user()->sekolah_id)->get(["id", "kelas", "jurusan", "ruangan"]);
         return response()->json($data);
     }
+    public function getRombelXII()
+    {
+        $data = Rombel::where('sekolah_id', Auth::user()->sekolah_id)->where('kelas', 'XII')->get(["id", "kelas", "jurusan", "ruangan"]);
+        return response()->json($data);
+    }
 }
