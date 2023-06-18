@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('guru.create') }}" class="btn btn-info btn-xs float-right">
+                            <a href="{{ route('guru.create') }}" class="btn btn-info btn-sm float-left mr-2">
                                 <i class="fas fa-plus-circle"></i> Tambah</a>
                         </div>
                         <div class="card-body">

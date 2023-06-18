@@ -48,7 +48,7 @@ class SiswaController extends Controller
                 })
                 ->addColumn('action', function ($row) {
                     $btn = '        <a class="btn btn-primary btn-xs" href="' . route('siswa.edit',  Crypt::encryptString($row->id)) . '">Edit</a>';
-                    $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteSiswa">Hapus</a><center>';
+                    $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-nama="' . $row->nama . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteSiswa">Hapus</a><center>';
                     return $btn;
                 })
                 ->rawColumns(['checkbox', 'kelas', 'sts_siswa', 'foto', 'action'])
@@ -404,5 +404,15 @@ class SiswaController extends Controller
         //Hapus siswa
         Siswa::where('sekolah_id', Auth::user()->sekolah_id)->whereIn('id', $SiswaId)->delete();
         return response()->json(['success' => '<span class="text-white">' . $count . '</span> Siswa deleted successfully.']);
+    }
+    public function nonaktif(Request $request)
+    {
+        $siswaID = $request->input('SiswaId');
+        $Nonaktif = count($siswaID);
+        // Menggunakan Model Eloquent untuk mengupdate data
+        Siswa::whereIn('id', $siswaID)->update([
+            'sts_siswa' => 'Nonaktif',
+        ]);
+        return response()->json(['success' => '<span class="text-white">' . $Nonaktif . '</span> Siswa berhasil dinonaktifkan.']);
     }
 }
