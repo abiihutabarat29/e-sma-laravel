@@ -23,8 +23,8 @@ class SiswaController extends Controller
             $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('check', function ($row) {
-                    return '<center><input type="checkbox" class="checkSiswa" name="siswaCheck[]" value="' . $row->id . '"></center>';
+                ->addColumn('checkbox', function ($row) {
+                    return '<center><input type="checkbox" class="row-checkbox" name="siswaCheck[]" value="' . $row->id . '"></center>';
                 })
                 ->addColumn('nisn', function ($data) {
                     return $data->nisn;
@@ -51,7 +51,7 @@ class SiswaController extends Controller
                     $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteSiswa">Hapus</a><center>';
                     return $btn;
                 })
-                ->rawColumns(['check', 'kelas', 'sts_siswa', 'foto', 'action'])
+                ->rawColumns(['checkbox', 'kelas', 'sts_siswa', 'foto', 'action'])
                 ->make(true);
         }
         return view('admin.siswa.data', compact('menu'));
@@ -309,17 +309,17 @@ class SiswaController extends Controller
             return response()->json(['errors' => $validator->errors()->all()]);
         }
         $siswaID = $request->input('siswaID', []);
-        $jumlahSiswaID = count($request->input('siswaID'));
+        $jumlahSiswaID = count($siswaID);
         $kelas = $request->input('kelas_id');
         // Menggunakan Model Eloquent untuk mengupdate data
         Siswa::whereIn('id', $siswaID)->update([
             'kelas_id' => $kelas,
         ]);
-        return redirect()->route('kenaikan-kelas.index')->with('toast_success', 'Congratulations, <h6 class="text-success">' . $jumlahSiswaID . '</h6> Siswa berhasil naik kelas.');
+        return response()->json(['success' => '<span class="text-white">' . $jumlahSiswaID . '</span> Siswa berhasil naik kelas.']);
     }
     public function kelulusan(Request $request)
     {
-        $menu = 'Kelulusan Alumni Tahun';
+        $menu = 'Kelulusan Alumni Tahun ' . Carbon::now()->year;
         $siswa = Siswa::with('kelas')->where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->whereHas('kelas', function ($query) {
             $query->where('kelas', 'XII');
         })->get();
@@ -376,6 +376,33 @@ class SiswaController extends Controller
         Siswa::whereIn('id', $CalumniID)->update([
             'sts_siswa' => 'Lulus',
         ]);
-        return redirect()->route('kenaikan-kelas.index')->with('toast_success', 'Congratulations, <h6 class="text-success">' . $jumlahCalumniID . '</h6> Siswa diluluskan.');
+        return response()->json(['success' => 'Congratulations <span class="text-white">' . $jumlahCalumniID . '</span> Siswa berhasil diluluskan.']);
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $SiswaId = $request->input('SiswaId');
+        $count = count($SiswaId);
+        // Menghapus foto siswa jika ada
+        foreach ($SiswaId as $id) {
+            $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->find($id);
+            if ($siswa && $siswa->foto) {
+                $path = 'foto-siswa/' . $siswa->foto;
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
+        }
+        // Menghapus entri mutasi terkait dengan siswa yang dihapus
+        foreach ($SiswaId as $id) {
+            $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->find($id);
+            if ($siswa && $siswa->nisn) {
+                $nisn = $siswa->nisn;
+                Mutasi::where('sekolah_id', Auth::user()->sekolah_id)->where('nisn', $nisn)->delete();
+            }
+        }
+        //Hapus siswa
+        Siswa::where('sekolah_id', Auth::user()->sekolah_id)->whereIn('id', $SiswaId)->delete();
+        return response()->json(['success' => '<span class="text-white">' . $count . '</span> Siswa deleted successfully.']);
     }
 }

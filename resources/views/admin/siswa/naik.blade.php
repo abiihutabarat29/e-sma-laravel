@@ -208,9 +208,10 @@
                                     .removeAttr("disabled");
                             });
                         } else {
+                            table.draw();
+                            alertSuccess(data.success);
                             $("#up").html("<i class='fa fa-arrow-up'></i> Naikkan").removeAttr(
                                 "disabled");
-                            window.location.reload();
                         }
                     },
                 });

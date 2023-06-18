@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::get('siswa/{id}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
         Route::put('siswa/{id}/update', [SiswaController::class, 'update'])->name('siswa.update');
         Route::delete('siswa/{siswa}/destroy', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+        Route::delete('siswa/delete-multiple', [SiswaController::class, 'deleteMultiple'])->name('siswa.delete.multiple');
         //Profil Sekolah
         Route::get('profile-sekolah', [ProfileSekolahController::class, 'index'])->name('profile-sekolah.index');
         Route::get('profile-sekolah/create', [ProfileSekolahController::class, 'create'])->name('profile-sekolah.create');

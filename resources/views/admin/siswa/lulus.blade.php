@@ -45,16 +45,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-2 mt-4 p-2">
-                                    <div class="form-group">
-                                        <button class="btn btn-primary" id="lulus"><i class="fa fa-check"></i>
-                                            Luluskan</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="card">
+                        <div class="card-header">
+                            <button class="btn btn-primary btn-sm" id="lulus"><i class="fa fa-check-double"></i>
+                                Luluskan</button>
+                        </div>
                         <div class="card-body">
                             <table class="table table-bordered table-striped data-table">
                                 <thead>
@@ -171,10 +169,14 @@
                                     .removeAttr("disabled");
                             });
                         } else {
+                            table.draw();
+                            alertSuccess(data.success);
                             $("#lulus").html("<i class='fa fa-arrow-up'></i> Luluskan")
                                 .removeAttr(
                                     "disabled");
-                            window.location.reload();
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
                         }
                     },
                 });
@@ -206,12 +208,15 @@
         //validasi data
         document.addEventListener('DOMContentLoaded', function() {
             var submitButton = document.getElementById('lulus');
+            var selectBox = document.getElementById('kelas_filter_id');
             // Cek apakah data ada atau tidak ada
             @if ($siswa->isEmpty())
                 submitButton.disabled = true;
-                submitButton.title = 'Pastikan data siswa/i kelas XII tersedia';
+                selectBox.disabled = true;
+                submitButton.title = 'Pastikan data siswa/i kelas XII tersedia.';
             @else
                 submitButton.disabled = false;
+                selectBox.disabled = false;
             @endif
         });
     </script>

@@ -88,6 +88,38 @@
             </div>
         </div>
     </div>
+    {{-- Modal Delete Multiple --}}
+    <div class="modal fade" id="ajaxModelHpsAll">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="modelHeadingHpsAll">
+                        </h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-dismissible fade show" role="alert" style="display: none;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <center>
+                        <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
+                    </center>
+                    <center>
+                        <h6>Apakah anda yakin menghapus Siswa ini ?</h6>
+                    </center>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Kembali</button>
+                    <button type="submit" class="btn btn-danger btn-sm " id="hapusAll"><i class="fa fa-trash"></i>
+                        Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
@@ -108,8 +140,8 @@
                 autoWidth: false,
                 ajax: "{{ route('siswa.index') }}",
                 columns: [{
-                        data: "check",
-                        name: "check",
+                        data: "checkbox",
+                        name: "checkbox",
                         orderable: false,
                         searchable: false,
                     }, {
@@ -170,7 +202,7 @@
                                         '</li></strong>');
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
-                                        "<i class='fa fa-info-circle'></i>Error"
+                                        "<i class='fa fa-trash'></i> Hapus"
                                     );
                                 });
                             } else {
@@ -185,6 +217,55 @@
                     });
                 });
             });
+            $("body").on("click", "#deleteAll", function() {
+                var SiswaId = [];
+
+                // Dapatkan nilai checkbox yang dipilih
+                $('input[name="siswaCheck[]"]:checked').each(function() {
+                    SiswaId.push($(this).val());
+                });
+                $("#modelHeadingHpsAll").html("Hapus");
+                $("#ajaxModelHpsAll").modal("show");
+                $("#hapusAll").click(function(e) {
+                    e.preventDefault();
+                    $(this).html(
+                        "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menghapus...</i></span>"
+                    ).attr('disabled', 'disabled');
+                    $.ajax({
+                        type: "DELETE",
+                        url: "{{ route('siswa.delete.multiple') }}",
+                        data: {
+                            SiswaId: SiswaId
+                        },
+                        success: function(data) {
+                            $('#selectAll').prop('checked', false);
+                            $('#deleteAll').prop('disabled', true);
+                            $('#nonaktif').prop('disabled', true);
+                            console.log(data.errors);
+                            if (data.errors) {
+                                $('.alert-danger').html('');
+                                $.each(data.errors, function(key, value) {
+                                    $('.alert-danger').show();
+                                    $('.alert-danger').append('<strong><li>' +
+                                        value +
+                                        '</li></strong>');
+                                    $(".alert-danger").fadeOut(5000);
+                                    $("#hapusAll").html(
+                                        "<i class='fa fa-trash'></i> Hapus"
+                                    );
+                                });
+                            } else {
+                                table.draw();
+                                alertSuccess(data.success);
+                                $("#hapusAll").html(
+                                    "<i class='fa fa-trash'></i> Hapus").removeAttr(
+                                    'disabled');
+                                $('#ajaxModelHpsAll').modal('hide');
+                            }
+                        },
+                    });
+                });
+            });
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
@@ -193,23 +274,48 @@
         $(document).ready(function() {
             // Checkbox "Pilih Semua"
             $('#selectAll').click(function() {
-                $('.checkSiswa').prop('checked', $(this).prop('checked'));
+                $('.row-checkbox').prop('checked', $(this).prop('checked'));
             });
             // Periksa apakah checkbox "Pilih Semua" harus dicentang
-            $('.checkSiswa').click(function() {
-                if ($('.checkSiswa:checked').length === $('.checkSiswa').length) {
+            $('.row-checkbox').click(function() {
+                if ($('.row-checkbox:checked').length === $('.row-checkbox').length) {
                     $('#selectAll').prop('checked', true);
                 } else {
                     $('#selectAll').prop('checked', false);
                 }
             });
-            $('.checkSiswa').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#deleteAll').prop('disabled', false);
-                } else {
-                    $('#deleteAll').prop('disabled', true);
-                }
-            });
+        });
+        // Ketika checkbox dipilih atau tidak dipilih
+        $(document).on('change', '.row-checkbox', function() {
+            var selected = $('.row-checkbox:checked');
+            var selectedAll = $('#selectAll');
+
+            if (selected.length > 0 || (selectedAll.length > 0 && selectedAll.is(':checked'))) {
+                // Jika ada checkbox yang dipilih atau selectAll terpilih, aktifkan button
+                $('#deleteAll').prop('disabled', false);
+                $('#nonaktif').prop('disabled', false);
+            } else {
+                // Jika tidak ada checkbox yang dipilih, nonaktifkan button
+                $('#deleteAll').prop('disabled', true);
+                $('#nonaktif').prop('disabled', true);
+            }
+        });
+
+        // Ketika selectAll checkbox di klik
+        $(document).on('change', '#selectAll', function() {
+            var checkboxes = $('.row-checkbox');
+
+            checkboxes.prop('checked', $(this).is(':checked'));
+
+            if ($(this).is(':checked')) {
+                // Jika selectAll terpilih, aktifkan button
+                $('#deleteAll').prop('disabled', false);
+                $('#nonaktif').prop('disabled', false);
+            } else {
+                // Jika selectAll tidak terpilih, nonaktifkan button
+                $('#deleteAll').prop('disabled', true);
+                $('#nonaktif').prop('disabled', true);
+            }
         });
     </script>
 @endsection
