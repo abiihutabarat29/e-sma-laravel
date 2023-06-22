@@ -40,13 +40,18 @@
                                     <button type="submit"
                                         class="form-control btn btn-primary rounded submit px-3">Masuk</button>
                                 </div>
-                                <div class="copyright text-center mt-4">
-                                    © {{ date('Y') }}
-                                    <span> <a href="{{ '/' }}">e-sekolah</a></span>
-                                </div>
                             </form>
                         </div>
                     </div>
+                    <footer class="main-footer mt-2"
+                        style="display: flex; align-items: center; justify-content: center;">
+                        <small>
+                            <span class="text-white" style="margin-right: 10px;">Copyright
+                                &copy;{{ date('Y') }}</strong> Cabang Dinas
+                                Pendidikan Wilayah VII Sumatera
+                                Utara All rights reserved.</span>
+                        </small>
+                    </footer>
                 </div>
             </div>
         </div>

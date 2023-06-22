@@ -1,6 +1,7 @@
 <footer class="main-footer">
-    <strong>Copyright &copy;{{ date('Y') }} Aplikasi Manajemen Data Sekolah.</strong>
-    All rights reserved.
+    <strong>Copyright &copy;{{ date('Y') }}</strong> Cabang Dinas
+    Pendidikan Wilayah VII Sumatera
+    Utara All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 1.0
     </div>

@@ -31,7 +31,7 @@ class GuruController extends Controller
                     return $data->nama;
                 })
                 ->addColumn('status', function ($data) {
-                    return $data->status;
+                    return '<center>' . $data->status . '</center>';
                 })
                 ->addColumn('foto', function ($data) {
                     if ($data->foto != null) {
@@ -46,7 +46,7 @@ class GuruController extends Controller
                     $btn = '<center>' . $btn . ' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Delete" class="btn btn-danger btn-xs deleteGuru">Hapus</a><center>';
                     return $btn;
                 })
-                ->rawColumns(['foto', 'action'])
+                ->rawColumns(['status', 'foto', 'action'])
                 ->make(true);
         }
         return view('admin.guru.data', compact('menu'));

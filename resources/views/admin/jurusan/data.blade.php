@@ -42,7 +42,7 @@
         </div>
     </section>
     <div class="modal fade" id="ajaxModel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modelHeading"></h4>
@@ -184,12 +184,12 @@
                                     value +
                                     '</li></strong>');
                                 $(".alert-danger").fadeOut(5000);
-                                $("#saveBtn").html("Simpan");
+                                $("#saveBtn").html("Simpan").removeAttr('disabled');
                             });
                         } else {
                             table.draw();
                             alertSuccess("Jurusan berhasil ditambah");
-                            $("#saveBtn").html("Simpan");
+                            $("#saveBtn").html("Simpan").removeAttr('disabled');
                             $('#ajaxModel').modal('hide');
                         }
                     },
@@ -221,13 +221,14 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
                                         "<i class='fa fa-trash'></i>Hapus"
-                                    );
+                                    ).removeAttr('disabled');
                                 });
                             } else {
                                 table.draw();
                                 alertSuccess(data.success);
                                 $("#hapusBtn").html(
-                                    "<i class='fa fa-trash'></i>Hapus");
+                                    "<i class='fa fa-trash'></i>Hapus").removeAttr(
+                                    'disabled');
                                 $('#ajaxModelHps').modal('hide');
                             }
                         },

@@ -21,17 +21,18 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="javascript:void(0)" id="createNewKabupaten" class="btn btn-info btn-xs float-right">
-                                <i class="fas fa-plus-circle"></i> Tambah</a>
+                            <a href="javascript:void(0)" id="createNewArsip" class="btn btn-info btn-sm">
+                                <i class="fas fa-plus-circle"></i> Tambah Arsip</a>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-striped data-table">
                                 <thead>
                                     <tr>
                                         <th style="width:5%">No</th>
-                                        <th style="width:15%">Kode Wilayah</th>
-                                        <th>Kabupaten</th>
-                                        <th class="text-center" style="width: 10%">Action</th>
+                                        <th>Nama Laporan Bulanan</th>
+                                        <th class="text-center" style="width: 10%">Bulan</th>
+                                        <th class="text-center" style="width: 8%">Tahun</th>
+                                        <th class="text-center" style="width: 8%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -42,37 +43,48 @@
             </div>
         </div>
     </section>
-    <div class="modal fade" id="ajaxModel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal fade" id="ajaxModelArsip" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modelHeading"></h4>
                 </div>
                 <div class="modal-body">
+                    <h6><i class="fa fa-info-circle text-danger"></i> Mohon Perhatian</h6>
+                    <hr>
+                    <p style="text-align: justify"><b>Arsip Laporan Bulanan</b> hanya bisa dilakukan 1x dalam sebulan, untuk
+                        itu diharapkan ketika selesai
+                        <b>Generate Laporan Bulanan</b>, Laporan hasil Generate langsung diarsipkan agar tidak melewati
+                        batas bulan pada saat <b>Laporan Bulanan</b> tergenerate sistem.
+                    </p>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="kabupatenForm" name="kabupatenForm" class="form-horizontal">
+                    <form id="arsipForm" name="arsipForm" class="form-horizontal" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="kabupaten_id" id="kabupaten_id">
+                        <input type="hidden" name="arsip_id" id="arsip_id">
+                        <input type="hidden" name="validfile" id="validfile"
+                            value="{{ Auth::user()->sekolah->npsn . \Carbon\Carbon::now()->format('m') . \Carbon\Carbon::now()->year }}">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">Kode Wilayah<span class="text-danger">*</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="kode_wilayah" name="kode_wilayah"
-                                    placeholder="Kode Wilayah" onkeypress="return hanyaAngka(event)">
+                                <label>Nama Laporan<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nama_labul" name="nama_labul"
+                                    placeholder="Nama Laporan">
+                                <small><i>*contoh : Laporan Bulanan Januari.</i></small>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">Nama Kabupaten<span class="text-danger"> *</span></label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="nama_kabupaten" name="nama_kabupaten"
-                                    placeholder="Nama Kabupaten">
+                                <label>File Laporan Bulanan<span class="text-danger">*</span></label>
+                                <input type="file" class="form-control" id="file" name="file">
                             </div>
+                            <small><i>*file maksimal 2MB dan berekstensi xls, xlsx.</i></small>
                         </div>
                         <div class="form-group">
                             <div class="card-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary btn-sm" id="saveBtn" value="create">Simpan
                                 </button>
                             </div>
@@ -85,7 +97,7 @@
 @endsection
 @section('modal')
     {{-- Modal Delete --}}
-    <div class="modal fade" id="ajaxModelHps">
+    <div class="modal fade" id="ajaxModelHpsArsip">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -105,7 +117,7 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus Kabupaten ini ?</h6>
+                        <h6>Apakah anda yakin menghapus Arsip Laporan Bulanan ini ?</h6>
                     </center>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -119,14 +131,6 @@
 @endsection
 @section('script')
     <script>
-        // Fungsi hanyaAngka
-        function hanyaAngka(evt) {
-            var charCode = (evt.which) ? evt.which : event.keyCode
-            if (charCode > 31 && (charCode < 48 || charCode > 57))
-
-                return false;
-            return true;
-        }
         $(function() {
             $.ajaxSetup({
                 headers: {
@@ -142,18 +146,22 @@
                 lengthMenu: [10, 50, 100, 200, 500],
                 lengthChange: true,
                 autoWidth: false,
-                ajax: "{{ route('kabupaten.index') }}",
+                ajax: "{{ route('arsip-labul.index') }}",
                 columns: [{
                         data: "DT_RowIndex",
                         name: "DT_RowIndex",
                     },
                     {
-                        data: "kode_wilayah",
-                        name: "kode_wilayah",
+                        data: "nama_labul",
+                        name: "nama_labul",
                     },
                     {
-                        data: "kabupaten",
-                        name: "kabupaten",
+                        data: "bulan",
+                        name: "bulan",
+                    },
+                    {
+                        data: "tahun",
+                        name: "tahun",
                     },
                     {
                         data: "action",
@@ -164,25 +172,12 @@
                 ],
             });
 
-            $("#createNewKabupaten").click(function() {
-                $("#saveBtn").val("create-kabupaten");
-                $("#kabupaten_id").val("");
-                $("#kabupatenForm").trigger("reset");
-                $("#modelHeading").html("Tambah Kabupaten");
-                $("#ajaxModel").modal("show");
-                $("#deleteKab").modal("show");
-            });
-
-            $("body").on("click", ".editKab", function() {
-                var kabupaten_id = $(this).data("id");
-                $.get("{{ route('kabupaten.index') }}" + "/" + kabupaten_id + "/edit", function(data) {
-                    $("#modelHeading").html("Edit Kabupaten");
-                    $("#saveBtn").val("edit-kabupaten");
-                    $("#ajaxModel").modal("show");
-                    $("#kabupaten_id").val(data.id);
-                    $("#kode_wilayah").val(data.kode_wilayah);
-                    $("#nama_kabupaten").val(data.kabupaten);
-                });
+            $("#createNewArsip").click(function() {
+                $("#saveBtn").val("create-arsip");
+                $("#arsip_id").val("");
+                $("#arsipForm").trigger("reset");
+                $("#modelHeading").html("Tambah Arsip");
+                $("#ajaxModelArsip").modal("show");
             });
 
             $("#saveBtn").click(function(e) {
@@ -190,11 +185,13 @@
                 $(this).html(
                     "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menyimpan...</i></span>"
                 ).attr('disabled', 'disabled');
+                var formData = new FormData($('#arsipForm')[0]);
                 $.ajax({
-                    data: $("#kabupatenForm").serialize(),
-                    url: "{{ route('kabupaten.store') }}",
+                    url: "{{ route('arsip-labul.store') }}",
                     type: "POST",
-                    dataType: "json",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(data) {
                         if (data.errors) {
                             $('.alert-danger').html('');
@@ -204,23 +201,23 @@
                                     value +
                                     '</li></strong>');
                                 $(".alert-danger").fadeOut(5000);
-                                $("#saveBtn").html("Simpan").removeAttr('disabled');
-                                // $('#kabupatenForm').trigger("reset");
+                                $("#saveBtn").html("Simpan").removeAttr(
+                                    'disabled');
                             });
                         } else {
                             table.draw();
-                            alertSuccess("Kabupaten berhasil ditambah");
-                            // $('#kabupatenForm').trigger("reset");
-                            $("#saveBtn").html("Simpan").removeAttr('disabled');
-                            $('#ajaxModel').modal('hide');
+                            alertSuccess("Arsip saved succesfully.");
+                            $("#saveBtn").html("Simpan").removeAttr(
+                                'disabled');
+                            $('#ajaxModelArsip').modal('hide');
                         }
                     },
                 });
             });
-            $("body").on("click", ".deleteKab", function() {
-                var kabupaten_id = $(this).data("id");
+            $("body").on("click", ".deleteArsip", function() {
+                var arsip_id = $(this).data("id");
                 $("#modelHeadingHps").html("Hapus");
-                $("#ajaxModelHps").modal("show");
+                $("#ajaxModelHpsArsip").modal("show");
                 $("#hapusBtn").click(function(e) {
                     e.preventDefault();
                     $(this).html(
@@ -228,7 +225,7 @@
                     ).attr('disabled', 'disabled');
                     $.ajax({
                         type: "DELETE",
-                        url: "{{ route('kabupaten.store') }}" + "/" + kabupaten_id,
+                        url: "{{ route('arsip-labul.store') }}" + "/" + arsip_id,
                         data: {
                             _token: "{!! csrf_token() !!}",
                         },
@@ -243,7 +240,8 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
                                         "<i class='fa fa-trash'></i>Hapus"
-                                    ).removeAttr('disabled');
+                                    ).removeAttr(
+                                        'disabled');
                                 });
                             } else {
                                 table.draw();
@@ -251,8 +249,7 @@
                                 $("#hapusBtn").html(
                                     "<i class='fa fa-trash'></i>Hapus").removeAttr(
                                     'disabled');
-                                $('#ajaxModelHps').modal('hide');
-                                // $('#data-table').DataTable().ajax.reload();
+                                $('#ajaxModelHpsArsip').modal('hide');
                             }
                         },
                     });
@@ -261,6 +258,9 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             })
+            $(function() {
+                bsCustomFileInput.init();
+            });
         });
     </script>
 @endsection

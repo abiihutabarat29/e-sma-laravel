@@ -243,7 +243,8 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
                                         "<i class='fa fa-trash'></i> Hapus"
-                                    );
+                                    ).removeAttr(
+                                        'disabled');
                                 });
                             } else {
                                 table.draw();
@@ -296,7 +297,7 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#nonAktifkan").html(
                                         "<i class='fa fa-ban'></i> Nonaktifkan"
-                                    );
+                                    ).removeAttr('disabled');
                                 });
                             } else {
                                 table.draw();
@@ -349,7 +350,7 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusAll").html(
                                         "<i class='fa fa-trash'></i> Hapus"
-                                    );
+                                    ).removeAttr('disabled');
                                 });
                             } else {
                                 table.draw();

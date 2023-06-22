@@ -239,8 +239,7 @@
                 e.preventDefault();
                 $(this).html(
                     "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menyimpan...</i></span>"
-                );
-
+                ).attr('disabled', 'disabled');
                 $.ajax({
                     data: $("#sekolahForm").serialize(),
                     url: "{{ route('sekolah.store') }}",
@@ -255,14 +254,14 @@
                                     value +
                                     '</li></strong>');
                                 $(".alert-danger").fadeOut(5000);
-                                $("#saveBtn").html("Simpan");
+                                $("#saveBtn").html("Simpan").removeAttr('disabled');
                                 // $('#sekolahForm').trigger("reset");
                             });
                         } else {
                             table.draw();
                             alertSuccess("Sekolah berhasil ditambah");
                             // $('#sekolahForm').trigger("reset");
-                            $("#saveBtn").html("Simpan");
+                            $("#saveBtn").html("Simpan").removeAttr('disabled');
                             $('#ajaxModel').modal('hide');
                         }
                     },
@@ -276,7 +275,7 @@
                     e.preventDefault();
                     $(this).html(
                         "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menghapus...</i></span>"
-                    );
+                    ).attr('disabled', 'disabled');
                     $.ajax({
                         type: "DELETE",
                         url: "{{ route('sekolah.store') }}" + "/" + sekolah_id +
@@ -295,13 +294,14 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
                                         "<i class='fa fa-trash'></i>Hapus"
-                                    );
+                                    ).removeAttr('disabled');
                                 });
                             } else {
                                 table.draw();
                                 alertSuccess(data.success);
                                 $("#hapusBtn").html(
-                                    "<i class='fa fa-trash'></i>Hapus");
+                                    "<i class='fa fa-trash'></i>Hapus").removeAttr(
+                                    'disabled');
                                 $('#ajaxModelHps').modal('hide');
                             }
                         },

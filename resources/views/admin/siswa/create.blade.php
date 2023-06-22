@@ -250,8 +250,8 @@
                                                 <div class="input-group">
                                                     <div class="custom-file">
                                                         <input type="file" id="foto" name="foto"
-                                                            class="custom-file-input @error('foto') is-invalid @enderror""
-                                                            id="foto" onchange="previewImg();">
+                                                            class="custom-file-input @error('foto') is-invalid @enderror"
+                                                            onchange="previewImg();">
                                                         <label class="custom-file-label">Pilih File</label>
                                                     </div>
                                                 </div>

@@ -157,8 +157,8 @@
                                         '</li></strong>');
                                     $(".alert-danger").fadeOut(5000);
                                     $("#hapusBtn").html(
-                                        "<i class='fa fa-info-circle'></i>Error"
-                                    );
+                                        "<i class='fa fa-info-circle'></i> Hapus"
+                                    ).removeAttr('disabled');
                                 });
                             } else {
                                 table.draw();

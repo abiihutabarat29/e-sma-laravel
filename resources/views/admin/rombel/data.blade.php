@@ -128,8 +128,7 @@
             e.preventDefault();
             $(this).html(
                 "<span class='spinner-border spinner-border-sm'></span><span class='visually-hidden'><i> menyimpan...</i></span>"
-            );
-
+            ).attr('disabled', 'disabled');
             $.ajax({
                 data: $("#rombelForm").serialize(),
                 url: "{{ route('rombel-sekolah.store') }}",
@@ -144,11 +143,11 @@
                                 value +
                                 '</li></strong>');
                             $(".alert-danger").fadeOut(5000);
-                            $("#saveBtn").html("Simpan");
+                            $("#saveBtn").html("Simpan").removeAttr('disabled');
                         });
                     } else {
                         alertSuccess("Kelas saved successfully.");
-                        $("#saveBtn").html("Simpan");
+                        $("#saveBtn").html("Simpan").removeAttr('disabled');
                         $('#ajaxModel').modal('hide');
                         setTimeout(function() {
                             window.location.reload();
