@@ -316,7 +316,8 @@
         </a>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'generate-labul' ? 'active' : '' }}">
+                <a href="{{ route('generate.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'generate-labul' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Generate Labul</p>
                 </a>

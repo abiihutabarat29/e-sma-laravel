@@ -32,6 +32,7 @@
                                         <th>Nama Laporan Bulanan</th>
                                         <th class="text-center" style="width: 10%">Bulan</th>
                                         <th class="text-center" style="width: 8%">Tahun</th>
+                                        <th class="text-center" style="width: 8%">Unduh</th>
                                         <th class="text-center" style="width: 8%">Action</th>
                                     </tr>
                                 </thead>
@@ -57,6 +58,7 @@
                         <b>Generate Laporan Bulanan</b>, Laporan hasil Generate langsung diarsipkan agar tidak melewati
                         batas bulan pada saat <b>Laporan Bulanan</b> tergenerate sistem.
                     </p>
+                    <hr>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -80,7 +82,7 @@
                                 <label>File Laporan Bulanan<span class="text-danger">*</span></label>
                                 <input type="file" class="form-control" id="file" name="file">
                             </div>
-                            <small><i>*file maksimal 2MB dan berekstensi xls, xlsx.</i></small>
+                            <small><i>*file maksimal 1MB dan berekstensi xls, xlsx.</i></small>
                         </div>
                         <div class="form-group">
                             <div class="card-footer">
@@ -162,6 +164,10 @@
                     {
                         data: "tahun",
                         name: "tahun",
+                    },
+                    {
+                        data: "unduh",
+                        name: "unduh",
                     },
                     {
                         data: "action",

@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ArsipLabul extends Model
+class GenerateLabul extends Model
 {
     use HasFactory;
 
-    protected $table = "arsip_labul";
+    protected $table = "generate_labul";
 
     protected $fillable = [
-        'sekolah_id', 'nama_labul', 'bulan', 'tahun', 'file_labul', 'validfile'
+        'sekolah_id', 'nama_labul'
     ];
     public function sekolah()
     {

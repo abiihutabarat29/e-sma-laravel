@@ -19,6 +19,7 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $menu = 'Siswa';
+        $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->get();
         if ($request->ajax()) {
             $data = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->where('sts_siswa', 'Aktif')->get();
             return DataTables::of($data)
@@ -54,7 +55,7 @@ class SiswaController extends Controller
                 ->rawColumns(['checkbox', 'kelas', 'sts_siswa', 'foto', 'action'])
                 ->make(true);
         }
-        return view('admin.siswa.data', compact('menu'));
+        return view('admin.siswa.data', compact('menu', 'siswa'));
     }
     public function create(Request $req)
     {

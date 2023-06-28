@@ -152,7 +152,10 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         // Kelulusan
         Route::get('kelulusan', [SiswaController::class, 'kelulusan'])->name('kelulusan.index');
         Route::post('kelulusan/lulus', [SiswaController::class, 'lulus'])->name('kelulusan.lulus');
-        // Arsip Labul
+        // Gneerate & Arsip Labul
         Route::resource('arsip-labul', LabulController::class);
+        Route::get('file/{id}/unduh', [LabulController::class, 'downloadFile'])->name('file.unduh');
+        Route::get('generate-labul', [LabulController::class, 'indexGenerate'])->name('generate.index');
+        Route::get('generate', [LabulController::class, 'generate'])->name('generate.labul');
     });
 });

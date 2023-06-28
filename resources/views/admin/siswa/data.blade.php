@@ -35,7 +35,12 @@
                             <table class="table table-bordered table-striped data-table">
                                 <thead>
                                     <tr>
-                                        <th class="text-center" style="width: 5%"><input type="checkbox" id="selectAll">
+                                        @if (empty($siswa))
+                                            <th class="text-center" style="width: 5%"><input type="checkbox"
+                                                    title="Pastikan Data Siswa/i tersedia." disabled>
+                                            @else
+                                            <th class="text-center" style="width: 5%"><input type="checkbox" id="selectAll">
+                                        @endif
                                         </th>
                                         <th style="width:5%">No</th>
                                         <th style="width:10%">NISN</th>
@@ -110,7 +115,8 @@
                         <h6 class="text-muted">::KEPUTUSAN INI TIDAK DAPAT DIUBAH KEMBALI::</h6>
                     </center>
                     <center>
-                        <h6>Apakah anda yakin menghapus <b><span class="text-danger" id="deleteCount"></span></b> siswa ini
+                        <h6>Apakah anda yakin menghapus <b><span class="text-danger" id="deleteCount"></span></b> siswa
+                            ini
                             ?</h6>
                     </center>
                 </div>
