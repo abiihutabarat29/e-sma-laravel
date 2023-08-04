@@ -30,4 +30,8 @@ class Siswa extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
     }
+    public function histori()
+    {
+        return $this->belongsTo(HistoriSiswa::class);
+    }
 }

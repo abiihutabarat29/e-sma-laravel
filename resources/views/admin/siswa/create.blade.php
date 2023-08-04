@@ -317,6 +317,7 @@
                 type: "POST",
                 dataType: 'json',
                 success: function(result) {
+                    var selectElement = $("#kelas_id");
                     if (result == "") {
                         $('#kelas_id').html(
                             '<option disable>::Tambahkan Kelas/Rombel Terlebih Dahulu::</option>'
@@ -326,10 +327,18 @@
                             '<option value="">--:---</option>');
                     }
                     $.each(result, function(key, value) {
-                        $("#kelas_id").append('<option value="' +
-                            value
-                            .id + '">' + value.kelas + ' ' + value.jurusan + ' ' + value
-                            .ruangan + '</option>');
+                        var option = $('<option>', {
+                            value: value.id,
+                            text: value.kelas + ' ' + value.jurusan + ' ' + value
+                                .ruangan
+                        });
+
+                        // Memeriksa apakah value.id sama dengan old('kelas_id')
+                        if (value.id == "{{ old('kelas_id') }}") {
+                            option.attr("selected", "selected");
+                        }
+
+                        selectElement.append(option);
                     });
                 }
             });

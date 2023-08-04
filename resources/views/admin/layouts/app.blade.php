@@ -84,4 +84,13 @@
         </div>
     </div>
     @include('sweetalert::alert')
+    @php
+        $tahunAjaranAktif = \App\Models\TahunAjaran::where('status', 1)->first();
+    @endphp
+    <div class="scrolling-text">
+        <marquee class="scrolling-text" behavior="scroll" direction="left">
+            JIKA TAHUN AJARAN (TA) TIDAK AKTIF SEGERA HUBUNGI ADMINISTRATOR CABDIS. TAHUN AJARAN AKTIF SEKRANG
+            : {{ $tahunAjaranAktif->nama }}
+        </marquee>
+    </div>
     @include('admin.layouts.footer')

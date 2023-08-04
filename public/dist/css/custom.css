@@ -1,3 +1,13 @@
+.scrolling-text {
+    background-color: #297bbf; /* Latar belakang putih */
+    color: #ffffff; /* Warna tulisan putih */
+    padding: 0px 0px 0px 0px; /* Padding atas dan bawah */
+}
+
+.scrolling-text marquee {
+    color: #ffffff; /* Warna tulisan putih pada elemen marquee */
+}
+
 .row-kartu {
     display: -ms-flexbox;
     display: flex;

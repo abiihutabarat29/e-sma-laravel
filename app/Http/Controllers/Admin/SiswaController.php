@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HistoriSiswa;
 use App\Models\Mutasi;
 use App\Models\Rombel;
 use App\Models\Siswa;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
@@ -125,25 +127,31 @@ class SiswaController extends Controller
         }
         $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
         $tahunAjaranId = $tahunAjaranAktif->id;
-        Siswa::create(
-            [
-                'sekolah_id' => Auth::user()->sekolah_id,
-                'tahun_ajaran_id' => $tahunAjaranId,
-                'nisn' => $request->nisn,
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tgl_lahir' => $request->tgl_lahir,
-                'gender' => $request->jenis_kelamin,
-                'agama' => $request->agama,
-                'kelas_id' => $request->kelas_id,
-                'tahun_masuk' => $request->thnmasuk,
-                'nohp' => $request->nohp,
-                'email' => $request->email,
-                'sts_siswa' => 'Aktif',
-                'foto' => $fileName,
-            ]
-        );
+
+        $siswa = Siswa::create([
+            'sekolah_id' => Auth::user()->sekolah_id,
+            'tahun_ajaran_id' => $tahunAjaranId,
+            'nisn' => $request->nisn,
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tgl_lahir' => $request->tgl_lahir,
+            'gender' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'kelas_id' => $request->kelas_id,
+            'tahun_masuk' => $request->thnmasuk,
+            'nohp' => $request->nohp,
+            'email' => $request->email,
+            'sts_siswa' => 'Aktif',
+            'foto' => $fileName,
+        ]);
+
+        HistoriSiswa::create([
+            'sekolah_id' => Auth::user()->sekolah_id,
+            'siswa_id' => $siswa->id, // Menggunakan ID siswa yang baru saja disimpan
+            'kelas_id' => $request->kelas_id,
+            'tahun_ajaran_id' => $tahunAjaranId,
+        ]);
         return redirect()->route('siswa.index')->with('toast_success', 'Siswa saved successfully.');
     }
     public function edit($id)
@@ -220,11 +228,8 @@ class SiswaController extends Controller
         } else {
             $fileName = $siswa->foto;
         }
-        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
-        $tahunAjaranId = $tahunAjaranAktif->id;
         $siswa->update(
             [
-                'tahun_ajaran_id' => $tahunAjaranId,
                 'nisn' => $request->nisn,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -316,13 +321,27 @@ class SiswaController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
-        $siswaID = $request->input('siswaID', []);
-        $jumlahSiswaID = count($siswaID);
-        $kelas = $request->input('kelas_id');
-        // Menggunakan Model Eloquent untuk mengupdate data
-        Siswa::whereIn('id', $siswaID)->update([
-            'kelas_id' => $kelas,
-        ]);
+        $siswaIDs = $request->input('siswaID', []);
+        $jumlahSiswaID = count($siswaIDs);
+        $kelasBaru = $request->input('kelas_id');
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
+
+        DB::transaction(function () use ($siswaIDs, $kelasBaru, $tahunAjaranId) {
+            // Menggunakan Model Eloquent untuk mengupdate data
+            Siswa::whereIn('id', $siswaIDs)->update([
+                'kelas_id' => $kelasBaru,
+            ]);
+
+            foreach ($siswaIDs as $siswaID) {
+                HistoriSiswa::create([
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'siswa_id' => $siswaID,
+                    'kelas_id' => $kelasBaru,
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                ]);
+            }
+        });
         return response()->json(['success' => '<span class="text-white">' . $jumlahSiswaID . '</span> Siswa berhasil naik kelas.']);
     }
     public function kelulusan(Request $request)
@@ -380,10 +399,27 @@ class SiswaController extends Controller
         }
         $CalumniID = $request->input('CalumniID', []);
         $jumlahCalumniID = count($request->input('CalumniID'));
-        // Menggunakan Model Eloquent untuk mengupdate data
-        Siswa::whereIn('id', $CalumniID)->update([
-            'sts_siswa' => 'Lulus',
-        ]);
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
+
+        DB::transaction(function () use ($CalumniID, $tahunAjaranId) {
+            // Mendapatkan informasi kelas dari salah satu siswa (semua siswa dianggap di kelas yang sama)
+            $kelas = Siswa::whereIn('id', $CalumniID)->first()->kelas_id;
+
+            // Menggunakan Model Eloquent untuk mengupdate data
+            Siswa::whereIn('id', $CalumniID)->update([
+                'sts_siswa' => 'Lulus',
+            ]);
+
+            foreach ($CalumniID as $siswaID) {
+                HistoriSiswa::create([
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'siswa_id' => $siswaID,
+                    'kelas_id' => $kelas,
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                ]);
+            }
+        });
         return response()->json(['success' => 'Congratulations <span class="text-white">' . $jumlahCalumniID . '</span> Siswa berhasil diluluskan.']);
     }
 
