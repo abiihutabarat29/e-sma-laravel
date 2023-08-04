@@ -179,19 +179,217 @@ class LabulController extends Controller
     }
     public function generate()
     {
-        $id = Auth::user()->sekolah_id;
+        $ids = Auth::user()->sekolah_id;
         $spreadsheet = new Spreadsheet();
-        $activeWorksheet = $spreadsheet->getActiveSheet();
-        $activeWorksheet->setCellValue('A1', 'Hello World !');
-
+        //===============start===============
+        $profil = ProfileSekolah::where('sekolah_id', $ids)->first();
+        $namayss = $profil->namayss == '' ? '*tidak didefinisikan' : $profil->namayss;
+        $alamatyss = $profil->alamatyss == '' ? '*tidak didefinisikan' : $profil->alamatyss;
+        // Design Table Identitas Sekolah
+        $spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'A. Identitas Sekolah');
+        $sheet = $spreadsheet->getActiveSheet()->setTitle('A, B, C');
+        $sheet->setCellValue('A2', '1.');
+        $sheet->setCellValue('A3', '2.');
+        $sheet->setCellValue('A4', '3.');
+        $sheet->setCellValue('A5', '4.');
+        $sheet->setCellValue('A6', '5.');
+        $sheet->setCellValue('A7', '6.');
+        $sheet->setCellValue('A8', '7.');
+        $sheet->setCellValue('A9', '8.');
+        $sheet->setCellValue('A10', '9.');
+        $sheet->setCellValue('A11', '10.');
+        $sheet->setCellValue('A12', '11.');
+        $sheet->setCellValue('A13', '12.');
+        $sheet->setCellValue('A14', '13.');
+        $sheet->setCellValue('A15', '14.');
+        $sheet->setCellValue('B2', 'Nama Sekolah');
+        $sheet->setCellValue('B3', 'Status');
+        $sheet->setCellValue('B4', 'Alamat/Kecamatan/Kode Pos');
+        $sheet->setCellValue('B5', 'Telepon/Hp/Email');
+        $sheet->setCellValue('B6', 'Tahun Berdiri');
+        $sheet->setCellValue('B7', 'Nomor SIOP Terakhir');
+        $sheet->setCellValue('B8', 'NPSN');
+        $sheet->setCellValue('B9', 'NSS');
+        $sheet->setCellValue('B10', 'NDS');
+        $sheet->setCellValue('B11', 'Jenjang Akreditasi/Tahun');
+        $sheet->setCellValue('B12', 'Standar Sekolah Bertaraf');
+        $sheet->setCellValue('B13', 'Nama Yayasan Perguruan/Pendidikan');
+        $sheet->setCellValue('B14', 'Alamat Yayasan');
+        $sheet->setCellValue('B15', 'Waktu Belajar');
+        $sheet->setCellValue('C2', ':');
+        $sheet->setCellValue('C3', ':');
+        $sheet->setCellValue('C4', ':');
+        $sheet->setCellValue('C5', ':');
+        $sheet->setCellValue('C6', ':');
+        $sheet->setCellValue('C7', ':');
+        $sheet->setCellValue('C8', ':');
+        $sheet->setCellValue('C9', ':');
+        $sheet->setCellValue('C10', ':');
+        $sheet->setCellValue('C11', ':');
+        $sheet->setCellValue('C12', ':');
+        $sheet->setCellValue('C13', ':');
+        $sheet->setCellValue('C14', ':');
+        $sheet->setCellValue('C15', ':');
+        $sheet->setCellValue('D2', $profil->sekolah->nama_sekolah);
+        $sheet->setCellValue('D3', $profil->sekolah->status);
+        $sheet->setCellValue('D4', $profil->alamat . ', ' .  $profil->kabupaten->kabupaten . ', ' .  $profil->kecamatan->kecamatan . ', ' .  $profil->kodepos);
+        $sheet->setCellValue('D5', "$profil->telp, $profil->email");
+        $sheet->setCellValue('D6', $profil->thnberdiri);
+        $sheet->setCellValue('D7', $profil->nosiop);
+        $sheet->setCellValue('D8', $profil->sekolah->npsn);
+        $sheet->setCellValue('D9', $profil->nss);
+        $sheet->setCellValue('D10', $profil->nds);
+        $sheet->setCellValue('D11', $profil->akreditas);
+        $sheet->setCellValue('D12', $profil->standar);
+        $sheet->setCellValue('D13', $namayss);
+        $sheet->setCellValue('D14', $alamatyss);
+        $sheet->setCellValue('D15', $profil->waktub);
+        // Style Table
+        $styleColumnCenter = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+        $styleNumberLeft = [
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+        ];
+        $styleBorder = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+        $styleBorderBottom = [
+            'borders' => [
+                'bottom' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+        $sheet->getStyle('D9')->getNumberFormat()->setFormatCode('00000000000');
+        $sheet->mergeCells('A1:D1');
+        $sheet->getStyle('A1')->getFont()->setBold(true);
+        $sheet->getStyle('A2:A15')->applyFromArray($styleColumnCenter);
+        $sheet->getStyle('D6:D10')->applyFromArray($styleNumberLeft);
+        // Style Auto Size
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        // ==============================================================================================
+        // Export Data Keadaan Siswa dan Agama
+        //Fetc Rombel X,XI,XII
+        $xmipa = Rombel::where('sekolah_id', $ids)->where('kelas', 'X')->where('jurusan', 'IPA')->count();
+        $xiis = Rombel::where('sekolah_id', $ids)->where('kelas', 'X')->where('jurusan', 'IPS')->count();
+        $xbhs = Rombel::where('sekolah_id', $ids)->where('kelas', 'X')->where('jurusan', 'BAHASA')->count();
+        $ximipa = Rombel::where('sekolah_id', $ids)->where('kelas', 'XI')->where('jurusan', 'IPA')->count();
+        $xiiis = Rombel::where('sekolah_id', $ids)->where('kelas', 'XI')->where('jurusan', 'IPS')->count();
+        $xibhs = Rombel::where('sekolah_id', $ids)->where('kelas', 'XI')->where('jurusan', 'BAHASA')->count();
+        $xiimipa = Rombel::where('sekolah_id', $ids)->where('kelas', 'XII')->where('jurusan', 'IPA')->count();
+        $xiiiis = Rombel::where('sekolah_id', $ids)->where('kelas', 'XII')->where('jurusan', 'IPS')->count();
+        $xiibhs = Rombel::where('sekolah_id', $ids)->where('kelas', 'XII')->where('jurusan', 'IPS')->count();
+        //Laki-laki-X-IPA
+        $rombel = Rombel::where('sekolah_id', $ids)->where('kelas', 'X')->where('jurusan', 'IPA')->where('ruangan', '1')->first();
+        $lxipa = Siswa::where('sekolah_id', $ids)->where('kelas_id', $rombel->id)->where('gender', 'L')->count();
+        //==============================================
+        $sheet->setCellValue('F1', 'B. Data Keadaan Siswa dan Bangunan');
+        $sheet->setCellValue('F2', 'No');
+        $sheet->setCellValue('F4', '1.');
+        $sheet->setCellValue('F5', '2.');
+        $sheet->setCellValue('F6', '3.');
+        $sheet->setCellValue('F7', '4.');
+        $sheet->setCellValue('F8', '5.');
+        $sheet->setCellValue('F9', '6.');
+        $sheet->setCellValue('F10', '7.');
+        $sheet->setCellValue('F11', '8.');
+        $sheet->setCellValue('F12', '9.');
+        $sheet->setCellValue('F13', 'JUMLAH');
+        $sheet->setCellValue('G2', 'Kelas/Program');
+        $sheet->setCellValue('G4', 'X-IPA');
+        $sheet->setCellValue('G5', 'XI-IPA');
+        $sheet->setCellValue('G6', 'XII-IPA');
+        $sheet->setCellValue('G7', 'X-IPS');
+        $sheet->setCellValue('G8', 'XI-IPS');
+        $sheet->setCellValue('G9', 'XII-IPS');
+        $sheet->setCellValue('G10', 'X-Bahasa');
+        $sheet->setCellValue('G11', 'XI-Bahasa');
+        $sheet->setCellValue('G12', 'XII-Bahasa');
+        $sheet->setCellValue('H2', 'SISWA');
+        $sheet->setCellValue('H3', 'L');
+        $sheet->setCellValue('H4', $lxipa);
+        $sheet->setCellValue('H5', '');
+        $sheet->setCellValue('H6', '');
+        $sheet->setCellValue('H7', '');
+        $sheet->setCellValue('H8', '');
+        $sheet->setCellValue('H9', '');
+        $sheet->setCellValue('H10', '');
+        $sheet->setCellValue('H11', '');
+        $sheet->setCellValue('H12', '');
+        $sheet->setCellValue('H13', '');
+        $sheet->setCellValue('I3', 'P');
+        $sheet->setCellValue('I4', '');
+        $sheet->setCellValue('I5', '');
+        $sheet->setCellValue('I6', '');
+        $sheet->setCellValue('I7', '');
+        $sheet->setCellValue('I8', '');
+        $sheet->setCellValue('I9', '');
+        $sheet->setCellValue('I10', '');
+        $sheet->setCellValue('I11', '');
+        $sheet->setCellValue('I12', '');
+        $sheet->setCellValue('I13', '');
+        $sheet->setCellValue('J2', 'Jumlah Siswa');
+        $sheet->setCellValue('J4', '');
+        $sheet->setCellValue('J5', '');
+        $sheet->setCellValue('J6', '');
+        $sheet->setCellValue('J7', '');
+        $sheet->setCellValue('J8', '');
+        $sheet->setCellValue('J9', '');
+        $sheet->setCellValue('J10', '');
+        $sheet->setCellValue('J11', '');
+        $sheet->setCellValue('J12', '');
+        $sheet->setCellValue('J13', '');
+        $sheet->setCellValue('K2', 'Jumlah Kelas (Rombel)');
+        $sheet->setCellValue('K4', $xmipa);
+        $sheet->setCellValue('K5', $xiis);
+        $sheet->setCellValue('K6', $xbhs);
+        $sheet->setCellValue('K7', $ximipa);
+        $sheet->setCellValue('K8', $xiiis);
+        $sheet->setCellValue('K9', $xibhs);
+        $sheet->setCellValue('K10', $xiimipa);
+        $sheet->setCellValue('K11', $xiiiis);
+        $sheet->setCellValue('K12', $xiibhs);
+        $sheet->setCellValue('K13', '');
+        //Marge left
+        $sheet->mergeCells('F1:Q1');
+        $sheet->mergeCells('F13:G13');
+        $sheet->mergeCells('H2:I2');
+        $sheet->mergeCells('L2:Q2');
+        //Marge down
+        $sheet->mergeCells('F2:F3');
+        $sheet->mergeCells('G2:G3');
+        $sheet->mergeCells('J2:J3');
+        $sheet->mergeCells('K2:K3');
+        //=========================
+        $sheet->getStyle('F1')->getFont()->setBold(true);
+        $sheet->getStyle('F2:Q13')->applyFromArray($styleColumnCenter);
+        $sheet->getStyle('F2:Q13')->applyFromArray($styleBorder);
+        $sheet->getStyle('G4:G12')->applyFromArray($styleNumberLeft);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
+        $sheet->getColumnDimension('G')->setAutoSize(true);
+        $sheet->getColumnDimension('H')->setWidth(25, 'pt');
+        $sheet->getColumnDimension('I')->setWidth(25, 'pt');
+        $sheet->getColumnDimension('J')->setWidth(70, 'pt');
+        $sheet->getColumnDimension('K')->setWidth(110, 'pt');
+        $sheet->getColumnDimension('M')->setWidth(110, 'pt');
+        $sheet->getColumnDimension('N')->setWidth(110, 'pt');
+        // ==============================================================================================
+        //===============end===============
         $writer = new Xlsx($spreadsheet);
-        // Set locale ke Indonesia
-        App::setLocale('id');
-        Date::setLocale('id');
         $sekolah = Auth::user()->sekolah->nama_sekolah;
-        $currentMonth = Carbon::now()->translatedFormat('F');
-        $currentYear = Carbon::now()->year;
-        $waktu = date('H:i:s');
         // Simpan file Excel ke buffer
         ob_start();
         $writer->save('php://output');

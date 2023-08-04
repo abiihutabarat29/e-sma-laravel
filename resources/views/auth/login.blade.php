@@ -10,7 +10,7 @@
                         </div>
                         <div class="login-wrap p-4 p-md-5">
                             <div class="d-flex justify-content-center">
-                                <img src="dist/login/images/logo-sekolah.svg" style="width:100px">
+                                <img src="dist/login/images/logo-login.png" style="width:300px">
                             </div>
                             <div class="w-100 text-center">
                                 <h3>E-SEKOLAH</h3>

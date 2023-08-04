@@ -28,6 +28,6 @@ class Role
         // if (in_array($request->user()->level, $level)) {
         //     return $next($request);
         // }
-        return redirect('login')->with('Maaf, kamu tidak memiliki hak akses!');
+        return redirect('/')->with('Maaf, kamu tidak memiliki hak akses!');
     }
 }

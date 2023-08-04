@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Mutasi;
 use App\Models\Siswa;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -104,9 +105,12 @@ class MutasiController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
         Mutasi::create(
             [
                 'sekolah_id' => Auth::user()->sekolah_id,
+                'tahun_ajaran_id' => $tahunAjaranId,
                 'nisn' => $request->nisn,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -127,6 +131,7 @@ class MutasiController extends Controller
         Siswa::create(
             [
                 'sekolah_id' => Auth::user()->sekolah_id,
+                'tahun_ajaran_id' => $tahunAjaranId,
                 'nisn' => $request->nisn,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -213,8 +218,12 @@ class MutasiController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
+
         $data = new Mutasi();
         $data->sekolah_id = Auth::user()->sekolah_id;
+        $data->tahun_ajaran_id = $tahunAjaranId;
         $data->nisn = $request->nisn;
         $data->nama = $request->nama;
         $data->kelas_id = $request->kelas_id;

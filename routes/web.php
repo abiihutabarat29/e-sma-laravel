@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\InventarisSekolahController;
 use App\Http\Controllers\Admin\LabulController;
 use App\Http\Controllers\Admin\SarprasController;
 use App\Http\Controllers\Admin\MutasiController;
+use App\Http\Controllers\Admin\TAController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,13 +37,10 @@ use App\Http\Controllers\Admin\MutasiController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::controller(AuthController::class)->group(function () {
     // Login
-    Route::get('login', 'index')->name('login')->middleware('guest');
-    Route::post('login', 'login')->middleware('guest');
+    Route::get('/', 'index')->name('login.index')->middleware('guest');
+    Route::post('login', 'login')->name('login')->middleware('guest');
     Route::get('logout', 'logout')->name('logout');
 });
 Route::group(['middleware' => ['auth:user,admincbd']], function () {
@@ -92,6 +90,10 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('golongan', GolonganController::class);
         // Jurusan
         Route::resource('jurusan', JurusanController::class);
+        // Tahun Ajaran
+        Route::resource('tahun-ajaran', TAController::class);
+        Route::post('tahun-ajaran/aktif/{id}', [TAController::class, 'setAktif']);
+        Route::post('tahun-ajaran/naktif/{id}', [TAController::class, 'setnAktif']);
     });
     // Route user sekolah
     Route::group(['middleware' => ['checkUser:2']], function () {

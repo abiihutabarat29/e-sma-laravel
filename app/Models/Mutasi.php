@@ -12,7 +12,7 @@ class Mutasi extends Model
     protected $table = "mutasi";
 
     protected $fillable = [
-        'sekolah_id', 'nisn', 'nama', 'alamat',
+        'sekolah_id', 'tahun_ajaran_id', 'nisn', 'nama', 'alamat',
         'tempat_lahir', 'tgl_lahir', 'gender', 'agama',
         'kelas_id', 'pkeahlian', 'tahun_masuk', 'nohp', 'email',
         'asal_sekolah', 'sekolah_tujuan', 'no_surat', 'keterangan', 'sts_mutasi',

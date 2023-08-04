@@ -39,7 +39,8 @@
                                 <span class="info-box-icon"><i class="fa fa-home"></i></span>
                                 <div class="info-box-content">
                                     <span
-                                        class="info-box-text">{{ $item['rombel']->kelas }}&nbsp;{{ $item['rombel']->jurusan }}&nbsp;{{ $item['rombel']->ruangan }}</span>
+                                        class="info-box-text">{{ $item['rombel']->kelas }}&nbsp;{{ $item['rombel']->jurusan }}&nbsp;{{ $item['rombel']->ruangan }}
+                                        - TA : {{ $item['rombel']->tahun_ajaran->nama }} </span>
                                     <span class="info-box-number">Jumlah Siswa/i :&nbsp;<span
                                             class="badge badge-danger">{{ $item['siswaCount'] }}</span></span>
                                 </div>
@@ -71,24 +72,30 @@
                         @csrf
                         <input type="hidden" name="rombel_id" id="rombel_id">
                         <div class="form-group">
-                            <div class="col-sm-12">
-                                <label>Kelas/Rombel<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="kelas" name="kelas"
-                                    placeholder="Kelas/Rombel">
-                            </div>
+                            <label>Kelas<span class="text-danger">*</span></label>
+                            <select class="form-control select2bs4" id="kelas" name="kelas" style="width: 100%;">
+                                <option selected disabled>---:---</option>
+                                <option value="X">X</option>
+                                <option value="XI">XI</option>
+                                <option value="XII">XII</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
+                        <div class="col-md-12">
+                            <div class="form-group">
                                 <label>Program/Jurusan<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="jurusan" name="jurusan"
-                                    placeholder="Program/Jurusan">
+                                <select class="form-control select2bs4" id="jurusan" name="jurusan" style="width: 100%;">
+                                    <option selected disabled>---:---</option>
+                                    <option value="IPA">IPA</option>
+                                    <option value="IPS">IPS</option>
+                                    <option value="BAHASA">BAHASA</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <label>Ruangan<span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" id="ruangan" name="ruangan"
-                                    placeholder="Ruangan">
+                                    placeholder="contoh : 1 atau 2 atau 3">
                             </div>
                         </div>
                         <div class="form-group">
@@ -119,8 +126,8 @@
                 $("#saveBtn").val("edit-rombel");
                 $("#ajaxModel").modal("show");
                 $("#rombel_id").val(data.id);
-                $("#kelas").val(data.kelas);
-                $("#jurusan").val(data.jurusan);
+                $("#kelas").val(data.kelas).trigger('change');;
+                $("#jurusan").val(data.jurusan).trigger('change');
                 $("#ruangan").val(data.ruangan);
             });
         });
@@ -156,5 +163,8 @@
                 },
             });
         });
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
     </script>
 @endsection

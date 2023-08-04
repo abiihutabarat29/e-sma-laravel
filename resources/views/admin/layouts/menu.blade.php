@@ -124,6 +124,34 @@
             </li>
         </ul>
     </li>
+    <li
+        class="nav-item {{ request()->segment(1) == 'tahun-ajaran' || request()->segment(1) == 'setting-ta' ? 'menu-open' : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'tahun-ajaran' || request()->segment(1) == 'setting-ta' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Tahun Ajaran
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('tahun-ajaran.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'tahun-ajaran' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Tahun Ajaran</p>
+                </a>
+            </li>
+        </ul>
+        {{-- <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'setting-ta' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Setting TA</p>
+                </a>
+            </li>
+        </ul> --}}
+    </li>
 @else
     <li
         class="nav-item {{ request()->segment(1) == 'profile-sekolah' ||
@@ -278,33 +306,6 @@
         </ul>
     </li>
     <li
-        class="nav-item {{ request()->segment(1) == 'buku-induk' || request()->segment(1) == 'cetak-data' ? 'menu-open' : '' }}">
-        <a href="#"
-            class="nav-link {{ request()->segment(1) == 'buku-induk' || request()->segment(1) == 'cetak-data' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-layer-group"></i>
-            <p>
-                Master Administrasi
-                <i class="right fas fa-angle-left"></i>
-            </p>
-        </a>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'buku-induk' ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Buku Induk</p>
-                </a>
-            </li>
-        </ul>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
-                <a href="#" class="nav-link {{ request()->segment(1) == 'cetak-data' ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Cetak Data</p>
-                </a>
-            </li>
-        </ul>
-    </li>
-    <li
         class="nav-item {{ request()->segment(1) == 'generate-labul' || request()->segment(1) == 'arsip-labul' ? 'menu-open' : '' }}">
         <a href="#"
             class="nav-link {{ request()->segment(1) == 'generate-labul' || request()->segment(1) == 'arsip-labul' ? 'active' : '' }}">
@@ -329,6 +330,52 @@
                     class="nav-link {{ request()->segment(1) == 'arsip-labul' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Arsip Labul</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li
+        class="nav-item {{ request()->segment(1) == 'buku-induk' || request()->segment(1) == 'cetak-data' ? 'menu-open' : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'buku-induk' || request()->segment(1) == 'cetak-data' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Administrasi
+                <i class="right fas fa-angle-left"></i>
+            </p>
+            <span class="badge badge-danger">coming soon</span>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'buku-induk' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Buku Induk</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'cetak-data' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Cetak Data</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item {{ request()->segment(1) == 'alumni' ? 'menu-open' : '' }}">
+        <a href="#" class="nav-link {{ request()->segment(1) == 'alumni' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-layer-group"></i>
+            <p>
+                Master Alumni
+                <i class="right fas fa-angle-left"></i>
+            </p>
+            <span class="badge badge-danger">coming soon</span>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="#" class="nav-link {{ request()->segment(1) == 'alumni' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Alumni</p>
                 </a>
             </li>
         </ul>

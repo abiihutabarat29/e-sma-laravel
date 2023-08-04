@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Mutasi;
 use App\Models\Rombel;
 use App\Models\Siswa;
+use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -122,9 +123,12 @@ class SiswaController extends Controller
         } else {
             $fileName = null;
         }
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
         Siswa::create(
             [
                 'sekolah_id' => Auth::user()->sekolah_id,
+                'tahun_ajaran_id' => $tahunAjaranId,
                 'nisn' => $request->nisn,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,
@@ -216,8 +220,11 @@ class SiswaController extends Controller
         } else {
             $fileName = $siswa->foto;
         }
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
         $siswa->update(
             [
+                'tahun_ajaran_id' => $tahunAjaranId,
                 'nisn' => $request->nisn,
                 'nama' => $request->nama,
                 'alamat' => $request->alamat,

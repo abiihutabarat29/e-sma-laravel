@@ -40,16 +40,14 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if (Auth::guard('admincbd')->check()) {
-
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
             Auth::guard('admincbd')->logout();
         } elseif (Auth::guard('user')->check()) {
-
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
             Auth::guard('user')->logout();
         }
-        return redirect('/login');
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

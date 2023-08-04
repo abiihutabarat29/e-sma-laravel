@@ -12,6 +12,15 @@ class Rombel extends Model
     protected $table = "rombel";
 
     protected $fillable = [
-        'sekolah_id', 'kelas', 'jurusan', 'ruangan'
+        'sekolah_id', 'kelas', 'jurusan', 'ruangan', 'tahun_ajaran_id'
     ];
+    public function tahun_ajaran()
+    {
+        return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
+    }
+
+    public function siswa()
+    {
+        return $this->hasMany(Siswa::class);
+    }
 }
