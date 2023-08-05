@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HistoriSiswa;
 use App\Models\Mutasi;
 use App\Models\Siswa;
 use App\Models\TahunAjaran;
@@ -125,10 +126,10 @@ class MutasiController extends Controller
                 'no_surat' => $request->no_surat,
                 'asal_sekolah' => $request->asal_sekolah,
                 'keterangan' => $request->keterangan,
-                'sts_mutasi' => 'pindahan',
+                'sts_mutasi' => 'Pindahan',
             ]
         );
-        Siswa::create(
+        $siswa = Siswa::create(
             [
                 'sekolah_id' => Auth::user()->sekolah_id,
                 'tahun_ajaran_id' => $tahunAjaranId,
@@ -146,6 +147,13 @@ class MutasiController extends Controller
                 'sts_siswa' => 'Aktif',
             ]
         );
+        HistoriSiswa::create([
+            'sekolah_id' => Auth::user()->sekolah_id,
+            'siswa_id' => $siswa->id,
+            'kelas_id' => $request->kelas_id,
+            'tahun_ajaran_id' => $tahunAjaranId,
+            'status' => 'Pindahan',
+        ]);
         return redirect()->route('mutasi-masuk.index')->with('toast_success', 'Siswa Pindahan saved successfully.');
     }
     public function destroy(Mutasi $mutasi)
@@ -235,12 +243,19 @@ class MutasiController extends Controller
         $data->nohp = $request->nohp;
         $data->email = $request->email;
         $data->tahun_masuk = $request->tahun_masuk;
-        $data->sts_mutasi = 'keluar';
+        $data->sts_mutasi = 'Keluar';
         $data->no_surat = $request->no_surat;
         $data->sekolah_tujuan = $request->sekolah_tujuan;
         $data->keterangan = $request->keterangan;
         $data->save();
         $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->findOrFail($request->siswa_id);
+        HistoriSiswa::create([
+            'sekolah_id' => Auth::user()->sekolah_id,
+            'siswa_id' => $siswa->id,
+            'kelas_id' => $request->kelas_id,
+            'tahun_ajaran_id' => $tahunAjaranId,
+            'status' => 'Keluar',
+        ]);
         $siswa->delete();
         return response()->json(['success' => 'Siswa Dropout successfully.']);
     }

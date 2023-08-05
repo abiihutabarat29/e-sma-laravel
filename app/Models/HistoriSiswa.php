@@ -12,7 +12,7 @@ class HistoriSiswa extends Model
     protected $table = "histori_siswa";
 
     protected $fillable = [
-        'sekolah_id', 'siswa_id', 'kelas_id', 'tahun_ajaran_id'
+        'sekolah_id', 'siswa_id', 'kelas_id', 'tahun_ajaran_id', 'status'
     ];
 
     public function siswa()

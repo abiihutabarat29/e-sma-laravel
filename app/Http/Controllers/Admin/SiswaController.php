@@ -145,12 +145,12 @@ class SiswaController extends Controller
             'sts_siswa' => 'Aktif',
             'foto' => $fileName,
         ]);
-
         HistoriSiswa::create([
             'sekolah_id' => Auth::user()->sekolah_id,
-            'siswa_id' => $siswa->id, // Menggunakan ID siswa yang baru saja disimpan
+            'siswa_id' => $siswa->id,
             'kelas_id' => $request->kelas_id,
             'tahun_ajaran_id' => $tahunAjaranId,
+            'status' => 'Aktif',
         ]);
         return redirect()->route('siswa.index')->with('toast_success', 'Siswa saved successfully.');
     }
@@ -339,6 +339,7 @@ class SiswaController extends Controller
                     'siswa_id' => $siswaID,
                     'kelas_id' => $kelasBaru,
                     'tahun_ajaran_id' => $tahunAjaranId,
+                    'status' => 'Naik Kelas',
                 ]);
             }
         });
@@ -417,6 +418,7 @@ class SiswaController extends Controller
                     'siswa_id' => $siswaID,
                     'kelas_id' => $kelas,
                     'tahun_ajaran_id' => $tahunAjaranId,
+                    'status' => 'Lulus',
                 ]);
             }
         });
@@ -453,10 +455,28 @@ class SiswaController extends Controller
     {
         $siswaID = $request->input('SiswaId');
         $Nonaktif = count($siswaID);
-        // Menggunakan Model Eloquent untuk mengupdate data
-        Siswa::whereIn('id', $siswaID)->update([
-            'sts_siswa' => 'Nonaktif',
-        ]);
+        $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
+        $tahunAjaranId = $tahunAjaranAktif->id;
+
+        DB::transaction(function () use ($siswaID, $tahunAjaranId) {
+            // Mendapatkan informasi kelas dari salah satu siswa (semua siswa dianggap di kelas yang sama)
+            $kelas = Siswa::whereIn('id', $siswaID)->first()->kelas_id;
+
+            // Menggunakan Model Eloquent untuk mengupdate data
+            Siswa::whereIn('id', $siswaID)->update([
+                'sts_siswa' => 'Nonaktif',
+            ]);
+
+            foreach ($siswaID as $siswaid) {
+                HistoriSiswa::create([
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'siswa_id' => $siswaid,
+                    'kelas_id' => $kelas,
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                    'status' => 'Nonaktif',
+                ]);
+            }
+        });
         return response()->json(['success' => '<span class="text-white">' . $Nonaktif . '</span> Siswa berhasil dinonaktifkan.']);
     }
 }
