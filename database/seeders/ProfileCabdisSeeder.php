@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\UsersCabdis;
+use App\Models\ProfileCabdis;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
-class AdminSeeder extends Seeder
+class ProfileCabdisSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +15,13 @@ class AdminSeeder extends Seeder
     {
         $data = [
             [
-                'nik' => '1212121212121200',
+                'users_cabdis_id' => '1',
                 'nama' => 'Administrator',
-                'nohp' => '082274884828',
                 'email' => 'admin@gmail.com',
-                'password' => Hash::make('12345678'),
-                'role' => 1,
-                'status' => 1,
+                'nik' => '1212121212121200',
+                'nohp' => '082274884828',
             ],
         ];
-        UsersCabdis::insert($data);
+        ProfileCabdis::insert($data);
     }
 }
