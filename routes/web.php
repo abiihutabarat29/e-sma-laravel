@@ -145,7 +145,7 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::delete('mutasi-masuk/{mutasi}/destroy', [MutasiController::class, 'destroy'])->name('mutasi-masuk.destroy');
         // Mutasi Keluar
         Route::get('mutasi-keluar', [MutasiController::class, 'indexk'])->name('mutasi-keluar.index');
-        Route::get('mutasi-keluar/create', [MutasiController::class, 'createk'])->name('mutasi-keluar.create');
+        // Route::get('mutasi-keluar/create', [MutasiController::class, 'createk'])->name('mutasi-keluar.create');
         Route::post('mutasi-keluar', [MutasiController::class, 'storek'])->name('mutasi-keluar.store');
         Route::delete('mutasi-keluar/{siswa}/destroy', [MutasiController::class, 'destroyk'])->name('mutasi-keluar.destroy');
         // Kenaikan Kelas

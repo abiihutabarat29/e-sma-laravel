@@ -89,8 +89,8 @@
     @endphp
     <div class="scrolling-text">
         <marquee class="scrolling-text" behavior="scroll" direction="left">
-            JIKA TAHUN AJARAN (TA) TIDAK AKTIF SEGERA HUBUNGI ADMINISTRATOR CABDIS. TAHUN AJARAN AKTIF SEKRANG
-            : {{ $tahunAjaranAktif->nama }}
+            JIKA TAHUN AJARAN (TA) TIDAK AKTIF SEGERA HUBUNGI ADMINISTRATOR CABDIS. TAHUN AJARAN AKTIF SEKRANG :
+            {{ $tahunAjaranAktif ? $tahunAjaranAktif->nama : 'TA belum diaktifkan oleh administrator' }}
         </marquee>
     </div>
     @include('admin.layouts.footer')

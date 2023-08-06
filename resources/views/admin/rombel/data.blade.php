@@ -152,6 +152,10 @@
                             $(".alert-danger").fadeOut(5000);
                             $("#saveBtn").html("Simpan").removeAttr('disabled');
                         });
+                    } else if (data.warning) {
+                        alertWarning(data.warning);
+                        $("#saveBtn").html("Simpan").removeAttr('disabled');
+                        $('#ajaxModel').modal('hide');
                     } else {
                         alertSuccess("Kelas saved successfully.");
                         $("#saveBtn").html("Simpan").removeAttr('disabled');

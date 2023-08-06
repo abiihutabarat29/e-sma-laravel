@@ -270,6 +270,11 @@
                                     $(".alert-danger").fadeOut(5000);
                                     $("#saveBtn").html("Simpan");
                                 });
+                            } else if (data.warning) {
+                                alertWarning(data.warning);
+                                $("#saveBtn").html("Simpan")
+                                    .removeAttr("disabled");
+                                $('#ajaxModel').modal('hide');
                             } else {
                                 table.draw();
                                 alertSuccess("Siswa dropout successfully.");

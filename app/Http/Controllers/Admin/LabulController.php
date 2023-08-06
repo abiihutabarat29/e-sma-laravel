@@ -293,8 +293,491 @@ class LabulController extends Controller
         $xiiiis = Rombel::where('sekolah_id', $ids)->where('kelas', 'XII')->where('jurusan', 'IPS')->count();
         $xiibhs = Rombel::where('sekolah_id', $ids)->where('kelas', 'XII')->where('jurusan', 'IPS')->count();
         //Laki-laki-X-IPA
-        $rombel = Rombel::where('sekolah_id', $ids)->where('kelas', 'X')->where('jurusan', 'IPA')->where('ruangan', '1')->first();
-        $lxipa = Siswa::where('sekolah_id', $ids)->where('kelas_id', $rombel->id)->where('gender', 'L')->count();
+        $lxipa = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-X-IPS
+        $lxiis = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-X-BAHASA
+        $lxbhs = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-XI-IPA
+        $lxiipa = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-XI-IPS
+        $lxiiis = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-XI-BAHASA
+        $lxibhs = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-XII-IPA
+        $lxiiipa = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-XII-IPS
+        $lxiiiis = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Laki-laki-XII-BAHASA
+        $lxiibhs = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'L')->count();
+        //Perempuan-X-IPA
+        $pxipa = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-X-IPS
+        $pxiis = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-X-BAHASA
+        $pxbhs = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-XI-IPA
+        $pxiipa = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-XI-IPS
+        $pxiiis = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-XI-BAHASA
+        $pxibhs = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-XII-IPA
+        $pxiiipa = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-XII-IPS
+        $pxiiiis = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //Perempuan-XII-BAHASA
+        $pxiibhs = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif');
+        })->where('gender', 'P')->count();
+        //X-IPA-Kristen Protestan
+        $xipai = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //X-IPS-Islam
+        $xiisi = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //X-BAHASA-Islam
+        $xbhsi = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //XI-IPA-Islam
+        $xiipai = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //XI-IPS-Islam
+        $xiiisi = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //XI-BAHASA-Islam
+        $xibhsi = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //XII-IPA-Islam
+        $xiiipai = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //XII-IPS-Islam
+        $xiiiisi = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //XII-BAHASA-Islam
+        $xiibhsi = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Islam');
+        })->count();
+        //X-IPA-Kristen Protestan
+        $xipakp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //X-IPS-Kristen Protestan
+        $xiiskp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //X-BAHASA-Kristen Protestan
+        $xbhskp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //XI-IPA-Kristen Protestan
+        $xiipakp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //XI-IPS-Kristen Protestan
+        $xiiiskp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //XI-BAHASA-Kristen Protestan
+        $xibhskp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //XII-IPA-Kristen Protestan
+        $xiiipakp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //XII-IPS-Kristen Protestan
+        $xiiiiskp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //XII-BAHASA-Kristen Protestan
+        $xiibhskp = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Protestan');
+        })->count();
+        //X-IPA-Kristen Katholik
+        $xipakk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //X-IPS-Kristen Katholik
+        $xiiskk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //X-BAHASA-Kristen Katholik
+        $xbhskk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //XI-IPA-Kristen Katholik
+        $xiipakk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //XI-IPS-Kristen Katholik
+        $xiiiskk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //XI-BAHASA-Kristen Katholik
+        $xibhskk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //XII-IPA-Kristen Katholik
+        $xiiipakk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //XII-IPS-Kristen Katholik
+        $xiiiiskk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //XII-BAHASA-Kristen Katholik
+        $xiibhskk = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Kristen Katholik');
+        })->count();
+        //X-IPA-Hindu
+        $xipah = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //X-IPS-Hindu
+        $xiish = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //X-BAHASA-Hindu
+        $xbhsh = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //XI-IPA-Hindu
+        $xiipah = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //XI-IPS-Hindu
+        $xiiish = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //XI-BAHASA-Hindu
+        $xibhsh = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //XII-IPA-Hindu
+        $xiiipah = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //XII-IPS-Hindu
+        $xiiiish = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //XII-BAHASA-Hindu
+        $xiibhsh = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Hindu');
+        })->count();
+        //X-IPA-Budha
+        $xipab = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //X-IPS-Budha
+        $xiisb = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //X-BAHASA-Budha
+        $xbhsb = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'X')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //XI-IPA-Budha
+        $xiipab = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //XI-IPS-Budha
+        $xiiisb = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //XI-BAHASA-Budha
+        $xibhsb = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XI')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //XII-IPA-Budha
+        $xiiipab = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //XII-IPS-Budha
+        $xiiiisb = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'IPS')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
+        //XII-BAHASA-Budha
+        $xiibhsb = Siswa::whereHas('kelas', function ($query) use ($ids) {
+            $query->where('sekolah_id', $ids)
+                ->where('kelas', 'XII')
+                ->where('jurusan', 'BAHASA')
+                ->where('sts_siswa', 'Aktif')
+                ->where('agama', 'Budha');
+        })->count();
         //==============================================
         $sheet->setCellValue('F1', 'B. Data Keadaan Siswa dan Bangunan');
         $sheet->setCellValue('F2', 'No');
@@ -321,48 +804,115 @@ class LabulController extends Controller
         $sheet->setCellValue('H2', 'SISWA');
         $sheet->setCellValue('H3', 'L');
         $sheet->setCellValue('H4', $lxipa);
-        $sheet->setCellValue('H5', '');
-        $sheet->setCellValue('H6', '');
-        $sheet->setCellValue('H7', '');
-        $sheet->setCellValue('H8', '');
-        $sheet->setCellValue('H9', '');
-        $sheet->setCellValue('H10', '');
-        $sheet->setCellValue('H11', '');
-        $sheet->setCellValue('H12', '');
-        $sheet->setCellValue('H13', '');
+        $sheet->setCellValue('H5', $lxiipa);
+        $sheet->setCellValue('H6', $lxiiipa);
+        $sheet->setCellValue('H7', $lxiis);
+        $sheet->setCellValue('H8', $lxiiis);
+        $sheet->setCellValue('H9', $lxiiiis);
+        $sheet->setCellValue('H10', $lxbhs);
+        $sheet->setCellValue('H11', $lxibhs);
+        $sheet->setCellValue('H12', $lxiibhs);
+        $sheet->setCellValue('H13', '=SUM(H4:H12)');
         $sheet->setCellValue('I3', 'P');
-        $sheet->setCellValue('I4', '');
-        $sheet->setCellValue('I5', '');
-        $sheet->setCellValue('I6', '');
-        $sheet->setCellValue('I7', '');
-        $sheet->setCellValue('I8', '');
-        $sheet->setCellValue('I9', '');
-        $sheet->setCellValue('I10', '');
-        $sheet->setCellValue('I11', '');
-        $sheet->setCellValue('I12', '');
-        $sheet->setCellValue('I13', '');
+        $sheet->setCellValue('I4', $pxipa);
+        $sheet->setCellValue('I5', $pxiipa);
+        $sheet->setCellValue('I6', $pxiiipa);
+        $sheet->setCellValue('I7', $pxiis);
+        $sheet->setCellValue('I8', $pxiiis);
+        $sheet->setCellValue('I9', $pxiiiis);
+        $sheet->setCellValue('I10', $pxbhs);
+        $sheet->setCellValue('I11', $pxibhs);
+        $sheet->setCellValue('I12', $pxiibhs);
+        $sheet->setCellValue('I13', '=SUM(I4:I12)');
         $sheet->setCellValue('J2', 'Jumlah Siswa');
-        $sheet->setCellValue('J4', '');
-        $sheet->setCellValue('J5', '');
-        $sheet->setCellValue('J6', '');
-        $sheet->setCellValue('J7', '');
-        $sheet->setCellValue('J8', '');
-        $sheet->setCellValue('J9', '');
-        $sheet->setCellValue('J10', '');
-        $sheet->setCellValue('J11', '');
-        $sheet->setCellValue('J12', '');
-        $sheet->setCellValue('J13', '');
+        $sheet->setCellValue('J4', '=H4+I4');
+        $sheet->setCellValue('J5', '=H5+I5');
+        $sheet->setCellValue('J6', '=H6+I6');
+        $sheet->setCellValue('J7', '=H7+I7');
+        $sheet->setCellValue('J8', '=H8+I8');
+        $sheet->setCellValue('J9', '=H9+I9');
+        $sheet->setCellValue('J10', '=H10+I10');
+        $sheet->setCellValue('J11', '=H11+I11');
+        $sheet->setCellValue('J12', '=H12+I12');
+        $sheet->setCellValue('J13', '=SUM(J4:J12)');
         $sheet->setCellValue('K2', 'Jumlah Kelas (Rombel)');
         $sheet->setCellValue('K4', $xmipa);
-        $sheet->setCellValue('K5', $xiis);
-        $sheet->setCellValue('K6', $xbhs);
-        $sheet->setCellValue('K7', $ximipa);
+        $sheet->setCellValue('K5', $ximipa);
+        $sheet->setCellValue('K6', $xiimipa);
+        $sheet->setCellValue('K7', $xiis);
         $sheet->setCellValue('K8', $xiiis);
-        $sheet->setCellValue('K9', $xibhs);
-        $sheet->setCellValue('K10', $xiimipa);
-        $sheet->setCellValue('K11', $xiiiis);
+        $sheet->setCellValue('K9', $xiiiis);
+        $sheet->setCellValue('K10', $xbhs);
+        $sheet->setCellValue('K11', $xibhs);
         $sheet->setCellValue('K12', $xiibhs);
-        $sheet->setCellValue('K13', '');
+        $sheet->setCellValue('K13', '=SUM(K4:K12)');
+        $sheet->setCellValue('L2', 'Agama');
+        $sheet->setCellValue('L3', 'Islam');
+        $sheet->setCellValue('L4', $xipai);
+        $sheet->setCellValue('L5', $xiipai);
+        $sheet->setCellValue('L6', $xiiipai);
+        $sheet->setCellValue('L7', $xiisi);
+        $sheet->setCellValue('L8', $xiiisi);
+        $sheet->setCellValue('L9', $xiiiisi);
+        $sheet->setCellValue('L10', $xbhsi);
+        $sheet->setCellValue('L11', $xibhsi);
+        $sheet->setCellValue('L12', $xiibhsi);
+        $sheet->setCellValue('L13', '=SUM(L4:L12)');
+        $sheet->setCellValue('M3', 'Kristen Protestan');
+        $sheet->setCellValue('M4', $xipakp);
+        $sheet->setCellValue('M5', $xiipakp);
+        $sheet->setCellValue('M6', $xiiipakp);
+        $sheet->setCellValue('M7', $xiiskp);
+        $sheet->setCellValue('M8', $xiiiskp);
+        $sheet->setCellValue('M9', $xiiiiskp);
+        $sheet->setCellValue('M10', $xbhskp);
+        $sheet->setCellValue('M11', $xiibhskp);
+        $sheet->setCellValue('M12', $xiibhskp);
+        $sheet->setCellValue('M13', '=SUM(M4:M12)');
+        $sheet->setCellValue('N3', 'Kristen Katholik');
+        $sheet->setCellValue('N4', $xipakk);
+        $sheet->setCellValue('N5', $xiipakk);
+        $sheet->setCellValue('N6', $xiiipakk);
+        $sheet->setCellValue('N7', $xiiskk);
+        $sheet->setCellValue('N8', $xiiiskk);
+        $sheet->setCellValue('N9', $xiiiiskk);
+        $sheet->setCellValue('N10', $xbhskk);
+        $sheet->setCellValue('N11', $xibhskk);
+        $sheet->setCellValue('N12', $xiibhskk);
+        $sheet->setCellValue('N13', '=SUM(N4:N12)');
+        $sheet->setCellValue('O3', 'Hindu');
+        $sheet->setCellValue('O4', $xipah);
+        $sheet->setCellValue('O5', $xiipah);
+        $sheet->setCellValue('O6', $xiiipah);
+        $sheet->setCellValue('O7', $xiish);
+        $sheet->setCellValue('O8', $xiiish);
+        $sheet->setCellValue('O9', $xiiiish);
+        $sheet->setCellValue('O10', $xbhsh);
+        $sheet->setCellValue('O11', $xibhsh);
+        $sheet->setCellValue('O12', $xiibhsh);
+        $sheet->setCellValue('O13', '=SUM(O4:O12)');
+        $sheet->setCellValue('P3', 'Budha');
+        $sheet->setCellValue('P4', $xipab);
+        $sheet->setCellValue('P5', $xiipab);
+        $sheet->setCellValue('P6', $xiiipab);
+        $sheet->setCellValue('P7', $xiisb);
+        $sheet->setCellValue('P8', $xiiisb);
+        $sheet->setCellValue('P9', $xiiiisb);
+        $sheet->setCellValue('P10', $xbhsb);
+        $sheet->setCellValue('P11', $xibhsb);
+        $sheet->setCellValue('P12', $xiibhsb);
+        $sheet->setCellValue('P13', '=SUM(P4:P12)');
+        $sheet->setCellValue('Q3', 'Jumlah');
+        $sheet->setCellValue('Q4', '=SUM(L4:P4)');
+        $sheet->setCellValue('Q5', '=SUM(L5:P5)');
+        $sheet->setCellValue('Q6', '=SUM(L6:P6)');
+        $sheet->setCellValue('Q7', '=SUM(L7:L7)');
+        $sheet->setCellValue('Q8', '=SUM(L8:L8)');
+        $sheet->setCellValue('Q9', '=SUM(L9:L9)');
+        $sheet->setCellValue('Q10', '=SUM(L10:L10)');
+        $sheet->setCellValue('Q11', '=SUM(L11:L11)');
+        $sheet->setCellValue('Q12', '=SUM(L12:L12)');
+        $sheet->setCellValue('Q13', '=SUM(Q4:Q12)');
         //Marge left
         $sheet->mergeCells('F1:Q1');
         $sheet->mergeCells('F13:G13');

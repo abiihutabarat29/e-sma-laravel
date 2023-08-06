@@ -107,54 +107,58 @@ class MutasiController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
-        $tahunAjaranId = $tahunAjaranAktif->id;
-        Mutasi::create(
-            [
+        if ($tahunAjaranAktif) {
+            $tahunAjaranId = $tahunAjaranAktif->id;
+            Mutasi::create(
+                [
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                    'nisn' => $request->nisn,
+                    'nama' => $request->nama,
+                    'alamat' => $request->alamat,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tgl_lahir' => $request->tgl_lahir,
+                    'gender' => $request->jenis_kelamin,
+                    'agama' => $request->agama,
+                    'kelas_id' => $request->kelas_id,
+                    'tahun_masuk' => $request->thnmasuk,
+                    'nohp' => $request->nohp,
+                    'email' => $request->email,
+                    'no_surat' => $request->no_surat,
+                    'asal_sekolah' => $request->asal_sekolah,
+                    'keterangan' => $request->keterangan,
+                    'sts_mutasi' => 'Pindahan',
+                ]
+            );
+            $siswa = Siswa::create(
+                [
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                    'nisn' => $request->nisn,
+                    'nama' => $request->nama,
+                    'alamat' => $request->alamat,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'tgl_lahir' => $request->tgl_lahir,
+                    'gender' => $request->jenis_kelamin,
+                    'agama' => $request->agama,
+                    'kelas_id' => $request->kelas_id,
+                    'tahun_masuk' => $request->thnmasuk,
+                    'nohp' => $request->nohp,
+                    'email' => $request->email,
+                    'sts_siswa' => 'Aktif',
+                ]
+            );
+            HistoriSiswa::create([
                 'sekolah_id' => Auth::user()->sekolah_id,
-                'tahun_ajaran_id' => $tahunAjaranId,
-                'nisn' => $request->nisn,
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tgl_lahir' => $request->tgl_lahir,
-                'gender' => $request->jenis_kelamin,
-                'agama' => $request->agama,
+                'siswa_id' => $siswa->id,
                 'kelas_id' => $request->kelas_id,
-                'tahun_masuk' => $request->thnmasuk,
-                'nohp' => $request->nohp,
-                'email' => $request->email,
-                'no_surat' => $request->no_surat,
-                'asal_sekolah' => $request->asal_sekolah,
-                'keterangan' => $request->keterangan,
-                'sts_mutasi' => 'Pindahan',
-            ]
-        );
-        $siswa = Siswa::create(
-            [
-                'sekolah_id' => Auth::user()->sekolah_id,
                 'tahun_ajaran_id' => $tahunAjaranId,
-                'nisn' => $request->nisn,
-                'nama' => $request->nama,
-                'alamat' => $request->alamat,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tgl_lahir' => $request->tgl_lahir,
-                'gender' => $request->jenis_kelamin,
-                'agama' => $request->agama,
-                'kelas_id' => $request->kelas_id,
-                'tahun_masuk' => $request->thnmasuk,
-                'nohp' => $request->nohp,
-                'email' => $request->email,
-                'sts_siswa' => 'Aktif',
-            ]
-        );
-        HistoriSiswa::create([
-            'sekolah_id' => Auth::user()->sekolah_id,
-            'siswa_id' => $siswa->id,
-            'kelas_id' => $request->kelas_id,
-            'tahun_ajaran_id' => $tahunAjaranId,
-            'status' => 'Pindahan',
-        ]);
-        return redirect()->route('mutasi-masuk.index')->with('toast_success', 'Siswa Pindahan saved successfully.');
+                'status' => 'Pindahan',
+            ]);
+            return redirect()->route('mutasi-masuk.index')->with('toast_success', 'Siswa Pindahan saved successfully.');
+        } else {
+            return redirect()->route('mutasi-masuk.index')->with('toast_error', 'Tahun Ajaran saat ini belum aktif.');
+        }
     }
     public function destroy(Mutasi $mutasi)
     {
@@ -201,11 +205,11 @@ class MutasiController extends Controller
         }
         return view('admin.mutasi-keluar.data', compact('menu'));
     }
-    public function createk(Request $req)
-    {
-        $menu = 'Tambah Data Mutasi Keluar';
-        return view('admin.mutasi-keluar.create', compact('menu'));
-    }
+    // public function createk(Request $req)
+    // {
+    //     $menu = 'Tambah Data Mutasi Keluar';
+    //     return view('admin.mutasi-keluar.create', compact('menu'));
+    // }
     public function storek(Request $request)
     {
         //Translate Bahasa Indonesia
@@ -227,37 +231,40 @@ class MutasiController extends Controller
             return response()->json(['errors' => $validator->errors()->all()]);
         }
         $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
-        $tahunAjaranId = $tahunAjaranAktif->id;
-
-        $data = new Mutasi();
-        $data->sekolah_id = Auth::user()->sekolah_id;
-        $data->tahun_ajaran_id = $tahunAjaranId;
-        $data->nisn = $request->nisn;
-        $data->nama = $request->nama;
-        $data->kelas_id = $request->kelas_id;
-        $data->alamat = $request->alamat;
-        $data->tempat_lahir = $request->tempat_lahir;
-        $data->tgl_lahir = $request->tgl_lahir;
-        $data->gender = $request->gender;
-        $data->agama = $request->agama;
-        $data->nohp = $request->nohp;
-        $data->email = $request->email;
-        $data->tahun_masuk = $request->tahun_masuk;
-        $data->sts_mutasi = 'Keluar';
-        $data->no_surat = $request->no_surat;
-        $data->sekolah_tujuan = $request->sekolah_tujuan;
-        $data->keterangan = $request->keterangan;
-        $data->save();
-        $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->findOrFail($request->siswa_id);
-        HistoriSiswa::create([
-            'sekolah_id' => Auth::user()->sekolah_id,
-            'siswa_id' => $siswa->id,
-            'kelas_id' => $request->kelas_id,
-            'tahun_ajaran_id' => $tahunAjaranId,
-            'status' => 'Keluar',
-        ]);
-        $siswa->delete();
-        return response()->json(['success' => 'Siswa Dropout successfully.']);
+        if ($tahunAjaranAktif) {
+            $tahunAjaranId = $tahunAjaranAktif->id;
+            $data = new Mutasi();
+            $data->sekolah_id = Auth::user()->sekolah_id;
+            $data->tahun_ajaran_id = $tahunAjaranId;
+            $data->nisn = $request->nisn;
+            $data->nama = $request->nama;
+            $data->kelas_id = $request->kelas_id;
+            $data->alamat = $request->alamat;
+            $data->tempat_lahir = $request->tempat_lahir;
+            $data->tgl_lahir = $request->tgl_lahir;
+            $data->gender = $request->gender;
+            $data->agama = $request->agama;
+            $data->nohp = $request->nohp;
+            $data->email = $request->email;
+            $data->tahun_masuk = $request->tahun_masuk;
+            $data->sts_mutasi = 'Keluar';
+            $data->no_surat = $request->no_surat;
+            $data->sekolah_tujuan = $request->sekolah_tujuan;
+            $data->keterangan = $request->keterangan;
+            $data->save();
+            $siswa = Siswa::where('sekolah_id', Auth::user()->sekolah_id)->findOrFail($request->siswa_id);
+            HistoriSiswa::create([
+                'sekolah_id' => Auth::user()->sekolah_id,
+                'siswa_id' => $siswa->id,
+                'kelas_id' => $request->kelas_id,
+                'tahun_ajaran_id' => $tahunAjaranId,
+                'status' => 'Keluar',
+            ]);
+            $siswa->delete();
+            return response()->json(['success' => 'Siswa Dropout successfully.']);
+        } else {
+            return response()->json(['warning' => 'Tahun Ajaran saat ini belum aktif.']);
+        }
     }
     public function destroyk($id)
     {

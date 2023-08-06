@@ -168,6 +168,10 @@
                                         "<i class='fa fa-arrow-up'></i> Luluskan")
                                     .removeAttr("disabled");
                             });
+                        } else if (data.warning) {
+                            alertWarning(data.warning);
+                            $("#lulus").html("<i class='fa fa-arrow-up'></i> Luluskan")
+                                .removeAttr("disabled");
                         } else {
                             table.draw();
                             alertSuccess(data.success);

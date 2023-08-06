@@ -49,20 +49,24 @@ class RombelController extends Controller
             return response()->json(['errors' => $validator->errors()->all()]);
         }
         $tahunAjaranAktif = TahunAjaran::where('status', 1)->first();
-        $tahunAjaranId = $tahunAjaranAktif->id;
-        Rombel::updateOrCreate(
-            [
-                'id' => $request->rombel_id
-            ],
-            [
-                'sekolah_id' => Auth::user()->sekolah_id,
-                'kelas' => $request->kelas,
-                'jurusan' => $request->jurusan,
-                'ruangan' => $request->ruangan,
-                'tahun_ajaran_id' => $tahunAjaranId,
-            ]
-        );
-        return response()->json(['success' => 'Kelas saved successfully.']);
+        if ($tahunAjaranAktif) {
+            $tahunAjaranId = $tahunAjaranAktif->id;
+            Rombel::updateOrCreate(
+                [
+                    'id' => $request->rombel_id
+                ],
+                [
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'kelas' => $request->kelas,
+                    'jurusan' => $request->jurusan,
+                    'ruangan' => $request->ruangan,
+                    'tahun_ajaran_id' => $tahunAjaranId,
+                ]
+            );
+            return response()->json(['success' => 'Kelas saved successfully.']);
+        } else {
+            return response()->json(['warning' => 'Tahun Ajaran saat ini belum aktif.']);
+        }
     }
     public function edit($id)
     {

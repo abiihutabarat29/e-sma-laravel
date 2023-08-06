@@ -199,14 +199,16 @@
                             $('.alert-danger').html('');
                             $.each(data.errors, function(key, value) {
                                 $('.alert-danger').show();
-                                $('.alert-danger').append('<strong><li>' +
-                                    value +
+                                $('.alert-danger').append('<strong><li>' + value +
                                     '</li></strong>');
                                 $(".alert-danger").fadeOut(5000);
-                                $("#up").html(
-                                        "<i class='fa fa-arrow-up'></i> Naikkan")
+                                $("#up").html("<i class='fa fa-arrow-up'></i> Naikkan")
                                     .removeAttr("disabled");
                             });
+                        } else if (data.warning) {
+                            alertWarning(data.warning);
+                            $("#up").html("<i class='fa fa-arrow-up'></i> Naikkan")
+                                .removeAttr("disabled");
                         } else {
                             table.draw();
                             alertSuccess(data.success);
