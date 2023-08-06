@@ -271,6 +271,12 @@
                                         )
                                         .removeAttr("disabled");
                                 });
+                            } else if (data.warning) {
+                                alertWarning(data.warning);
+                                $("#aktif").html(
+                                        "<i class='fa fa-fa-check'></i> Aktifkan")
+                                    .removeAttr('disabled');
+                                $('#ajaxModelAktif').modal('hide');
                             } else {
                                 table.draw();
                                 alertSuccess(data.success);

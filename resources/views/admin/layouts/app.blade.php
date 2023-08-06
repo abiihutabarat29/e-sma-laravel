@@ -90,7 +90,9 @@
     <div class="scrolling-text">
         <marquee class="scrolling-text" behavior="scroll" direction="left">
             JIKA TAHUN AJARAN (TA) TIDAK AKTIF SEGERA HUBUNGI ADMINISTRATOR CABDIS. TAHUN AJARAN AKTIF SEKRANG :
-            {{ $tahunAjaranAktif ? $tahunAjaranAktif->nama : 'TA belum diaktifkan oleh administrator' }}
+            {!! $tahunAjaranAktif
+                ? $tahunAjaranAktif->nama
+                : '<span class="text-danger">TA belum diaktifkan oleh administrator</span>' !!}
         </marquee>
     </div>
     @include('admin.layouts.footer')

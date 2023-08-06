@@ -40,7 +40,14 @@
                                 <div class="info-box-content">
                                     <span
                                         class="info-box-text">{{ $item['rombel']->kelas }}&nbsp;{{ $item['rombel']->jurusan }}&nbsp;{{ $item['rombel']->ruangan }}
-                                        - TA : {{ $item['rombel']->tahun_ajaran->nama }} </span>
+                                        - TA :
+                                        {!! $item['rombel']->tahun_ajaran
+                                            ? $item['rombel']->tahun_ajaran->nama
+                                            : ($item['rombel']->tahun_ajaran
+                                                ? '<span class="badge badge-danger">nonaktif</span>'
+                                                : '<span class="badge badge-danger">kosong</span>') !!}
+
+                                    </span>
                                     <span class="info-box-number">Jumlah Siswa/i :&nbsp;<span
                                             class="badge badge-danger">{{ $item['siswaCount'] }}</span></span>
                                 </div>
@@ -144,14 +151,20 @@
                 success: function(data) {
                     if (data.errors) {
                         $('.alert-danger').html('');
+                        $('.alert-danger').show();
                         $.each(data.errors, function(key, value) {
-                            $('.alert-danger').show();
-                            $('.alert-danger').append('<strong><li>' +
-                                value +
+                            $('.alert-danger').append('<strong><li>' + value +
                                 '</li></strong>');
-                            $(".alert-danger").fadeOut(5000);
-                            $("#saveBtn").html("Simpan").removeAttr('disabled');
                         });
+
+                        // Hapus pesan kesalahan setelah 5 detik
+                        setTimeout(function() {
+                            $('.alert-danger').fadeOut(1000, function() {
+                                $(this).html('').hide();
+                            });
+                        }, 5000);
+
+                        $("#saveBtn").html("Simpan").removeAttr('disabled');
                     } else if (data.warning) {
                         alertWarning(data.warning);
                         $("#saveBtn").html("Simpan").removeAttr('disabled');

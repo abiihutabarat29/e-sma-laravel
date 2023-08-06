@@ -23,7 +23,7 @@ class TAController extends Controller
                 ->addColumn('status', function ($data) {
                     if ($data->status == 1) {
                         $status = '<center><span class="badge badge-success">aktif</span></center>';
-                    } elseif ($data->status == 2) {
+                    } elseif ($data->status == null) {
                         $status = '<center><span class="badge badge-primary">selesai</span></center>';
                     } else {
                         $status = '<center><span class="badge badge-danger">nonaktif</span></center>';
@@ -33,7 +33,7 @@ class TAController extends Controller
                 ->addColumn('action', function ($row) {
                     if ($row->status == 1) {
                         $btn = '<center><a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-nama="' . $row->nama . '" data-original-title="Non Aktifkan TA" class="btn btn-danger btn-xs nonaktifTa"><i class="fas fa-ban"></i> nonaktifkan/selesai</a><center>';
-                    } elseif ($row->status == 2) {
+                    } elseif ($row->status == null) {
                         $btn = '<center><span class="badge badge-primary">selesai</span></center>';
                     } else {
                         $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $row->id . '" data-original-title="Edit" class="edit btn btn-primary btn-xs editTa"><i class="fas fa-edit"></i> Edit</a>';
@@ -52,10 +52,31 @@ class TAController extends Controller
         $message = array(
             'nama.required' => 'Tahun Ajaran harus diisi.',
             'nama.unique' => 'Tahun Ajaran sudah ada.',
+            'nama.regex' => 'Format Tahun Ajaran tidak valid. Contoh gunakan format 2023/2024.',
         );
+        if (!$request->ta_id) {
+            $ruleTa = 'required|unique:tahun_ajaran,nama|regex:/^\d{4}\/\d{4}$/';
+        } else {
+            $lastTa = TahunAjaran::where('id', $request->ta_id)->first();
+            if ($lastTa->nama == $request->nama) {
+                $ruleTa = 'required|regex:/^\d{4}\/\d{4}$/';
+            } else {
+                $ruleTa = 'required|unique:tahun_ajaran,nama|regex:/^\d{4}\/\d{4}$/';
+            }
+        }
         $validator = Validator::make($request->all(), [
-            'nama' => 'required|unique:tahun_ajaran,nama',
+            'nama' => $ruleTa,
         ], $message);
+
+        if (!$request->ta_id) {
+            $validator->after(function ($validator) {
+                $tahunAjaranAktif = TahunAjaran::where('status', 0)->first();
+
+                if ($tahunAjaranAktif && $tahunAjaranAktif->status == 0) {
+                    $validator->errors()->add('status', 'Maaf, Tahun Ajaran hanya masih ada yang belum diaktifkan.');
+                }
+            });
+        }
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
@@ -66,6 +87,7 @@ class TAController extends Controller
             ],
             [
                 'nama' => $request->nama,
+                'status' => 0,
             ]
         );
         return response()->json(['success' => 'Tahun Ajaran saved successfully.']);
@@ -80,16 +102,27 @@ class TAController extends Controller
     {
         // Cari tahun ajaran berdasarkan ID
         $tahunAjaran = TahunAjaran::findOrFail($id);
-        // Mengaktifkan tahun ajaran yang dipilih
-        $tahunAjaran->update(['status' => 1]);
-        return response()->json(['success' => 'Tahun ajaran berhasil diaktifkan.']);
+
+        // Cek apakah ada tahun ajaran lain yang statusnya masih aktif (nilai 1)
+        $activeTahunAjaran = TahunAjaran::where('status', 1)->where('id', '<>', $id)->first();
+
+        if ($activeTahunAjaran) {
+            $namaPrev = $activeTahunAjaran->nama;
+            $nama = $tahunAjaran->nama;
+            return response()->json(['warning' => 'Tahun Ajaran ' . $namaPrev . ' yang masih aktif. Tahun Ajaran ' . $nama . ' tidak dapat diaktifkan.']);
+        } else {
+            $nama = $tahunAjaran->nama;
+            // Mengaktifkan tahun ajaran yang dipilih
+            $tahunAjaran->update(['status' => 1]);
+            return response()->json(['success' => 'Tahun Ajaran ' . $nama . ' berhasil diaktifkan.']);
+        }
     }
     public function setnAktif($id)
     {
         // Cari tahun ajaran berdasarkan ID
         $tahunAjaran = TahunAjaran::findOrFail($id);
         // Mengaktifkan tahun ajaran yang dipilih
-        $tahunAjaran->update(['status' => 2]);
+        $tahunAjaran->update(['status' => null]);
         return response()->json(['success' => 'Tahun ajaran diselesaikan.']);
     }
 }

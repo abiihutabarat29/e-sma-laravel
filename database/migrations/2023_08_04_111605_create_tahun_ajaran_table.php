@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tahun_ajaran', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->integer('status')->default(0);
+            $table->string('nama')->unique();
+            $table->string('status')->unique()->nullable();
             $table->timestamps();
         });
     }
