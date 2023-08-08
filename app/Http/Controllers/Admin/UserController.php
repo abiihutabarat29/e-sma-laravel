@@ -146,7 +146,7 @@ class UserController extends Controller
         if (!$request->user_id) {
             Timeline::create(
                 [
-                    'user_id' => Auth::user()->id,
+                    'user_id' => Authuth::user()->id,
                     'sekolah_id' => $request->sekolah_id,
                     'status' => 'membuat akun sekolah baru',
                     'pesan' => 'Selamat bergabung ' . '&nbsp;&nbsp;' . '<b>' . $request->nama . '</b>' . '!' . '&nbsp;&nbsp;' . 'akun anda berhasil dibuat.',
@@ -155,7 +155,7 @@ class UserController extends Controller
         } else {
             Timeline::create(
                 [
-                    'user_id' => Auth::user()->id,
+                    'user_id' => Authuth::user()->id,
                     'status' => 'memperbaharui akun',
                     'pesan' => 'Memperbaharui akun ' . '&nbsp;&nbsp;' . '<b>' . $request->nama . '</b>' . '!',
                 ]
@@ -231,13 +231,15 @@ class UserController extends Controller
             'tgl_lahir' => $request->tgl_lahir,
             'alamat' => $request->alamat,
         ]);
-        Timeline::create(
-            [
-                'user_id' => Auth::user()->id,
-                'sekolah_id' => Auth::user()->sekolah_id,
-                'status' => 'memperbaharui profil',
-            ]
-        );
+        if (!Auth::user()->role == 1) {
+            Timeline::create(
+                [
+                    'user_id' => $id,
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'status' => 'memperbaharui profil',
+                ]
+            );
+        }
         //redirect to index
         return redirect()->route('profil.index')->with(['toast_success' => 'Profil updated successfully.']);
     }
@@ -266,13 +268,15 @@ class UserController extends Controller
                 'password' => Hash::make($request->npassword),
             ]
         );
-        Timeline::create(
-            [
-                'user_id' => Auth::user()->id,
-                'sekolah_id' => Auth::user()->sekolah_id,
-                'status' => 'memperbaharui password',
-            ]
-        );
+        if (!Auth::user()->role == 1) {
+            Timeline::create(
+                [
+                    'user_id' => $id,
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'status' => 'memperbaharui password',
+                ]
+            );
+        }
         //redirect to index
         return redirect()->route('profil.index')->with(['toast_success' => 'Password updated successfully.']);
     }
@@ -299,14 +303,16 @@ class UserController extends Controller
         $user->update([
             'foto' => $img->hashName(),
         ]);
-        Timeline::create(
-            [
-                'user_id' => Auth::user()->id,
-                'sekolah_id' => Auth::user()->sekolah_id,
-                'status' => 'memperbaharui foto profil',
-                'foto' => $img->hashName(),
-            ]
-        );
+        if (!Auth::user()->role == 1) {
+            Timeline::create(
+                [
+                    'user_id' => $id,
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'status' => 'memperbaharui foto profil',
+                    'foto' => $img->hashName(),
+                ]
+            );
+        }
         //redirect to index
         return redirect()->route('profil.index')->with(['toast_success' => 'Photo updated successfully.']);
     }
