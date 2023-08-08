@@ -75,6 +75,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <figure class="highcharts-figure">
+                        <div id="container-sekolah-alumni" style="height: 400px; width:100%;"></div>
+                    </figure>
+                </div>
+            </div>
+            <hr>
+            <div class="col-md-12">
+                <div class="card">
+                    <figure class="highcharts-figure">
                         <div id="container-sekolah-guru" style="height: 400px; width:100%;"></div>
                     </figure>
                 </div>
@@ -127,6 +135,41 @@
                 },
                 series: [{
                     name: 'Jumlah Siswa/i',
+                    data: counts
+                }]
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data passed from the controller
+            var alumni = @json($alumni);
+
+            // Prepare the data for Highcharts
+            var categories = [];
+            var counts = [];
+
+            alumni.forEach(function(item) {
+                categories.push(item.sekolah_nama); // School name from the 'sekolah' table
+                counts.push(item.alumni_count);
+            });
+
+            // Create the Highcharts chart
+            Highcharts.chart('container-sekolah-alumni', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Grafik Jumlah Alumni Seluruh Sekolah'
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Jumlah'
+                    }
+                },
+                series: [{
+                    name: 'Jumlah Alumni',
                     data: counts
                 }]
             });

@@ -30,6 +30,11 @@ class DashboardController extends Controller
                 ->leftJoin('siswa', 'sekolah.id', '=', 'siswa.sekolah_id')
                 ->groupBy('sekolah.id', 'sekolah.nama_sekolah')
                 ->get();
+            $alumni = Siswa::select('sekolah.nama_sekolah as sekolah_nama', Siswa::raw('COUNT(siswa.id) as alumni_count'))
+                ->join('sekolah', 'sekolah.id', '=', 'siswa.sekolah_id')
+                ->where('siswa.sts_siswa', 'Lulus') // Menambahkan kondisi untuk siswa yang statusnya "lulus"
+                ->groupBy('sekolah.id', 'sekolah.nama_sekolah')
+                ->get();
             $guru = Sekolah::select('sekolah.nama_sekolah as sekolah_nama', Guru::raw('COUNT(guru.id) as guru_count'))
                 ->leftJoin('guru', 'sekolah.id', '=', 'guru.sekolah_id')
                 ->groupBy('sekolah.id', 'sekolah.nama_sekolah')
@@ -38,7 +43,7 @@ class DashboardController extends Controller
                 ->leftJoin('pegawai', 'sekolah.id', '=', 'pegawai.sekolah_id')
                 ->groupBy('sekolah.id', 'sekolah.nama_sekolah')
                 ->get();
-            return view('admin.dashboard.admin', compact('menu', 'guruall', 'pegawaiall', 'user', 'siswaall', 'alumniall', 'siswa', 'guru', 'pegawai'));
+            return view('admin.dashboard.admin', compact('menu', 'guruall', 'pegawaiall', 'user', 'siswaall', 'alumniall', 'siswa', 'alumni', 'guru', 'pegawai'));
         } else {
             return view('admin.dashboard.sekolah', compact('menu', 'guru', 'pegawai', 'user', 'siswa', 'alumni'));
         }

@@ -421,7 +421,7 @@
 </div>
 <li class="nav-header">MANUAL BOOK</li>
 <li class="nav-item">
-    <a href="{{ route('download') }}" class="nav-link">
+    <a href="#" class="nav-link">
         <i class="nav-icon fas fa-download"></i>
         <p>
             Download

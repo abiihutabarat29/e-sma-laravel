@@ -200,8 +200,12 @@ class UserController extends Controller
         } else {
             $user = User::where("id", $id)->first();
         }
-        $lastEmail = User::where('id', $request->id)->first();
-        if ($lastEmail->email == $request->email) {
+        if (Auth::user()->role == 1) {
+            $updateEmail = UsersCabdis::where('id', $id)->first();
+        } else {
+            $updateEmail = User::where("id", $id)->first();
+        }
+        if ($updateEmail->email == $request->email) {
             $ruleEmail = 'required|email';
         } else {
             $ruleEmail = 'required|email|unique:users,email';
@@ -220,6 +224,9 @@ class UserController extends Controller
             ]
         );
         $profil->update([
+            'nama' => $request->nama,
+            'nohp' => $request->nohp,
+            'email' => $request->email,
             'gender' => $request->jenis_kelamin,
             'tempat_lahir' => $request->tempat_lahir,
             'tgl_lahir' => $request->tgl_lahir,
