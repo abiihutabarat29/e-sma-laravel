@@ -143,24 +143,6 @@ class UserController extends Controller
                 'nohp' => $request->nohp,
             ]
         );
-        if (!$request->user_id) {
-            Timeline::create(
-                [
-                    'user_id' => Authuth::user()->id,
-                    'sekolah_id' => $request->sekolah_id,
-                    'status' => 'membuat akun sekolah baru',
-                    'pesan' => 'Selamat bergabung ' . '&nbsp;&nbsp;' . '<b>' . $request->nama . '</b>' . '!' . '&nbsp;&nbsp;' . 'akun anda berhasil dibuat.',
-                ]
-            );
-        } else {
-            Timeline::create(
-                [
-                    'user_id' => Authuth::user()->id,
-                    'status' => 'memperbaharui akun',
-                    'pesan' => 'Memperbaharui akun ' . '&nbsp;&nbsp;' . '<b>' . $request->nama . '</b>' . '!',
-                ]
-            );
-        }
         return response()->json(['success' => 'User saved successfully.']);
     }
     public function edit($id)
