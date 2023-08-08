@@ -233,7 +233,7 @@ class UserController extends Controller
         ]);
         Timeline::create(
             [
-                'user_id' => $request->id,
+                'user_id' => Auth::user()->id,
                 'sekolah_id' => Auth::user()->sekolah_id,
                 'status' => 'memperbaharui profil',
             ]
@@ -268,7 +268,7 @@ class UserController extends Controller
         );
         Timeline::create(
             [
-                'user_id' => $request->id,
+                'user_id' => Auth::user()->id,
                 'sekolah_id' => Auth::user()->sekolah_id,
                 'status' => 'memperbaharui password',
             ]
@@ -301,7 +301,7 @@ class UserController extends Controller
         ]);
         Timeline::create(
             [
-                'user_id' => $id,
+                'user_id' => Auth::user()->id,
                 'sekolah_id' => Auth::user()->sekolah_id,
                 'status' => 'memperbaharui foto profil',
                 'foto' => $img->hashName(),
