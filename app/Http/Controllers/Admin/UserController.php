@@ -116,7 +116,7 @@ class UserController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()->all()]);
         }
-        User::updateOrCreate(
+        $usersid = User::updateOrCreate(
             [
                 'id' => $request->user_id
             ],
@@ -131,7 +131,6 @@ class UserController extends Controller
                 'status' => 1,
             ]
         );
-        $usersid  = User::orderBy('id', 'DESC')->first();
         ProfileUsers::updateOrCreate(
             [
                 'id' => $request->user_id
