@@ -52,12 +52,14 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
     Route::put('profile/{user}/update-password', [UserController::class, 'updatepassword'])->name('profil.update.password');
     Route::put('profile/{user}/update-foto', [UserController::class, 'updatefoto'])->name('profil.update.foto');
     // Download Manual Book
-    Route::get('download', [ManualBookController::class, 'download'])->name('download');
+    // Route::get('download', [ManualBookController::class, 'download'])->name('download');
     //Get Data JSON
     Route::post('kabupaten/get-kabupaten', [KabupatenController::class, 'getKabupaten']);
     Route::post('kecamatan/get-kecamatan', [KecamatanController::class, 'getKecamatan']);
     Route::post('desa/get-desa', [DesaController::class, 'getDesa']);
     Route::post('mata-pelajaran/get-mapel', [MapelController::class, 'getMapel']);
+    Route::post('kategori/get-kategori-mapel', [MapelController::class, 'getKategoriMapel']);
+    Route::post('kelompok/get-kelompok-mapel', [MapelController::class, 'getKelompok']);
     Route::post('sarana/get-sarana', [SaranaController::class, 'getSarana']);
     Route::post('inventaris/get-inventaris', [InventarisController::class, 'getInventaris']);
     Route::post('siswa/get-siswa', [SiswaController::class, 'getSiswa']);
@@ -80,8 +82,6 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::post('users-sekolah', [UserController::class, 'store'])->name('user.store');
         Route::get('users-sekolah/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
         Route::delete('users-sekolah/{user}/destroy', [UserController::class, 'destroy'])->name('user.destroy');
-        // Mata Pelajaran
-        Route::resource('mata-pelajaran', MapelController::class);
         // Sarana
         Route::resource('sarana', SaranaController::class);
         // Inventaris
@@ -99,6 +99,18 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         // Semester
         Route::get('semester', [TAController::class, 'semesterData'])->name('semester.data');
         Route::post('semester/aktif/{id}', [TAController::class, 'setAktifSmt']);
+        // Mata Pelajaran
+        Route::resource('mata-pelajaran', MapelController::class);
+        // Kelompok Mapel
+        Route::get('kelompok-mapel', [MapelController::class, 'kelompok'])->name('kelompok.data');
+        Route::post('kelompok-mapel', [MapelController::class, 'storeKelompok'])->name('kelompok.store');
+        Route::get('kelompok-mapel/{id}/edit', [MapelController::class, 'editKelompok']);
+        Route::delete('kelompok-mapel/{id}/destroy', [MapelController::class, 'destroyKelompok']);
+        // SubKelompok Mapel
+        Route::get('subkelompok-mapel', [MapelController::class, 'subKelompok'])->name('subkelompok.data');
+        Route::post('subkelompok-mapel', [MapelController::class, 'storeSubKelompok'])->name('subkelompok.store');
+        Route::get('subkelompok-mapel/{id}/edit', [MapelController::class, 'editSubKelompok']);
+        Route::delete('subkelompok-mapel/{id}/destroy', [MapelController::class, 'destroySubKelompok']);
         // Guru
         Route::get('guru', [GuruController::class, 'index'])->name('guru.index');
         Route::get('guru/create', [GuruController::class, 'create'])->name('guru.create');

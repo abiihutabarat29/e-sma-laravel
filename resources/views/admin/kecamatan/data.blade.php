@@ -223,7 +223,6 @@
                             });
                         }
                     });
-                    $("#kabupaten_id").val(data.kabupaten_id);
                     $("#kode_wilayah").val(data.kode_wilayah);
                     $("#nama_kecamatan").val(data.kecamatan);
                 });

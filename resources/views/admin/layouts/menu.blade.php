@@ -11,7 +11,6 @@
         class="nav-item {{ request()->segment(1) == 'kabupaten' ||
         request()->segment(1) == 'sekolah' ||
         request()->segment(1) == 'users-sekolah' ||
-        request()->segment(1) == 'mata-pelajaran' ||
         request()->segment(1) == 'sarana' ||
         request()->segment(1) == 'inventaris' ||
         request()->segment(1) == 'golongan'
@@ -21,7 +20,6 @@
             class="nav-link {{ request()->segment(1) == 'kabupaten' ||
             request()->segment(1) == 'sekolah' ||
             request()->segment(1) == 'users-sekolah' ||
-            request()->segment(1) == 'mata-pelajaran' ||
             request()->segment(1) == 'sarana' ||
             request()->segment(1) == 'inventaris' ||
             request()->segment(1) == 'golongan'
@@ -80,15 +78,6 @@
         </ul>
         <ul class="nav nav-treeview">
             <li class="nav-item">
-                <a href="{{ route('mata-pelajaran.index') }}"
-                    class="nav-link {{ request()->segment(1) == 'mata-pelajaran' ? 'active' : '' }}">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Mata Pelajaran</p>
-                </a>
-            </li>
-        </ul>
-        <ul class="nav nav-treeview">
-            <li class="nav-item">
                 <a href="{{ route('sarana.index') }}"
                     class="nav-link {{ request()->segment(1) == 'sarana' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
@@ -127,6 +116,7 @@
 @else
     <li
         class="nav-item {{ request()->segment(1) == 'tahun-pelajaran' ||
+        request()->segment(1) == 'mata-pelajaran' ||
         request()->segment(1) == 'rombel-sekolah' ||
         request()->segment(1) == 'dakl' ||
         request()->segment(1) == 'sarpras' ||
@@ -135,6 +125,7 @@
             : '' }}">
         <a href="#"
             class="nav-link {{ request()->segment(1) == 'tahun-pelajaran' ||
+            request()->segment(1) == 'mata-pelajaran' ||
             request()->segment(1) == 'rombel-sekolah' ||
             request()->segment(1) == 'dakl' ||
             request()->segment(1) == 'sarpras' ||
@@ -153,6 +144,15 @@
                     class="nav-link {{ request()->segment(1) == 'tahun-pelajaran' ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Tahun Pelajaran</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('mata-pelajaran.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'mata-pelajaran' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Mata Pelajaran</p>
                 </a>
             </li>
         </ul>
@@ -358,48 +358,48 @@
             </li>
         </ul>
     </li>
+    <li class="nav-header">PENGATURAN</li>
+    <li
+        class="nav-item {{ request()->segment(1) == 'profile-sekolah' || request()->segment(1) == 'wilayah-sekolah' ? 'menu-open' : '' }}">
+        <a href="#"
+            class="nav-link {{ request()->segment(1) == 'profile-sekolah' || request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-school"></i>
+            <p>
+                Sekolah
+                <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('profile-sekolah.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'profile-sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Profil Sekolah</p>
+                </a>
+            </li>
+        </ul>
+        <ul class="nav nav-treeview">
+            <li class="nav-item">
+                <a href="{{ route('wilayah-sekolah.index') }}"
+                    class="nav-link {{ request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Wilayah Sekolah</p>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <div class="user-panel">
+    </div>
+    <li class="nav-header">MANUAL BOOK</li>
+    <li class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-download"></i>
+            <p>
+                Download
+            </p>
+        </a>
+    </li>
 @endif
-<li class="nav-header">PENGATURAN</li>
-<li
-    class="nav-item {{ request()->segment(1) == 'profile-sekolah' || request()->segment(1) == 'wilayah-sekolah' ? 'menu-open' : '' }}">
-    <a href="#"
-        class="nav-link {{ request()->segment(1) == 'profile-sekolah' || request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
-        <i class="nav-icon fas fa-school"></i>
-        <p>
-            Sekolah
-            <i class="right fas fa-angle-left"></i>
-        </p>
-    </a>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('profile-sekolah.index') }}"
-                class="nav-link {{ request()->segment(1) == 'profile-sekolah' ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Profil Sekolah</p>
-            </a>
-        </li>
-    </ul>
-    <ul class="nav nav-treeview">
-        <li class="nav-item">
-            <a href="{{ route('wilayah-sekolah.index') }}"
-                class="nav-link {{ request()->segment(1) == 'wilayah-sekolah' ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
-                <p>Wilayah Sekolah</p>
-            </a>
-        </li>
-    </ul>
-</li>
-<div class="user-panel">
-</div>
-<li class="nav-header">MANUAL BOOK</li>
-<li class="nav-item">
-    <a href="#" class="nav-link">
-        <i class="nav-icon fas fa-download"></i>
-        <p>
-            Download
-        </p>
-    </a>
-</li>
 <div class="user-panel mt-3">
 </div>
 <li class="nav-item">

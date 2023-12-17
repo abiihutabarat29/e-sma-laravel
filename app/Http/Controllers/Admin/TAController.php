@@ -13,7 +13,7 @@ class TAController extends Controller
 {
     public function index(Request $request)
     {
-        $menu = 'Tahun Pelajaran & Semester';
+        $menu = 'Tahun Pelajaran dan Semester';
         if ($request->ajax()) {
             $data = TahunPelajaran::get();
             return DataTables::of($data)
