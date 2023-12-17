@@ -90,13 +90,15 @@ Route::group(['middleware' => ['auth:user,admincbd']], function () {
         Route::resource('golongan', GolonganController::class);
         // Jurusan
         Route::resource('jurusan', JurusanController::class);
-        // Tahun Ajaran
-        Route::resource('tahun-ajaran', TAController::class);
-        Route::post('tahun-ajaran/aktif/{id}', [TAController::class, 'setAktif']);
-        Route::post('tahun-ajaran/naktif/{id}', [TAController::class, 'setnAktif']);
     });
     // Route user sekolah
     Route::group(['middleware' => ['checkUser:2']], function () {
+        // Tahun Pelajaran
+        Route::resource('tahun-pelajaran', TAController::class);
+        Route::post('tahun-pelajaran/aktif/{id}', [TAController::class, 'setAktifTa']);
+        // Semester
+        Route::get('semester', [TAController::class, 'semesterData'])->name('semester.data');
+        Route::post('semester/aktif/{id}', [TAController::class, 'setAktifSmt']);
         // Guru
         Route::get('guru', [GuruController::class, 'index'])->name('guru.index');
         Route::get('guru/create', [GuruController::class, 'create'])->name('guru.create');

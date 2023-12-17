@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('rombel', function (Blueprint $table) {
-            $table->unsignedBigInteger('tahun_ajaran_id')->after('ruangan');
+        Schema::create('tahun_pelajaran', function (Blueprint $table) {
+            $table->id();
+            $table->string('tahun');
+            $table->integer('status');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('rombel', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('tahun_pelajaran');
     }
 };

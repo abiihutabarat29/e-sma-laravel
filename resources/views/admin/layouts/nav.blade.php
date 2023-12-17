@@ -1,5 +1,6 @@
 @php
-    $tahunAjaranAktif = \App\Models\TahunAjaran::where('status', 1)->first();
+    $tahunAjaranAktif = \App\Models\TahunPelajaran::where('status', 1)->first();
+    $smtAktif = \App\Models\Semester::where('status', 1)->first();
 @endphp
 
 <!-- Navbar -->
@@ -11,18 +12,17 @@
         </li>
     </ul>
 
-    @if ($tahunAjaranAktif)
+    @if ($tahunAjaranAktif && $smtAktif)
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#"><span class="btn btn-primary btn-sm">TA :
-                        {{ $tahunAjaranAktif->nama }} Aktif</span></a>
+            <li class="nav-item"><span class="text-dark"> TP :
+                    {{ $tahunAjaranAktif->tahun }} SEMESTER : {{ $smtAktif->nama_smt }} </span>
             </li>
         </ul>
     @else
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#"><span class="btn btn-danger btn-sm">TA belum diaktifkan
-                        administrator</span></a>
+                <a class="nav-link" href="#"><span class="btn btn-danger btn-sm">Tahun Pelajaran & Semester belum
+                        aktif</span></a>
             </li>
         </ul>
     @endif

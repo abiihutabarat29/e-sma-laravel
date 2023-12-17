@@ -85,14 +85,17 @@
     </div>
     @include('sweetalert::alert')
     @php
-        $tahunAjaranAktif = \App\Models\TahunAjaran::where('status', 1)->first();
+        $tahunAjaranAktif = \App\Models\TahunPelajaran::where('status', 1)->first();
+        $smtAktif = \App\Models\Semester::where('status', 1)->first();
     @endphp
     <div class="scrolling-text">
         <marquee class="scrolling-text" behavior="scroll" direction="left">
-            JIKA TAHUN AJARAN (TA) TIDAK AKTIF SEGERA HUBUNGI ADMINISTRATOR CABDIS. TAHUN AJARAN AKTIF SEKRANG :
+            TAHUN PELAJARAN :
             {!! $tahunAjaranAktif
-                ? $tahunAjaranAktif->nama
-                : '<span class="text-danger">TA belum diaktifkan oleh administrator</span>' !!}
+                ? $tahunAjaranAktif->tahun
+                : '<span class="text-danger">Tahun Pelajaran belum aktif.</span>' !!}
+            SEMESTER :
+            {!! $smtAktif ? $smtAktif->nama_smt : '<span class="text-danger">Semester belum aktif.</span>' !!}
         </marquee>
     </div>
     @include('admin.layouts.footer')
